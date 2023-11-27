@@ -1,0 +1,23 @@
+name: Release CI
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  publish-npm:
+
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: openglobus/openglobus/.github/actions/main
+
+      - run: npm run build
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
