@@ -1,6 +1,6 @@
 {
   "name": "@openglobus/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Openglobus React Components",
   "main": "dist/index.umd.js",
   "private": false,
