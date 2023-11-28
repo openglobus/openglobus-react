@@ -4,12 +4,12 @@ import {Globe, GlobusTerrain, utils, XYZ} from '@openglobus/og';
 
 let index: Globe;
 
-interface GlobeContextProps {
+interface GlobusContextProps {
     globe: Globe | null;
     setGlobe: React.Dispatch<React.SetStateAction<Globe | null>>;
 }
 
-const GlobeContext = createContext<GlobeContextProps>({
+const GlobusContext = createContext<GlobusContextProps>({
     globe: null,
     setGlobe: () => {
     },
@@ -18,14 +18,14 @@ const GlobeContext = createContext<GlobeContextProps>({
 export const GlobeContextProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [globe, setGlobe] = useState<Globe | null>(index);
 
-    return <GlobeContext.Provider value={{globe, setGlobe}}>{children}</GlobeContext.Provider>;
+    return <GlobusContext.Provider value={{globe, setGlobe}}>{children}</GlobusContext.Provider>;
 };
 
-export const useGlobeContext = (): GlobeContextProps => useContext(GlobeContext);
+export const useGlobusContext = (): GlobusContextProps => useContext(GlobusContext);
 
 const Globus: React.FC<{ children?: React.ReactNode }> = ({children}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
-    const {setGlobe} = useGlobeContext();
+    const {setGlobe} = useGlobusContext();
 
     useEffect(() => {
         if (!index) {
