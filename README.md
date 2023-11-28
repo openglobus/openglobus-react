@@ -3,15 +3,15 @@ Openglobus React Components
 
 Install:
 ```bash
-npm i @openglobus/react
+npm i @openglobus/openglobus-react
 ```
 
 Example of usage: 
 
 `App.tsx`
 ```tsx
-import '@openglobus/react/dist/style.css'
-import Globus, {GlobusContextProvider} from '@openglobus/react'
+import '@openglobus/openglobus-react/dist/style.css'
+import Globus, {GlobusContextProvider} from '@openglobus/openglobus-react'
 
 
 function App() {
@@ -26,7 +26,7 @@ export default App
 ```
 `Button.tsx`
 ```tsx
-import {useGlobusContext} from '@openglobus/react'
+import {useGlobusContext} from '@openglobus/openglobus-react'
 // import './buttons.css'
 import {LonLat} from "@openglobus/og";
 

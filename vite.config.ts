@@ -6,7 +6,7 @@ export default defineConfig ({
     build: {
         lib: {
             entry: resolve(__dirname, "src/index.tsx"),
-            name: "@openglobus/react",
+            name: "@openglobus/openglobus-react",
 
             fileName: "index",
         },
