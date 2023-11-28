@@ -5,27 +5,27 @@ import {Globe, GlobusTerrain, utils, XYZ} from '@openglobus/og';
 let index: Globe;
 
 interface GlobusContextProps {
-    globe: Globe | null;
-    setGlobe: React.Dispatch<React.SetStateAction<Globe | null>>;
+    globus: Globe | null;
+    setGlobus: React.Dispatch<React.SetStateAction<Globe | null>>;
 }
 
 const GlobusContext = createContext<GlobusContextProps>({
-    globe: null,
-    setGlobe: () => {
+    globus: null,
+    setGlobus: () => {
     },
 });
 
-export const GlobeContextProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [globe, setGlobe] = useState<Globe | null>(index);
+export const GlobusContextProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+    const [globus, setGlobus] = useState<Globe | null>(index);
 
-    return <GlobusContext.Provider value={{globe, setGlobe}}>{children}</GlobusContext.Provider>;
+    return <GlobusContext.Provider value={{globus: globus, setGlobus: setGlobus}}>{children}</GlobusContext.Provider>;
 };
 
 export const useGlobusContext = (): GlobusContextProps => useContext(GlobusContext);
 
 const Globus: React.FC<{ children?: React.ReactNode }> = ({children}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
-    const {setGlobe} = useGlobusContext();
+    const {setGlobus} = useGlobusContext();
 
     useEffect(() => {
         if (!index) {
@@ -86,18 +86,18 @@ const Globus: React.FC<{ children?: React.ReactNode }> = ({children}) => {
         }
         // targetRef.current!.globus = globus;
 
-        setGlobe(index);
+        setGlobus(index);
     }, []);
 
     return (
-        <GlobeContextProvider>
+        <GlobusContextProvider>
             <div style={{
                 width: '100%',
                 height: '100%'
             }} id="globus" ref={targetRef}>
                 {children}
             </div>
-        </GlobeContextProvider>
+        </GlobusContextProvider>
     );
 };
 

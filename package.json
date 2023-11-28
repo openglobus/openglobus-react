@@ -1,11 +1,11 @@
 {
   "name": "@openglobus/openglobus-react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Openglobus React Components",
   "main": "dist/index.umd.js",
   "private": false,
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],
