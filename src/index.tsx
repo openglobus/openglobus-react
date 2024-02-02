@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useRef, useState} from 'rea
 import '@openglobus/og/css/og.css';
 import {Globe, GlobusTerrain, utils, XYZ} from '@openglobus/og';
 
-let index: Globe;
+let index: Globe | null = null;
 
 interface GlobusContextProps {
     globus: Globe | null;
@@ -23,7 +23,7 @@ export const GlobusContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useGlobusContext = (): GlobusContextProps => useContext(GlobusContext);
 
-const Globus: React.FC<{ children?: React.ReactNode }> = ({children}) => {
+const Globus: React.FC<{ children?: React.ReactNode, options: any }> = ({options, children}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
     const {setGlobus} = useGlobusContext();
 
@@ -73,20 +73,19 @@ const Globus: React.FC<{ children?: React.ReactNode }> = ({children}) => {
                 terrain: new GlobusTerrain(),
                 layers: [osm, sat],
                 autoActivate: true,
+                atmosphereEnabled: true,
+                ...options
             });
 
-            index.planet.atmosphereEnabled = true;
-
-            return () => {
-                // globus?.destroy();
-                // globus = null;
-            };
         } else {
             targetRef.current = index.$target as HTMLDivElement
         }
         // targetRef.current!.globus = globus;
-
         setGlobus(index);
+        return () => {
+            // index?.destroy();
+            // index = null;
+        };
     }, []);
 
     return (
