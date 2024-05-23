@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useGlobusContext} from "./GlobeContext";
 import {Globe, GlobusTerrain, IGlobeParams, utils, XYZ} from "@openglobus/og";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
@@ -14,12 +14,13 @@ interface GlobusProps extends IGlobeParams {
 const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
     const {setGlobus} = useGlobusContext();
-    const [options, setOptions] = React.useState<IGlobeParams>(rest);
+    const [options, setOptions] = useState<IGlobeParams>(rest);
+
     useEffect(() => {
-        setOptions(rest);
-    }, []);
+        if (index && rest.atmosphereEnabled !== undefined) index.planet.atmosphereEnabled = rest.atmosphereEnabled;
+    }, [rest.atmosphereEnabled]);
+
     useEffect(() => {
-console.log(rest)
         if (!index) {
             const osm = new XYZ('OpenStreetMap', {
                 isBaseLayer: true,
@@ -55,7 +56,10 @@ console.log(rest)
                 nightTextureCoefficient: 2.7,
                 urlRewrite: function (s: any, u: string) {
                     // @ts-ignore
-                    return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});
+                    return utils.stringTemplate(u, {
+                        s: this._getSubdomain(),
+                        quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)
+                    });
                 },
             });
 
