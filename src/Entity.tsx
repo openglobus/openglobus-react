@@ -1,4 +1,5 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import * as React from "react";
+import { useEffect, useContext, useRef } from 'react';
 import { useGlobusContext } from './index';
 // @ts-ignore
 import { IEntityParams, Entity as GlobusEntity } from '@openglobus/og';

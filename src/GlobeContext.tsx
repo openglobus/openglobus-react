@@ -1,7 +1,8 @@
 import {Globe} from "@openglobus/og";
-import React, {createContext, useContext, useState} from "react";
+import * as React from "react";
+import {createContext, useContext, useState} from "react";
 
-interface GlobusContextProps {
+export interface GlobusContextProps {
     globus: Globe | null;
     setGlobus: React.Dispatch<React.SetStateAction<Globe | null>>;
 }

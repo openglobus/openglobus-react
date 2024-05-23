@@ -1,14 +1,25 @@
-import React, {useEffect, useRef} from "react";
+import * as React from "react";
+import {useEffect, useRef} from "react";
 import {useGlobusContext} from "./GlobeContext";
-import {Globe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
+import {Globe, GlobusTerrain, IGlobeParams, utils, XYZ} from "@openglobus/og";
+import {EventCallback} from "@openglobus/og/lib/js/Events";
 
 let index: Globe | null = null;
 
-const Globus: React.FC<{ children?: React.ReactNode, options: any }> = ({options, children}) => {
+interface GlobusProps extends IGlobeParams {
+    children?: React.ReactNode,
+    onDraw?: EventCallback
+}
+
+const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
     const {setGlobus} = useGlobusContext();
-
+    const [options, setOptions] = React.useState<IGlobeParams>(rest);
     useEffect(() => {
+        setOptions(rest);
+    }, []);
+    useEffect(() => {
+console.log(rest)
         if (!index) {
             const osm = new XYZ('OpenStreetMap', {
                 isBaseLayer: true,
@@ -57,15 +68,20 @@ const Globus: React.FC<{ children?: React.ReactNode, options: any }> = ({options
                 atmosphereEnabled: true,
                 ...options
             });
+            if (onDraw)
+                index.planet.events.on('draw', onDraw)
 
         } else {
             targetRef.current = index.$target as HTMLDivElement
         }
         // targetRef.current!.globus = globus;
+
         setGlobus(index);
         return () => {
-            // index?.destroy();
-            // index = null;
+            if (onDraw)
+                index?.planet.events.off('draw', onDraw)
+            index?.destroy();
+            index = null;
         };
     }, [options]);
 
@@ -78,4 +94,4 @@ const Globus: React.FC<{ children?: React.ReactNode, options: any }> = ({options
         </div>
     );
 };
-export default Globus;
+export {Globus};
