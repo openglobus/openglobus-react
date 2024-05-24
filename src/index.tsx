@@ -4,3 +4,4 @@ export * from "./GlobeContext";
 export * from './Layer';
 export * from './Vector';
 export * from './Entity';
+export * from  './entity/Billboard';
