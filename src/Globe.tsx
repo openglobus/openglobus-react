@@ -1,8 +1,9 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import {useGlobusContext} from "./GlobeContext";
-import {Globe, GlobusTerrain, IGlobeParams, utils, XYZ} from "@openglobus/og";
+import {Globe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
+import {IGlobeParams} from "@openglobus/og/lib/js/Globe";
 
 let index: Globe | null = null;
 
@@ -56,11 +57,7 @@ const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
                 nightTextureCoefficient: 2.7,
                 urlRewrite: function (s: any, u: string) {
                     // @ts-ignore
-                    return utils.stringTemplate(u, {
-                        s: this._getSubdomain(),
-                        quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)
-                    });
-                },
+                    return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});},
             });
 
             index = new Globe({
