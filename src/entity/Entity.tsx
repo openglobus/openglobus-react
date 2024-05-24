@@ -1,14 +1,12 @@
 import * as React from "react";
 import {useContext, useEffect, useRef} from "react";
 import {useGlobusContext} from './index';
-import {Entity as GlobusEntity,  LonLat} from '@openglobus/og';
-import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
-
-import {VectorContext} from "./Vector";
+import { Entity as GlobusEntity, IEntityParams, IGlobeParams, LonLat} from '@openglobus/og';
+import {VectorContext} from "../Vector";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
 import {NumberArray3} from "@openglobus/og/lib/js/math/Vec3";
 
-// type EntityChildElement = React.ReactElement<{ type: typeof Billboard }>;
+type EntityChildElement = React.ReactElement<{ type: typeof Billboard }>;
 
 
 interface EntityProps extends IEntityParams {
@@ -43,4 +41,3 @@ const Entity: React.FC<EntityProps> = ({lonlat, name, ...rest}) => {
 };
 
 export {Entity};
-   

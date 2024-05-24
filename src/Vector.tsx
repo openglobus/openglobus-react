@@ -1,25 +1,42 @@
 import * as React from "react";
-import  {createContext, useCallback, useEffect, useRef, useState} from 'react';
+import {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {useGlobusContext} from './index';
-import {Vector as GlobusVector} from '@openglobus/og';
-import { IVectorParams } from '@openglobus/og/lib/js/layer/Vector';
+import {Entity, Vector as GlobusVector} from '@openglobus/og';
+import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
+import {EventCallback} from "@openglobus/og/lib/js/Events";
 
-const VectorContext = createContext<{ addEntity: (entity: any) => void ,removeEntity:(entity: any) => void}>({ addEntity: () => {},removeEntity: () => {} });
+const VectorContext = createContext<{
+    addEntity: (entity: any) => void,
+    removeEntity: (entity: any) => void
+}>({
+    addEntity: () => {
+    }, removeEntity: () => {
+    }
+});
+type EntityElement = React.ReactElement<{ type: typeof Entity }>;
 
-const Vector: React.FC<{ children?: React.ReactNode, params: IVectorParams, name: string }> = ({ params, children , name}) => {
-    const { globus } = useGlobusContext();
+export interface VectorProps extends IVectorParams {
+    children?: EntityElement | EntityElement[]
+    name: string
+    onDraw?: EventCallback
+
+}
+
+const Vector: React.FC<VectorProps> = ({onDraw, children, name, ...rest}) => {
+    const {globus} = useGlobusContext();
     const vectorRef = useRef<GlobusVector | null>(null);
     const [entities, setEntities] = useState<any[]>([]);
     const entitiesRef = useRef(new Set()); // To keep track of added entities
 
     useEffect(() => {
         if (globus) {
-            vectorRef.current = new GlobusVector(name, params);
+            vectorRef.current = new GlobusVector(name, rest);
             globus.planet.addLayer(vectorRef.current);
-
+            if (onDraw) vectorRef.current?.events.on('draw', onDraw)
             return () => {
                 if (vectorRef.current) {
                     globus.planet.removeLayer(vectorRef.current);
+                    if (onDraw) vectorRef.current?.events.off('draw', onDraw)
                 }
             };
         }
@@ -49,10 +66,10 @@ const Vector: React.FC<{ children?: React.ReactNode, params: IVectorParams, name
         }
     }, []);
     return (
-        <VectorContext.Provider value={{ addEntity, removeEntity }}>
+        <VectorContext.Provider value={{addEntity, removeEntity}}>
             {children}
         </VectorContext.Provider>
     );
 };
 
-export { Vector, VectorContext };
+export {Vector, VectorContext};
