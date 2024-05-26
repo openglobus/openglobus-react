@@ -4,11 +4,13 @@ import {useGlobusContext} from "./GlobeContext";
 import {Globe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
 import {IGlobeParams} from "@openglobus/og/lib/js/Globe";
+import "@openglobus/og/css/og.css";
 
 let index: Globe | null = null;
 
 interface GlobusProps extends IGlobeParams {
     children?: React.ReactNode,
+    atmosphereEnabled?: boolean,
     onDraw?: EventCallback
 }
 
