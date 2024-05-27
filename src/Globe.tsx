@@ -8,7 +8,7 @@ import "@openglobus/og/css/og.css";
 
 let index: Globe | null = null;
 
-interface GlobusProps extends IGlobeParams {
+export interface GlobusProps extends IGlobeParams {
     children?: React.ReactNode,
     atmosphereEnabled?: boolean,
     onDraw?: EventCallback

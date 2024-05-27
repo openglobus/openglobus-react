@@ -1,19 +1,31 @@
 import * as React from "react";
-import { useContext, useEffect, useRef } from "react";
-import { Billboard as GlobusBillboard } from "@openglobus/og";
-import { IBillboardParams } from "@openglobus/og/lib/js/entity/Billboard";
-import { EntityContext } from "../Entity";
+import {useContext, useEffect, useRef} from "react";
+import {Billboard as GlobusBillboard} from "@openglobus/og";
+import {IBillboardParams} from "@openglobus/og/lib/js/entity/Billboard";
+import {EntityContext} from "../Entity";
 import {useGlobusContext} from "../GlobeContext";
 
-interface BillboardParams extends IBillboardParams {}
+export interface BillboardParams extends IBillboardParams {
+    name?: string;
+}
 
-const Billboard: React.FC<BillboardParams> = ({ ...params }) => {
-    const { addBillboard, removeBillboard } = useContext(EntityContext);
+const Billboard: React.FC<BillboardParams> = ({color, ...params}) => {
+    const {addBillboard, removeBillboard} = useContext(EntityContext);
     const billboardRef = useRef<GlobusBillboard | null>(null);
     const {globus} = useGlobusContext();
 
+
     useEffect(() => {
-        billboardRef.current = new GlobusBillboard(params);
+        if (typeof color === 'string' && billboardRef.current) {
+            billboardRef.current?.setColorHTML(color)
+        }
+    }, [color]);
+    
+    useEffect(() => {
+        billboardRef.current = new GlobusBillboard({
+            ...params,
+            color: color
+        });
         if (billboardRef.current) {
             addBillboard(billboardRef.current);
         }
@@ -28,4 +40,4 @@ const Billboard: React.FC<BillboardParams> = ({ ...params }) => {
     return null;
 };
 
-export { Billboard };
+export {Billboard};
