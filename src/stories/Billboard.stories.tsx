@@ -20,7 +20,10 @@ export const Default: Story = {
   args: {
     size: [96, 96],
     color: "#ff5959",
-    src: 'https://openglobus.org/examples/examples/billboards/carrot.png'
+    src: 'https://openglobus.org/examples/examples/billboards/carrot.png',
+    rotation: 0,
+    offset: [0, 0, 0],
+    visibility: true,
   },
   render: (args: BillboardParams) => <GlobusContextProvider>
     <Globus atmosphereEnabled={false}>
