@@ -9,6 +9,16 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
   ],
+  core: {
+    // builder: '@storybook/builder-vite',
+    disableTelemetry: true,
+    // channelOptions:{
+    //   maxDepth: 3
+    // },
+
+  },
+
+
   framework: {
     name: "@storybook/react-vite",
     options: {},

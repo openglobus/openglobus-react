@@ -18,11 +18,12 @@ type EntityElement = React.ReactElement<{ type: typeof Entity }>;
 export interface VectorProps extends IVectorParams {
     children?: EntityElement | EntityElement[]
     name: string
-    onDraw?: EventCallback
+    // onDraw?: EventCallback
+    onMouseEnter?: EventCallback
 
 }
 
-const Vector: React.FC<VectorProps> = ({onDraw, children, name, ...rest}) => {
+const Vector: React.FC<VectorProps> = ({ children, name, ...rest}) => {
     const {globus} = useGlobusContext();
     const vectorRef = useRef<GlobusVector | null>(null);
     const [entities, setEntities] = useState<any[]>([]);
@@ -32,11 +33,13 @@ const Vector: React.FC<VectorProps> = ({onDraw, children, name, ...rest}) => {
         if (globus) {
             vectorRef.current = new GlobusVector(name, rest);
             globus.planet.addLayer(vectorRef.current);
-            if (onDraw) vectorRef.current?.events.on('draw', onDraw)
+            // if (onDraw) vectorRef.current?.events.on('draw', onDraw)
+            if (rest.onMouseEnter) vectorRef.current?.events.on('mouseenter', rest.onMouseEnter)
             return () => {
                 if (vectorRef.current) {
                     globus.planet.removeLayer(vectorRef.current);
-                    if (onDraw) vectorRef.current?.events.off('draw', onDraw)
+                    // if (onDraw) vectorRef.current?.events.off('draw', onDraw)
+                    if (rest.onMouseEnter) vectorRef.current?.events.off('mouseenter', rest.onMouseEnter)
                 }
             };
         }
