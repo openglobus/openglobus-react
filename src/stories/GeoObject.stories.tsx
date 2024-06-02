@@ -7,10 +7,11 @@ import React from 'react';
 import {Billboard, BillboardParams} from "../entity";
 import {LonLat} from "@openglobus/og";
 import {GlobusContextProvider} from "../GlobeContext";
+import {GeoObject, GeoObjectParams} from "../entity/GeoObject";
 
 const meta = {
-  component: Billboard,
-} satisfies Meta<typeof Billboard>;
+  component: GeoObject,
+} satisfies Meta<typeof GeoObject>;
 
 export default meta;
 
@@ -18,19 +19,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    size: [96, 96],
-    color: "#ff5959",
-    src: 'https://openglobus.org/examples/examples/billboards/carrot.png',
-    rotation: 0,
-    offset: [0, 0, 0],
     visibility: true,
+    yaw: 0,
+    roll: 0,
+    pitch: 0,
+    scale: 1,
+    tag: 'none',
+    color: 'red',
+    objSrc: 'https://raw.githubusercontent.com/pavletto/og_resources/main/geo_object/penguin.obj',
   },
-  render: (args: BillboardParams) => <GlobusContextProvider>
+  render: (args: GeoObjectParams) => <GlobusContextProvider>
     <Globus atmosphereEnabled={false}>
       <Vector name={'test'}
               scaleByDistance={[6000000, 24000000, 10000000000]}>
         <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
-          <Billboard
+          <GeoObject
               {...args}
           />
         </Entity>

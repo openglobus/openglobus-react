@@ -48,6 +48,7 @@ const Entity: React.FC<EntityProps> = ({lon, lat,alt,lonlat, name, children, ...
     useEffect(() => {
         if (name) entityRef.current?.setLonLat2(lon,lat, alt);
     }, [lon, lat, alt]);
+
     useEffect(() => {
         if (globus) {
             entityRef.current = new GlobusEntity({lonlat, name, ...rest});
@@ -60,12 +61,17 @@ const Entity: React.FC<EntityProps> = ({lon, lat,alt,lonlat, name, children, ...
             };
         }
     }, [globus, addEntity, removeEntity]);
+
     useEffect(() => {
         if(billboard && !entityRef.current?.billboard) entityRef.current?.setBillboard(billboard);
     }, [billboard]);
+
+    useEffect(() => {
+        if(geoObject && !entityRef.current?.geoObject) entityRef.current?.setGeoObject(geoObject);
+    }, [geoObject]);
+
     const addBillboard = useCallback((entity: GlobusBillboard) => {
         setBillboard(entity)
-
     }, []);
 
     const removeBillboard = useCallback((entity: any) => {
@@ -78,7 +84,7 @@ const Entity: React.FC<EntityProps> = ({lon, lat,alt,lonlat, name, children, ...
     }, []);
 
     const removeGeoObject = useCallback((entity: any) => {
-        entityRef.current?.billboard?.remove()
+        entityRef.current?.geoObject?.remove()
         setGeoObject(null)
     }, []);
 

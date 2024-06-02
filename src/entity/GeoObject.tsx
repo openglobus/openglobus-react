@@ -1,31 +1,33 @@
 import * as React from "react";
-import { useContext, useEffect, useRef } from "react";
-import { GeoObject as GlobusGeoObject } from "@openglobus/og";
-import { IGeoObjectParams } from "@openglobus/og/lib/js/entity/GeoObject";
-import { EntityContext } from "../Entity";
+import {useContext, useEffect, useRef} from "react";
+import {GeoObject as GlobusGeoObject} from "@openglobus/og";
+import {IGeoObjectParams} from "@openglobus/og/lib/js/entity/GeoObject";
+import {EntityContext} from "../Entity";
 import {useGlobusContext} from "../GlobeContext";
 
-interface GeoObjectParams extends IGeoObjectParams {}
+export interface GeoObjectParams extends IGeoObjectParams {
+}
 
-const GeoObject: React.FC<GeoObjectParams> = ({ ...params }) => {
-    const { addBillboard, removeBillboard } = useContext(EntityContext);
-    const billboardRef = useRef<GlobusGeoObject | null>(null);
+const GeoObject: React.FC<GeoObjectParams> = ({...params}) => {
+    const {addGeoObject, removeGeoObject} = useContext(EntityContext);
+    const geoObjectRef = useRef<GlobusGeoObject | null>(null);
     const {globus} = useGlobusContext();
 
     useEffect(() => {
-        billboardRef.current = new GlobusGeoObject(params);
-        if (billboardRef.current) {
-            addBillboard(billboardRef.current);
+        if (globus) {
+            geoObjectRef.current = new GlobusGeoObject(params);
+            if (geoObjectRef.current) {
+                addGeoObject(geoObjectRef.current);
+            }
         }
-
         return () => {
-            if (billboardRef.current) {
-                removeBillboard(billboardRef.current);
+            if (geoObjectRef.current) {
+                removeGeoObject(geoObjectRef.current);
             }
         };
-    }, [addBillboard, removeBillboard, globus]);
+    }, [addGeoObject, removeGeoObject, globus]);
 
     return null;
 };
 
-export { GeoObject };
+export {GeoObject};
