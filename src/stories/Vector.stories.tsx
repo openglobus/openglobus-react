@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
     // },
   args: {
     name: 'test',
-    onMouseEnter: action('on-click',{depth: 1,  maxDepth:0}),
+    onMouseEnter: action('on-click',{depth: 1,  maxDepth:1}),
   },
   render: (args: VectorProps) => <GlobusContextProvider>
     <Globus atmosphereEnabled={false}>

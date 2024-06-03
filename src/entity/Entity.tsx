@@ -1,27 +1,14 @@
 import * as React from "react";
-import {createContext, useCallback, useContext, useEffect, useRef, useState} from "react";
-import {useGlobusContext} from '../index';
-import {Billboard as GlobusBillboard, GeoObject as GlobusGeoObject,Entity as GlobusEntity, LonLat} from '@openglobus/og';
-import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
-
-import {VectorContext} from "../layer/Vector";
-import {EventCallback} from "@openglobus/og/lib/js/Events";
-import {NumberArray3} from "@openglobus/og/lib/js/math/Vec3";
-import {Billboard} from "./index";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useGlobusContext } from '../index';
+import { Billboard as GlobusBillboard, GeoObject as GlobusGeoObject, Entity as GlobusEntity, LonLat } from '@openglobus/og';
+import type { IEntityParams } from "@openglobus/og/lib/js/entity/Entity";
+import { VectorContext } from "../layer/Vector";
+import { EventCallback } from "@openglobus/og/lib/js/Events";
+import { NumberArray3 } from "@openglobus/og/lib/js/math/Vec3";
+import { Billboard } from "./index";
 
 type EntityChildElement = React.ReactElement<{ type: typeof Billboard }>;
-
-const EntityContext = createContext<{
-    removeGeoObject: (b: any) => void
-    removeBillboard: (b: any) => void
-    addGeoObject: (b: any) => void,
-    addBillboard: (b: any) => void,
-}>({
-    addGeoObject: () => {},
-    removeGeoObject: () => {},
-    addBillboard: () => {},
-    removeBillboard: () => {}
-});
 
 export interface EntityProps extends IEntityParams {
     children?: EntityChildElement,
@@ -32,22 +19,22 @@ export interface EntityProps extends IEntityParams {
     onDraw?: EventCallback
 }
 
-const Entity: React.FC<EntityProps> = ({visibility,lon, lat,alt,lonlat, name, children, ...rest}) => {
-    const {globus} = useGlobusContext();
-    const {addEntity, removeEntity} = useContext(VectorContext);
+const Entity: React.FC<EntityProps> = ({ visibility, lon, lat, alt, lonlat, name, children, ...rest }) => {
+    const { globus } = useGlobusContext();
+    const { addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject } = useContext(VectorContext);
     const entityRef = useRef<GlobusEntity | null>(null);
     const [billboard, setBillboard] = useState<GlobusBillboard | null>(null);
     const [geoObject, setGeoObject] = useState<GlobusGeoObject | null>(null);
 
     useEffect(() => {
         if (lonlat) {
-            if (!(lonlat instanceof LonLat)) lonlat = LonLat.createFromArray(lonlat as NumberArray3)
+            if (!(lonlat instanceof LonLat)) lonlat = LonLat.createFromArray(lonlat as NumberArray3);
             entityRef.current?.setLonLat(lonlat);
         }
     }, [lonlat, billboard]);
 
     useEffect(() => {
-        if (name) entityRef.current?.setLonLat2(lon,lat, alt);
+        if (name) entityRef.current?.setLonLat2(lon, lat, alt);
     }, [lon, lat, alt]);
 
     useEffect(() => {
@@ -58,47 +45,59 @@ const Entity: React.FC<EntityProps> = ({visibility,lon, lat,alt,lonlat, name, ch
 
     useEffect(() => {
         if (globus) {
-            entityRef.current = new GlobusEntity({lonlat, name, ...rest});
+            entityRef.current = new GlobusEntity({ lonlat, name, ...rest
+            });
             addEntity(entityRef.current);
 
             return () => {
-                if (globus) {
-                    removeEntity(entityRef.current)
+                if (globus && entityRef.current) {
+                    removeEntity(entityRef.current);
                 }
             };
         }
     }, [globus, addEntity, removeEntity]);
 
     useEffect(() => {
-        if(billboard && !entityRef.current?.billboard) entityRef.current?.setBillboard(billboard);
+        if (billboard && !entityRef.current?.billboard) entityRef.current?.setBillboard(billboard);
     }, [billboard]);
 
     useEffect(() => {
-        if(geoObject && !entityRef.current?.geoObject) entityRef.current?.setGeoObject(geoObject);
+        if (geoObject && !entityRef.current?.geoObject) entityRef.current?.setGeoObject(geoObject);
     }, [geoObject]);
 
-    const addBillboard = useCallback((entity: GlobusBillboard) => {
-        setBillboard(entity)
-    }, []);
+    const addBillboardContext = useCallback((entity: GlobusBillboard) => {
+        setBillboard(entity);
+        if (entityRef.current) {
+            addBillboard(entityRef.current, entity);
+        }
+    }, [addBillboard]);
 
-    const removeBillboard = useCallback((entity: any) => {
-        entityRef.current?.billboard?.remove()
-        setBillboard(null)
-    }, []);
+    const removeBillboardContext = useCallback(() => {
+        if (entityRef.current) {
+            removeBillboard(entityRef.current);
+        }
+        setBillboard(null);
+    }, [removeBillboard]);
 
-    const addGeoObject = useCallback((entity: GlobusGeoObject) => {
-        setGeoObject(entity)
-    }, []);
+    const addGeoObjectContext = useCallback((entity: GlobusGeoObject) => {
+        setGeoObject(entity);
+        if (entityRef.current) {
+            addGeoObject(entityRef.current, entity);
+        }
+    }, [addGeoObject]);
 
-    const removeGeoObject = useCallback((entity: any) => {
-        entityRef.current?.geoObject?.remove()
-        setGeoObject(null)
-    }, []);
+    const removeGeoObjectContext = useCallback(() => {
+        if (entityRef.current) {
+            removeGeoObject(entityRef.current);
+        }
+        setGeoObject(null);
+    }, [removeGeoObject]);
 
-    return <EntityContext.Provider value={{addBillboard, removeBillboard, addGeoObject, removeGeoObject}}>
-        {children}
-    </EntityContext.Provider>;
+    return (
+        <>
+            {children && React.cloneElement(children, { addBillboard: addBillboardContext, removeBillboard: removeBillboardContext, addGeoObject: addGeoObjectContext, removeGeoObject: removeGeoObjectContext })}
+        </>
+    );
 };
 
-export {Entity, EntityContext};
-   
+export { Entity };

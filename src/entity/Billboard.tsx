@@ -1,16 +1,26 @@
 import * as React from "react";
-import {useContext, useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import {Billboard as GlobusBillboard, Vec2, Vec3} from "@openglobus/og";
 import {IBillboardParams} from "@openglobus/og/lib/js/entity/Billboard";
-import {EntityContext} from "./Entity";
 import {RADIANS} from "@openglobus/og/lib/js/math";
 
 export interface BillboardParams extends IBillboardParams {
     name?: string;
+    addBillboard: (billboard: GlobusBillboard) => void;
+    removeBillboard: (billboard: GlobusBillboard) => void;
 }
 
-const Billboard: React.FC<BillboardParams> = ({visibility, src, size, color, rotation, offset, ...params}) => {
-    const {addBillboard, removeBillboard} = useContext(EntityContext);
+const Billboard: React.FC<BillboardParams> = ({
+                                                  visibility,
+                                                  src,
+                                                  size,
+                                                  color,
+                                                  rotation,
+                                                  offset,
+                                                  addBillboard,
+                                                  removeBillboard,
+                                                  ...params
+                                              }) => {
     const billboardRef = useRef<GlobusBillboard | null>(null);
 
     useEffect(() => {
@@ -39,7 +49,7 @@ const Billboard: React.FC<BillboardParams> = ({visibility, src, size, color, rot
             } else if (offset instanceof Vec2) {
                 billboardRef.current?.setOffset(offset.x, offset.y);
             } else {
-                billboardRef.current?.setOffset(offset[0],offset[1],offset[2]);
+                billboardRef.current?.setOffset(offset[0], offset[1], offset[2]);
             }
         }
     }, [offset]);
@@ -64,7 +74,7 @@ const Billboard: React.FC<BillboardParams> = ({visibility, src, size, color, rot
             src,
             offset,
             visibility,
-            rotation: rotation ? rotation * RADIANS: 0
+            rotation: rotation ? rotation * RADIANS : 0
         });
         if (billboardRef.current) {
             addBillboard(billboardRef.current);

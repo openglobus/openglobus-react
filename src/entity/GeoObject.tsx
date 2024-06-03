@@ -1,12 +1,13 @@
 import * as React from "react";
-import {useContext, useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import {GeoObject as GlobusGeoObject, Vec4} from "@openglobus/og";
 import {IGeoObjectParams} from "@openglobus/og/lib/js/entity/GeoObject";
-import {EntityContext} from "./Entity";
 import {useGlobusContext} from "../GlobeContext";
 import {RADIANS} from "@openglobus/og/lib/js/math";
 
 export interface GeoObjectParams extends IGeoObjectParams {
+    addGeoObject: (geoObject: GlobusGeoObject) => void,
+    removeGeoObject: (geoObject: GlobusGeoObject) => void,
 }
 
 const GeoObject: React.FC<GeoObjectParams> = ({
@@ -18,9 +19,10 @@ const GeoObject: React.FC<GeoObjectParams> = ({
                                                   textureSrc,
                                                   scale,
                                                   visibility,
+                                                  addGeoObject,
+                                                  removeGeoObject,
                                                   ...params
                                               }) => {
-    const {addGeoObject, removeGeoObject} = useContext(EntityContext);
     const geoObjectRef = useRef<GlobusGeoObject | null>(null);
     const {globus} = useGlobusContext();
 
@@ -82,7 +84,7 @@ const GeoObject: React.FC<GeoObjectParams> = ({
     useEffect(() => {
         if (globus) {
             geoObjectRef.current = new GlobusGeoObject({
-                yaw, roll, pitch, color, objSrc,textureSrc, scale, visibility, ...params
+                yaw, roll, pitch, color, objSrc, textureSrc, scale, visibility, ...params
             });
             if (geoObjectRef.current) {
                 addGeoObject(geoObjectRef.current);
