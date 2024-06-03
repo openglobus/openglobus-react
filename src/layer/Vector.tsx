@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createContext, useCallback, useEffect, useRef, useState} from "react";
-import {useGlobusContext} from './index';
+import {useGlobusContext} from '../index';
 import {Entity, Vector as GlobusVector} from '@openglobus/og';
 import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
 import {EventCallback} from "@openglobus/og/lib/js/Events";

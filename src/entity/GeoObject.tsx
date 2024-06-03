@@ -2,7 +2,7 @@ import * as React from "react";
 import {useContext, useEffect, useRef} from "react";
 import {GeoObject as GlobusGeoObject, Vec4} from "@openglobus/og";
 import {IGeoObjectParams} from "@openglobus/og/lib/js/entity/GeoObject";
-import {EntityContext} from "../Entity";
+import {EntityContext} from "./Entity";
 import {useGlobusContext} from "../GlobeContext";
 import {RADIANS} from "@openglobus/og/lib/js/math";
 

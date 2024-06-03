@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useGlobusContext } from './index';
+import { useGlobusContext } from '../index';
 import { ILayerParams, Layer as GlobusLayer } from '@openglobus/og';
 
 const Layer = ({ props, name }: { props: ILayerParams,name: string }) => {

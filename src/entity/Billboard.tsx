@@ -2,7 +2,7 @@ import * as React from "react";
 import {useContext, useEffect, useRef} from "react";
 import {Billboard as GlobusBillboard, Vec2, Vec3} from "@openglobus/og";
 import {IBillboardParams} from "@openglobus/og/lib/js/entity/Billboard";
-import {EntityContext} from "../Entity";
+import {EntityContext} from "./Entity";
 import {RADIANS} from "@openglobus/og/lib/js/math";
 
 export interface BillboardParams extends IBillboardParams {

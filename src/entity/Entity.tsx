@@ -1,13 +1,13 @@
 import * as React from "react";
 import {createContext, useCallback, useContext, useEffect, useRef, useState} from "react";
-import {useGlobusContext} from './index';
+import {useGlobusContext} from '../index';
 import {Billboard as GlobusBillboard, GeoObject as GlobusGeoObject,Entity as GlobusEntity, LonLat} from '@openglobus/og';
 import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
 
-import {VectorContext} from "./Vector";
+import {VectorContext} from "../layer/Vector";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
 import {NumberArray3} from "@openglobus/og/lib/js/math/Vec3";
-import {Billboard} from "./entity";
+import {Billboard} from "./index";
 
 type EntityChildElement = React.ReactElement<{ type: typeof Billboard }>;
 

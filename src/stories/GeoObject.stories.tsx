@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Entity} from '../Entity';
+import {Entity} from '../entity/Entity';
 import {Globus} from "../Globe";
-import {Vector} from "../Vector";
+import {Vector} from "../layer/Vector";
 import React from 'react';
 import {GlobusContextProvider} from "../GlobeContext";
 import {GeoObject, GeoObjectParams} from "../entity/GeoObject";
