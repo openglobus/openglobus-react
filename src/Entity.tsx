@@ -25,7 +25,7 @@ const EntityContext = createContext<{
 
 export interface EntityProps extends IEntityParams {
     children?: EntityChildElement,
-    visibility: boolean,
+    visibility?: boolean,
     lon: number,
     lat: number,
     alt: number,

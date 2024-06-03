@@ -1,10 +1,10 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Entity} from '../Entity';
+import {Entity, EntityProps} from '../Entity';
 import {Globus} from "../Globe";
 import {Vector} from "../Vector";
 import React from 'react';
-import {Billboard, BillboardParams} from "../entity";
+import {Billboard} from "../entity";
 import {GlobusContextProvider} from "../GlobeContext";
 
 const meta = {
@@ -22,7 +22,7 @@ export const Default: Story = {
     args: {
         lon: 10, lat: 10, alt: 100000
     },
-    render: (args: BillboardParams) => <GlobusContextProvider>
+    render: (args: EntityProps) => <GlobusContextProvider>
         <Globus atmosphereEnabled={false}>
             <Vector name={'test'}
                     scaleByDistance={[6000000, 24000000, 10000000000]}>
