@@ -25,13 +25,14 @@ const EntityContext = createContext<{
 
 export interface EntityProps extends IEntityParams {
     children?: EntityChildElement,
+    visibility: boolean,
     lon: number,
     lat: number,
     alt: number,
     onDraw?: EventCallback
 }
 
-const Entity: React.FC<EntityProps> = ({lon, lat,alt,lonlat, name, children, ...rest}) => {
+const Entity: React.FC<EntityProps> = ({visibility,lon, lat,alt,lonlat, name, children, ...rest}) => {
     const {globus} = useGlobusContext();
     const {addEntity, removeEntity} = useContext(VectorContext);
     const entityRef = useRef<GlobusEntity | null>(null);
@@ -48,6 +49,12 @@ const Entity: React.FC<EntityProps> = ({lon, lat,alt,lonlat, name, children, ...
     useEffect(() => {
         if (name) entityRef.current?.setLonLat2(lon,lat, alt);
     }, [lon, lat, alt]);
+
+    useEffect(() => {
+        if (typeof visibility === 'boolean' && entityRef.current) {
+            entityRef.current?.setVisibility(visibility);
+        }
+    }, [visibility]);
 
     useEffect(() => {
         if (globus) {
