@@ -1,16 +1,21 @@
 import * as React from "react";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { useGlobusContext } from '../index';
-import { Billboard as GlobusBillboard, GeoObject as GlobusGeoObject, Entity as GlobusEntity, LonLat } from '@openglobus/og';
-import type { IEntityParams } from "@openglobus/og/lib/js/entity/Entity";
-import { VectorContext } from "../layer/Vector";
-import { EventCallback } from "@openglobus/og/lib/js/Events";
-import { NumberArray3 } from "@openglobus/og/lib/js/math/Vec3";
-import { Billboard } from "./index";
+import {useCallback, useContext, useEffect, useRef, useState} from "react";
+import {useGlobusContext} from '../index';
+import {
+    Billboard as GlobusBillboard,
+    Entity as GlobusEntity,
+    GeoObject as GlobusGeoObject,
+    LonLat
+} from '@openglobus/og';
+import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
+import {VectorContext} from "../layer/Vector";
+import {EventCallback} from "@openglobus/og/lib/js/Events";
+import {NumberArray3} from "@openglobus/og/lib/js/math/Vec3";
+import {Billboard, GeoObject} from "./index";
 
-type EntityChildElement = React.ReactElement<{ type: typeof Billboard }>;
+type EntityChildElement = React.ReactElement< typeof Billboard | typeof GeoObject >;
 
-export interface EntityProps extends IEntityParams {
+export interface EntityParams extends IEntityParams {
     children?: EntityChildElement,
     visibility?: boolean,
     lon: number,
@@ -19,9 +24,16 @@ export interface EntityProps extends IEntityParams {
     onDraw?: EventCallback
 }
 
-const Entity: React.FC<EntityProps> = ({ visibility, lon, lat, alt, lonlat, name, children, ...rest }) => {
-    const { globus } = useGlobusContext();
-    const { addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject } = useContext(VectorContext);
+const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name, children, ...rest}) => {
+    const {globus} = useGlobusContext();
+    const {
+        addEntity,
+        removeEntity,
+        addBillboard,
+        removeBillboard,
+        addGeoObject,
+        removeGeoObject
+    } = useContext(VectorContext);
     const entityRef = useRef<GlobusEntity | null>(null);
     const [billboard, setBillboard] = useState<GlobusBillboard | null>(null);
     const [geoObject, setGeoObject] = useState<GlobusGeoObject | null>(null);
@@ -45,7 +57,8 @@ const Entity: React.FC<EntityProps> = ({ visibility, lon, lat, alt, lonlat, name
 
     useEffect(() => {
         if (globus) {
-            entityRef.current = new GlobusEntity({ lonlat, name, ...rest
+            entityRef.current = new GlobusEntity({
+                lonlat, name, ...rest
             });
             addEntity(entityRef.current);
 
@@ -95,9 +108,14 @@ const Entity: React.FC<EntityProps> = ({ visibility, lon, lat, alt, lonlat, name
 
     return (
         <>
-            {children && React.cloneElement(children, { addBillboard: addBillboardContext, removeBillboard: removeBillboardContext, addGeoObject: addGeoObjectContext, removeGeoObject: removeGeoObjectContext })}
+            {children &&  React.cloneElement(children, {
+                _addBillboard: addBillboardContext,
+                _removeBillboard: removeBillboardContext,
+                _addGeoObject: addGeoObjectContext,
+                _removeGeoObject: removeGeoObjectContext
+            })}
         </>
     );
 };
 
-export { Entity };
+export {Entity};

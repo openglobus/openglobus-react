@@ -28,6 +28,7 @@ export interface VectorProps extends IVectorParams {
     children?: EntityElement | EntityElement[]
     name: string
     onMouseEnter?: EventCallback
+    onDraw?: EventCallback
 }
 
 const Vector: React.FC<VectorProps> = ({ children, name, ...rest }) => {
@@ -40,10 +41,12 @@ const Vector: React.FC<VectorProps> = ({ children, name, ...rest }) => {
         if (globus) {
             vectorRef.current = new GlobusVector(name, rest);
             globus.planet.addLayer(vectorRef.current);
+            if (rest.onDraw) vectorRef.current?.events.on('draw', rest.onDraw);
             if (rest.onMouseEnter) vectorRef.current?.events.on('mouseenter', rest.onMouseEnter);
             return () => {
                 if (vectorRef.current) {
                     globus.planet.removeLayer(vectorRef.current);
+                    if (rest.onDraw) vectorRef.current?.events.off('draw', rest.onDraw);
                     if (rest.onMouseEnter) vectorRef.current?.events.off('mouseenter', rest.onMouseEnter);
                 }
             };

@@ -6,8 +6,8 @@ import {RADIANS} from "@openglobus/og/lib/js/math";
 
 export interface BillboardParams extends IBillboardParams {
     name?: string;
-    addBillboard: (billboard: GlobusBillboard) => void;
-    removeBillboard: (billboard: GlobusBillboard) => void;
+    readonly _addBillboard?: (billboard: GlobusBillboard) => void;
+    readonly _removeBillboard?: (billboard: GlobusBillboard) => void;
 }
 
 const Billboard: React.FC<BillboardParams> = ({
@@ -17,8 +17,8 @@ const Billboard: React.FC<BillboardParams> = ({
                                                   color,
                                                   rotation,
                                                   offset,
-                                                  addBillboard,
-                                                  removeBillboard,
+                                                  _addBillboard,
+                                                  _removeBillboard,
                                                   ...params
                                               }) => {
     const billboardRef = useRef<GlobusBillboard | null>(null);
@@ -76,16 +76,16 @@ const Billboard: React.FC<BillboardParams> = ({
             visibility,
             rotation: rotation ? rotation * RADIANS : 0
         });
-        if (billboardRef.current) {
-            addBillboard(billboardRef.current);
+        if (billboardRef.current && _addBillboard) {
+            _addBillboard(billboardRef.current);
         }
 
         return () => {
-            if (billboardRef.current) {
-                removeBillboard(billboardRef.current);
+            if (billboardRef.current && _removeBillboard) {
+                _removeBillboard(billboardRef.current);
             }
         };
-    }, [addBillboard, removeBillboard]);
+    }, [_addBillboard, _removeBillboard]);
 
     return null;
 };

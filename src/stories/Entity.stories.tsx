@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Entity, EntityProps} from '../entity/Entity';
+import {Entity, EntityParams} from '../entity/Entity';
 import {Globus} from "../Globe";
 import {Vector} from "../layer/Vector";
 import React from 'react';
@@ -22,7 +22,7 @@ export const Default: Story = {
     args: {
         lon: 10, lat: 10, alt: 100000
     },
-    render: (args: EntityProps) => <GlobusContextProvider>
+    render: (args: EntityParams) => <GlobusContextProvider>
         <Globus atmosphereEnabled={false}>
             <Vector name={'test'}
                     scaleByDistance={[6000000, 24000000, 10000000000]}>
