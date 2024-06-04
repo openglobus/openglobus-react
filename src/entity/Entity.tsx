@@ -5,6 +5,7 @@ import {
     Billboard as GlobusBillboard,
     Entity as GlobusEntity,
     GeoObject as GlobusGeoObject,
+    Label as GlobusLabel,
     LonLat
 } from '@openglobus/og';
 import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
@@ -32,11 +33,14 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         addBillboard,
         removeBillboard,
         addGeoObject,
-        removeGeoObject
+        removeGeoObject,
+        addLabel,
+        removeLabel
     } = useContext(VectorContext);
     const entityRef = useRef<GlobusEntity | null>(null);
     const [billboard, setBillboard] = useState<GlobusBillboard | null>(null);
     const [geoObject, setGeoObject] = useState<GlobusGeoObject | null>(null);
+    const [label, setLabel] = useState<GlobusLabel | null>(null);
 
     useEffect(() => {
         if (lonlat) {
@@ -78,6 +82,10 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         if (geoObject && !entityRef.current?.geoObject) entityRef.current?.setGeoObject(geoObject);
     }, [geoObject]);
 
+    useEffect(() => {
+        if (label && !entityRef.current?.label) entityRef.current?.setLabel(label);
+    }, [label]);
+
     const addBillboardContext = useCallback((entity: GlobusBillboard) => {
         setBillboard(entity);
         if (entityRef.current) {
@@ -106,9 +114,25 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         setGeoObject(null);
     }, [removeGeoObject]);
 
+    const addLabelContext = useCallback((entity: GlobusLabel) => {
+        setLabel(entity);
+        if (entityRef.current) {
+            addLabel(entityRef.current, entity);
+        }
+    }, [addLabel]);
+
+    const removeLabelContext = useCallback(() => {
+        if (entityRef.current) {
+            removeLabel(entityRef.current);
+        }
+        setGeoObject(null);
+    }, [removeLabel]);
+
     return (
         <>
             {children &&  React.cloneElement(children, {
+                _addLabel: addLabelContext,
+                _removeLabel: removeLabelContext,
                 _addBillboard: addBillboardContext,
                 _removeBillboard: removeBillboardContext,
                 _addGeoObject: addGeoObjectContext,

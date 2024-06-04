@@ -2,7 +2,7 @@ import * as React from "react";
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { useGlobusContext } from '../index';
 import { Vector as GlobusVector } from '@openglobus/og';
-import type { Entity, Billboard, GeoObject } from '@openglobus/og';
+import type { Entity, Billboard, GeoObject, Label } from '@openglobus/og';
 import { IVectorParams } from '@openglobus/og/lib/js/layer/Vector';
 import { EventCallback } from "@openglobus/og/lib/js/Events";
 
@@ -13,9 +13,13 @@ const VectorContext = createContext<{
     removeBillboard: (entity: Entity) => void,
     addGeoObject: (entity: Entity, geoObject: GeoObject) => void,
     removeGeoObject: (entity: Entity) => void,
+    addLabel: (entity: Entity, geoObject: Label) => void,
+    removeLabel: (entity: Entity) => void,
 }>({
     addEntity: () => {},
     removeEntity: () => {},
+    addLabel: () => {},
+    removeLabel: () => {},
     addBillboard: () => {},
     removeBillboard: () => {},
     addGeoObject: () => {},
@@ -94,8 +98,16 @@ const Vector: React.FC<VectorProps> = ({ children, name, ...rest }) => {
         entity.geoObject?.remove();
     }, []);
 
+    const addLabel = useCallback((entity: Entity, label: Label) => {
+        entity.setLabel(label);
+    }, []);
+
+    const removeLabel = useCallback((entity: Entity) => {
+        entity.label?.remove();
+    }, []);
+
     return (
-        <VectorContext.Provider value={{ addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject }}>
+        <VectorContext.Provider value={{ addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject, addLabel, removeLabel }}>
             {children}
         </VectorContext.Provider>
     );
