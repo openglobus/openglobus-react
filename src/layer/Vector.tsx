@@ -2,7 +2,7 @@ import * as React from "react";
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { useGlobusContext } from '../index';
 import { Vector as GlobusVector } from '@openglobus/og';
-import type { Entity, Billboard, GeoObject, Label } from '@openglobus/og';
+import type { Entity, Billboard, GeoObject, Label, Geometry } from '@openglobus/og';
 import { IVectorParams } from '@openglobus/og/lib/js/layer/Vector';
 import { EventCallback } from "@openglobus/og/lib/js/Events";
 
@@ -15,6 +15,8 @@ const VectorContext = createContext<{
     removeGeoObject: (entity: Entity) => void,
     addLabel: (entity: Entity, geoObject: Label) => void,
     removeLabel: (entity: Entity) => void,
+    addGeometry: (entity: Entity, geoObject: Geometry) => void,
+    removeGeometry: (entity: Entity) => void,
 }>({
     addEntity: () => {},
     removeEntity: () => {},
@@ -23,7 +25,9 @@ const VectorContext = createContext<{
     addBillboard: () => {},
     removeBillboard: () => {},
     addGeoObject: () => {},
-    removeGeoObject: () => {}
+    removeGeoObject: () => {},
+    addGeometry: () => {},
+    removeGeometry: () => {},
 });
 
 type EntityElement = React.ReactElement<{ type: typeof Entity }>;
@@ -35,11 +39,17 @@ export interface VectorProps extends IVectorParams {
     onDraw?: EventCallback
 }
 
-const Vector: React.FC<VectorProps> = ({ children, name, ...rest }) => {
+const Vector: React.FC<VectorProps> = ({ visibility, children, name, ...rest }) => {
     const { globus } = useGlobusContext();
     const vectorRef = useRef<GlobusVector | null>(null);
     const [entities, setEntities] = useState<any[]>([]);
     const entitiesRef = useRef(new Set()); // To keep track of added entities
+
+    useEffect(() => {
+        if (typeof visibility === 'boolean' && vectorRef.current) {
+            vectorRef.current.setVisibility(visibility);
+        }
+    }, [visibility]);
 
     useEffect(() => {
         if (globus) {
@@ -106,8 +116,16 @@ const Vector: React.FC<VectorProps> = ({ children, name, ...rest }) => {
         entity.label?.remove();
     }, []);
 
+    const addGeometry = useCallback((entity: Entity, geometry: Geometry) => {
+        entity.setGeometry(geometry);
+    }, []);
+
+    const removeGeometry = useCallback((entity: Entity) => {
+        entity.geometry?.remove();
+    }, []);
+
     return (
-        <VectorContext.Provider value={{ addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject, addLabel, removeLabel }}>
+        <VectorContext.Provider value={{ addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject, addLabel, removeLabel, addGeometry, removeGeometry }}>
             {children}
         </VectorContext.Provider>
     );

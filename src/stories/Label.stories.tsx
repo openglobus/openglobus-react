@@ -9,6 +9,7 @@ import {GlobusContextProvider} from "../GlobeContext";
 
 const meta = {
     component: Label,
+    tags: ['autodocs'],
     argTypes: {
         face: {
             options: ['Sacramento-Regular', 'NotoSansArabic-Regular', 'Audiowide-Regular'],
