@@ -23,14 +23,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        color: "#ff5959",
+        color: "#053df3",
+        outlineColor: "#33fa07",
         rotation: 0,
-        face: 'Sacramento-Regular',
+        face: 'Audiowide-Regular',
         align: 'center',
         opacity: 1,
-        size: 12,
-        outline: 1,
-        outlineColor: "#000000",
+        size: 32,
+        outline: 0.2,
         text: "Hello, World!",
         offset: [0, 0, 0],
         visibility: true,
@@ -55,7 +55,7 @@ export const Default: Story = {
 export const Arabic: Story = {
     args: {
         ...Default.args,
-        text: 'حبيبي يأتي إلى دبي',
+        text: 'حبيبي',
         face: 'NotoSansArabic-Regular',
         isRTL: true,
     },
