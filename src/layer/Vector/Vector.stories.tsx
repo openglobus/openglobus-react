@@ -1,16 +1,14 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Vector, VectorProps} from '../layer/Vector';
-import {Billboard} from "../entity";
-import {GlobusContextProvider} from "../GlobeContext";
+import {Vector, VectorProps} from './Vector';
+import {Billboard, Entity} from "@/entity";
+import {Globus, GlobusContextProvider} from "@/Globe";
 import {action} from '@storybook/addon-actions';
-
-import {Globus} from "../Globe";
-import {Entity} from "../entity/Entity";
 import React from "react";
 
 const meta = {
-  component: Vector,
+    title: 'Components/Layer/Vector',
+    component: Vector,
 } satisfies Meta<typeof Vector>;
 
 export default meta;

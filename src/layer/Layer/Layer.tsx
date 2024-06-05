@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { useGlobusContext } from '../index';
-import { ILayerParams, Layer as GlobusLayer } from '@openglobus/og';
+import {useEffect} from 'react';
+import {useGlobusContext} from '@/Globe';
+import {ILayerParams, Layer as GlobusLayer} from '@openglobus/og';
 
-const Layer = ({ props, name }: { props: ILayerParams,name: string }) => {
-    const { globus } = useGlobusContext();
+const Layer = ({props, name}: { props: ILayerParams, name: string }) => {
+    const {globus} = useGlobusContext();
 
     useEffect(() => {
         if (globus) {

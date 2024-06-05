@@ -1,19 +1,17 @@
+import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Entity} from '../entity/Entity';
-import {Globus} from "../Globe";
-import {Vector} from "../layer/Vector";
-import React from 'react';
-import {Label, LabelParams} from "../entity";
-import {GlobusContextProvider} from "../GlobeContext";
+import {Entity, Label, LabelParams} from '@/entity';
+import {Globus, GlobusContextProvider} from "@/Globe";
+import {Vector} from "@/layer";
 
 const meta = {
     component: Label,
-    tags: ['autodocs'],
+    title: 'Components/Entity/Label',
     argTypes: {
         face: {
             options: ['Sacramento-Regular', 'NotoSansArabic-Regular', 'Audiowide-Regular'],
-            control: {type: 'select'}, // Automatically inferred when 'options' is defined
+            control: {type: 'select'},
         }
     }
 } satisfies Meta<typeof Label>;

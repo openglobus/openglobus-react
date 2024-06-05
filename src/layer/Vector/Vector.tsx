@@ -1,10 +1,10 @@
 import * as React from "react";
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
-import { useGlobusContext } from '../index';
-import { Vector as GlobusVector } from '@openglobus/og';
-import type { Entity, Billboard, GeoObject, Label, Geometry } from '@openglobus/og';
-import { IVectorParams } from '@openglobus/og/lib/js/layer/Vector';
-import { EventCallback } from "@openglobus/og/lib/js/Events";
+import {createContext, useCallback, useEffect, useRef, useState} from "react";
+import {useGlobusContext} from '../../index';
+import type {Billboard, Entity, Geometry, GeoObject, Label} from '@openglobus/og';
+import {Vector as GlobusVector} from '@openglobus/og';
+import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
+import {EventCallback} from "@openglobus/og/lib/js/Events";
 
 const VectorContext = createContext<{
     addEntity: (entity: Entity) => void,

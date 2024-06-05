@@ -1,21 +1,18 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Entity, EntityParams} from '../entity/Entity';
-import {Globus} from "../Globe";
-import {Vector} from "../layer/Vector";
+import {Billboard, Entity, EntityParams} from '@/entity';
+import {Globus, GlobusContextProvider} from "@/Globe";
+import {Vector} from "@/layer";
 import React from 'react';
-import {Billboard} from "../entity";
-import {GlobusContextProvider} from "../GlobeContext";
 
 const meta = {
     component: Entity,
+    title: 'Components/Entity/Entity',
 } satisfies Meta<typeof Entity>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-// export const Default: Story = {};
 
 
 export const Default: Story = {
@@ -38,5 +35,3 @@ export const Default: Story = {
         </Globus>
     </GlobusContextProvider>
 };
-
-// export const Default = (args: BillboardParams) =>

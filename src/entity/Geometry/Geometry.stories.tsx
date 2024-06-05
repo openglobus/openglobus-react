@@ -1,15 +1,13 @@
+import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Entity} from '../entity/Entity';
-import {Globus} from "../Globe";
-import {Vector} from "../layer/Vector";
-import React from 'react';
-import {Geometry, GeometryParams, Label} from "../entity";
-import {GlobusContextProvider} from "../GlobeContext";
+import {Entity, Geometry, GeometryParams} from '@/entity';
+import {Globus, GlobusContextProvider} from "@/Globe";
+import {Vector} from "@/layer";
 
 const meta = {
     component: Geometry,
-    tags: ['autodocs'],
+    title: 'Components/Entity/Geometry',
 } satisfies Meta<typeof Geometry>;
 
 export default meta;
