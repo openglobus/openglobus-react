@@ -1,7 +1,7 @@
 import * as React from "react";
 import {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {useGlobusContext} from '../../index';
-import type {Billboard, Entity, Geometry, GeoObject, Label} from '@openglobus/og';
+import type {Billboard, Entity, Geometry, GeoObject, Label, Polyline} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
 import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
 import {EventCallback} from "@openglobus/og/lib/js/Events";
@@ -15,8 +15,10 @@ const VectorContext = createContext<{
     removeGeoObject: (entity: Entity) => void,
     addLabel: (entity: Entity, geoObject: Label) => void,
     removeLabel: (entity: Entity) => void,
-    addGeometry: (entity: Entity, geoObject: Geometry) => void,
+    addGeometry: (entity: Entity, geometry: Geometry) => void,
     removeGeometry: (entity: Entity) => void,
+    addPolyline: (entity: Entity, polyline: Polyline) => void,
+    removePolyline: (entity: Entity) => void,
 }>({
     addEntity: () => {},
     removeEntity: () => {},
@@ -28,6 +30,8 @@ const VectorContext = createContext<{
     removeGeoObject: () => {},
     addGeometry: () => {},
     removeGeometry: () => {},
+    addPolyline: () => {},
+    removePolyline: () => {},
 });
 
 type EntityElement = React.ReactElement<{ type: typeof Entity }>;
@@ -124,8 +128,16 @@ const Vector: React.FC<VectorProps> = ({ visibility, children, name, ...rest }) 
         entity.geometry?.remove();
     }, []);
 
+    const addPolyline = useCallback((entity: Entity, polyline: Polyline) => {
+        entity.setPolyline(polyline);
+    }, []);
+
+    const removePolyline = useCallback((entity: Entity) => {
+        entity.polyline?.remove();
+    }, []);
+
     return (
-        <VectorContext.Provider value={{ addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject, addLabel, removeLabel, addGeometry, removeGeometry }}>
+        <VectorContext.Provider value={{ addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject, addLabel, removeLabel, addGeometry, removeGeometry, addPolyline,removePolyline }}>
             {children}
         </VectorContext.Provider>
     );
