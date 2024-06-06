@@ -21,8 +21,18 @@ export const Default: Story = {
         altitude: 0,
         thickness: 1.5,
         opacity: 1,
-        pathColors: [["#f305c3"], ["#5cf305", "#fb0145", "#003afb"]],
-        path: [[[0, 0, 10000], [0, 1, 10000], [1, 1, 10000], [1, 0, 10000]]],
+        pathColors: [["#ff0000", "#ff7f00", "#ffff00", "#00ff00", "#0000ff", "#4b0082", "#9400d3"]],
+        path: [
+            [
+                [0, 0, 10000],
+                [0.2, 0.2, 15000],
+                [0.4, 0.4, 20000],
+                [0.6, 0.6, 25000],
+                [0.8, 0.8, 20000],
+                [1, 1, 15000],
+                [1.2, 1.2, 10000]
+            ]
+        ]
     },
     render: (args: PolylineParams) => {
         return <GlobusContextProvider>
