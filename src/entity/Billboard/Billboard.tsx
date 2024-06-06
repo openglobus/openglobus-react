@@ -30,13 +30,13 @@ const Billboard: React.FC<BillboardParams> = ({
     }, [visibility]);
 
     useEffect(() => {
-        if (src && billboardRef.current) {
+        if (typeof src === 'string' && billboardRef.current) {
             billboardRef.current?.setSrc(src)
         }
     }, [src]);
 
     useEffect(() => {
-        if (rotation && billboardRef.current) {
+        if (typeof rotation === 'number' && billboardRef.current) {
             billboardRef.current?.setRotation(rotation * RADIANS)
         }
     }, [rotation]);
