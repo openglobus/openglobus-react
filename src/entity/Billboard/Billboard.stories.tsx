@@ -90,5 +90,8 @@ export const  DifferentSrc: Story = {
         ...Default.args,
         src: 'https://png.pngtree.com/png-clipart/20230414/ourmid/pngtree-star-clipart-png-image_6705223.png'
     },
+    argTypes: {
+        ...Default.argTypes
+    },
     render: Default.render
 }
