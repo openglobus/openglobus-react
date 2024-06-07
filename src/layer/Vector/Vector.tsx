@@ -1,7 +1,7 @@
 import * as React from "react";
 import {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {useGlobusContext} from '../../index';
-import type {Billboard, Entity, Geometry, GeoObject, Label, Polyline} from '@openglobus/og';
+import type {Billboard, Entity, Geometry, GeoObject, Label, Polyline, Strip} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
 import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
 import {EventCallback} from "@openglobus/og/lib/js/Events";
@@ -19,19 +19,37 @@ const VectorContext = createContext<{
     removeGeometry: (entity: Entity) => void,
     addPolyline: (entity: Entity, polyline: Polyline) => void,
     removePolyline: (entity: Entity) => void,
+    addStrip: (entity: Entity, strip: Strip) => void,
+    removeStrip: (entity: Entity) => void,
 }>({
-    addEntity: () => {},
-    removeEntity: () => {},
-    addLabel: () => {},
-    removeLabel: () => {},
-    addBillboard: () => {},
-    removeBillboard: () => {},
-    addGeoObject: () => {},
-    removeGeoObject: () => {},
-    addGeometry: () => {},
-    removeGeometry: () => {},
-    addPolyline: () => {},
-    removePolyline: () => {},
+    addEntity: () => {
+    },
+    removeEntity: () => {
+    },
+    addLabel: () => {
+    },
+    removeLabel: () => {
+    },
+    addBillboard: () => {
+    },
+    removeBillboard: () => {
+    },
+    addGeoObject: () => {
+    },
+    removeGeoObject: () => {
+    },
+    addGeometry: () => {
+    },
+    removeGeometry: () => {
+    },
+    addPolyline: () => {
+    },
+    removePolyline: () => {
+    },
+    addStrip: () => {
+    },
+    removeStrip: () => {
+    },
 });
 
 type EntityElement = React.ReactElement<{ type: typeof Entity }>;
@@ -43,8 +61,8 @@ export interface VectorProps extends IVectorParams {
     onDraw?: EventCallback
 }
 
-const Vector: React.FC<VectorProps> = ({ visibility, children, name, ...rest }) => {
-    const { globus } = useGlobusContext();
+const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) => {
+    const {globus} = useGlobusContext();
     const vectorRef = useRef<GlobusVector | null>(null);
     const [entities, setEntities] = useState<any[]>([]);
     const entitiesRef = useRef(new Set()); // To keep track of added entities
@@ -136,11 +154,34 @@ const Vector: React.FC<VectorProps> = ({ visibility, children, name, ...rest }) 
         entity.polyline?.remove();
     }, []);
 
+    const addStrip = useCallback((entity: Entity, strip: Strip) => {
+        entity.setStrip(strip);
+    }, []);
+
+    const removeStrip = useCallback((entity: Entity) => {
+        entity.strip?.remove();
+    }, []);
+
     return (
-        <VectorContext.Provider value={{ addEntity, removeEntity, addBillboard, removeBillboard, addGeoObject, removeGeoObject, addLabel, removeLabel, addGeometry, removeGeometry, addPolyline,removePolyline }}>
+        <VectorContext.Provider value={{
+            addEntity,
+            removeEntity,
+            addBillboard,
+            removeBillboard,
+            addGeoObject,
+            removeGeoObject,
+            addLabel,
+            removeLabel,
+            addGeometry,
+            removeGeometry,
+            addPolyline,
+            removePolyline,
+            addStrip,
+            removeStrip
+        }}>
             {children}
         </VectorContext.Provider>
     );
 };
 
-export { Vector, VectorContext };
+export {Vector, VectorContext};

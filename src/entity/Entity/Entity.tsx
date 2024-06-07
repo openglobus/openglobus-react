@@ -8,19 +8,21 @@ import {
     GeoObject as GlobusGeoObject,
     Label as GlobusLabel,
     LonLat,
-    Polyline as GlobusPolyline
+    Polyline as GlobusPolyline,
+    Strip as GlobusStrip
 } from '@openglobus/og';
 import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
 import {VectorContext} from "@/layer/Vector/Vector";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
 import {NumberArray3} from "@openglobus/og/lib/js/math/Vec3";
-import {Billboard, Geometry, GeoObject, Label, Polyline} from "@/entity";
+import {Billboard, Geometry, GeoObject, Label, Polyline, Strip} from "@/entity";
 
 type EntityChildElement = React.ReactElement<
     typeof Billboard |
     typeof GeoObject |
     typeof Label |
     typeof Polyline |
+    typeof Strip |
     typeof Geometry
 >;
 
@@ -47,7 +49,9 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         addGeometry,
         removeGeometry,
         addPolyline,
-        removePolyline
+        removePolyline,
+        addStrip,
+        removeStrip
     } = useContext(VectorContext);
     const entityRef = useRef<GlobusEntity | null>(null);
     const [billboard, setBillboard] = useState<GlobusBillboard | null>(null);
@@ -55,6 +59,7 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
     const [label, setLabel] = useState<GlobusLabel | null>(null);
     const [geometry, setGeometry] = useState<GlobusGeometry | null>(null);
     const [polyline, setPolyline] = useState<GlobusPolyline | null>(null);
+    const [strip, setStrip] = useState<GlobusStrip | null>(null);
 
     useEffect(() => {
         if (lonlat) {
@@ -107,6 +112,10 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
     useEffect(() => {
         if (polyline && !entityRef.current?.polyline) entityRef.current?.setPolyline(polyline);
     }, [polyline]);
+
+    useEffect(() => {
+        if (strip && !entityRef.current?.strip) entityRef.current?.setStrip(strip);
+    }, [strip]);
 
     const addBillboardContext = useCallback((entity: GlobusBillboard) => {
         setBillboard(entity);
@@ -178,6 +187,20 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         setPolyline(null);
     }, [removePolyline]);
 
+    const addStripContext = useCallback((strip: GlobusStrip) => {
+        setStrip(strip);
+        if (entityRef.current) {
+            addStrip(entityRef.current, strip);
+        }
+    }, [addStrip]);
+
+    const removeStripContext = useCallback(() => {
+        if (entityRef.current) {
+            removeStrip(entityRef.current);
+        }
+        setStrip(null);
+    }, [removeStrip]);
+
     const childProps = {
         _addGeometry: addGeometryContext,
         _removeGeometry: removeGeometryContext,
@@ -189,6 +212,8 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         _removeGeoObject: removeGeoObjectContext,
         _addPolyline: addPolylineContext,
         _removePolyline: removePolylineContext,
+        _addStrip: addStripContext,
+        _removeStrip: removeStripContext,
     };
     if (!children) {
         return null;

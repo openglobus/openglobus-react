@@ -38,6 +38,44 @@ export interface PolylineParams extends Omit<IPolylineParams, 'pathColors' | 'pa
     readonly _removePolyline?: (billboard: GlobusPolyline) => void;
 }
 
+const isPathv3 = (path: PolylineParams['path']): path is IPolylineParams['path3v'] => {
+    return Array.isArray(path) && path.length > 0 && path[0][0] instanceof Vec3;
+}
+
+const isPathLonLat = (path: PolylineParams['path']): path is IPolylineParams['pathLonLat'] => {
+    return Array.isArray(path) && path.length > 0 && (path[0][0] instanceof LonLat || path[0][0] instanceof Array);
+}
+const convertPathArrayToLonLat = (path: PolylineParams['path']): IPolylineParams['pathLonLat'] => {
+    return (path as [number, number, number][][]).map((arr) => arr.map(arr2 => LonLat.createFromArray(arr2)))
+}
+
+const isCSSColor = (value: any): value is CSSColor => {
+    return typeof value === 'string' || Array.isArray(value);
+};
+
+const isCSSColorArray = (arr: any): arr is CSSColor[][] => {
+    return Array.isArray(arr) && arr.every(
+        subArr => Array.isArray(subArr) && subArr.every(isCSSColor)
+    );
+};
+
+const isSegmentPathColorArray = (arr: any): arr is  IPolylineParams['pathColors'] => {
+    return Array.isArray(arr) && arr.every(
+        subArr => Array.isArray(subArr) && subArr.every(
+            item => Array.isArray(item) && item.length === 4 && item.every(num => typeof num === 'number')
+        )
+    );
+};
+
+const convertPathColors = (pathColors: CSSColor[][] | IPolylineParams['pathColors']): IPolylineParams['pathColors'] => {
+    if (isCSSColorArray(pathColors)) {
+        return pathColors.map(path => path.map((c) => {
+            const vec4Color = htmlColorToRgba(c as CSSColor); // необходимо приведение типа
+            return [vec4Color.x, vec4Color.y, vec4Color.z, vec4Color.w];
+        }));
+    }
+    return pathColors as IPolylineParams['pathColors']; // или обработайте как SegmentPathColor[]
+};
 
 const Polyline: React.FC<PolylineParams> = ({
                                                 visibility,
@@ -84,16 +122,6 @@ const Polyline: React.FC<PolylineParams> = ({
         }
     }, [opacity]);
 
-    const isPathv3 = (path: PolylineParams['path']): path is IPolylineParams['path3v'] => {
-        return Array.isArray(path) && path.length > 0 && path[0][0] instanceof Vec3;
-    }
-
-    const isPathLonLat = (path: PolylineParams['path']): path is IPolylineParams['pathLonLat'] => {
-        return Array.isArray(path) && path.length > 0 && (path[0][0] instanceof LonLat || path[0][0] instanceof Array);
-    }
-    const convertPathArrayToLonLat = (path: PolylineParams['path']): IPolylineParams['pathLonLat'] => {
-        return (path as [number, number, number][][]).map((arr) => arr.map(arr2 => LonLat.createFromArray(arr2)))
-    }
     useEffect(() => {
         if (polylineRef.current && path !== undefined) {
             if (isPathLonLat(path)) {
@@ -106,35 +134,6 @@ const Polyline: React.FC<PolylineParams> = ({
             }
         }
     }, [path]);
-
-
-    const isCSSColor = (value: any): value is CSSColor => {
-        return typeof value === 'string' || Array.isArray(value);
-    };
-
-    const isCSSColorArray = (arr: any): arr is CSSColor[][] => {
-        return Array.isArray(arr) && arr.every(
-            subArr => Array.isArray(subArr) && subArr.every(isCSSColor)
-        );
-    };
-
-    const isSegmentPathColorArray = (arr: any): arr is  IPolylineParams['pathColors'] => {
-        return Array.isArray(arr) && arr.every(
-            subArr => Array.isArray(subArr) && subArr.every(
-                item => Array.isArray(item) && item.length === 4 && item.every(num => typeof num === 'number')
-            )
-        );
-    };
-
-    const convertPathColors = (pathColors: CSSColor[][] | IPolylineParams['pathColors']): IPolylineParams['pathColors'] => {
-        if (isCSSColorArray(pathColors)) {
-            return pathColors.map(path => path.map((c) => {
-                const vec4Color = htmlColorToRgba(c as CSSColor); // необходимо приведение типа
-                return [vec4Color.x, vec4Color.y, vec4Color.z, vec4Color.w];
-            }));
-        }
-        return pathColors as IPolylineParams['pathColors']; // или обработайте как SegmentPathColor[]
-    };
 
     useEffect(() => {
         if (pathColors && Array.isArray(pathColors) && pathColors.length > 0) {
