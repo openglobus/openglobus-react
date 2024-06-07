@@ -58,4 +58,24 @@ export const Untextured: Story = {
     </GlobusContextProvider>
 };
 
+export const Barrel: Story = {
+    args: {
+        ...Default.args,
+        textureSrc: 'https://raw.githubusercontent.com/PrincessGod/objTo3d-tiles/master/bin/barrel/barrel.png',
+        objSrc: 'https://raw.githubusercontent.com/PrincessGod/objTo3d-tiles/master/bin/barrel/barrel.obj'
+    },
+    render: (args: GeoObjectParams) => <GlobusContextProvider>
+        <Globus atmosphereEnabled={false}>
+            <Vector name={'test'}
+                    scaleByDistance={[100, 4000000, 1]}>
+                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                    <GeoObject
+                        {...args}
+                    />
+                </Entity>
+            </Vector>
+        </Globus>
+    </GlobusContextProvider>
+};
+
 // export const Default = (args: BillboardParams) =>

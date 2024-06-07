@@ -27,6 +27,16 @@ function getLeaf(startPoi: LonLat, endPoi: LonLat, maxHeight = 2000000, n = 10) 
 }
 
 export const Default: Story = {
+    argTypes:{
+        opacity: {
+            control: {
+                type: 'range',
+                min: 0,
+                max: 1,
+                step: 0.1
+            }
+        }
+    },
     args: {
         color: "#053df3",
         visibility: true,
