@@ -5,11 +5,11 @@ import {Globe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
 import {IGlobeParams} from "@openglobus/og/lib/js/Globe";
 import "@openglobus/og/css/og.css";
+import {Layer, Vector} from "@/layer";
 
-let index: Globe | null = null;
-
+type LayerChildren = React.ReactElement<{ type: typeof Layer|typeof Vector}>;
 export interface GlobusProps extends IGlobeParams {
-    children?: React.ReactNode,
+    children?: LayerChildren | LayerChildren[]
     atmosphereEnabled?: boolean,
     onDraw?: EventCallback
 }
@@ -18,13 +18,13 @@ const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
     const {setGlobus} = useGlobusContext();
     const [options, setOptions] = useState<IGlobeParams>(rest);
-
+    const gRef = useRef<Globe | null>(null);
     useEffect(() => {
-        if (index && rest.atmosphereEnabled !== undefined) index.planet.atmosphereEnabled = rest.atmosphereEnabled;
+        if (gRef && gRef.current && rest.atmosphereEnabled !== undefined) gRef.current.planet.atmosphereEnabled = rest.atmosphereEnabled;
     }, [rest.atmosphereEnabled]);
 
     useEffect(() => {
-        if (!index) {
+        if (!gRef.current) {
             const osm = new XYZ('OpenStreetMap', {
                 isBaseLayer: true,
                 url: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -62,29 +62,29 @@ const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
                     return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});},
             });
 
-            index = new Globe({
+            gRef.current = new Globe({
                 target: targetRef.current!,
                 name: 'Earth',
                 terrain: new GlobusTerrain(),
-                layers: [osm, sat],
+                    layers: [osm, sat],
                 autoActivate: true,
                 atmosphereEnabled: true,
                 ...options
             });
             if (onDraw)
-                index.planet.events.on('draw', onDraw)
+                gRef.current.planet.events.on('draw', onDraw)
 
         } else {
-            targetRef.current = index.$target as HTMLDivElement
+            targetRef.current = gRef.current.$target as HTMLDivElement
         }
         // targetRef.current!.globus = globus;
 
-        setGlobus(index);
+        setGlobus(gRef.current);
         return () => {
             if (onDraw)
-                index?.planet.events.off('draw', onDraw)
-            index?.destroy();
-            index = null;
+                gRef.current?.planet.events.off('draw', onDraw)
+            gRef.current?.destroy();
+            gRef.current = null;
         };
     }, [options]);
 
@@ -92,7 +92,7 @@ const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
         <div style={{
             width: '100%',
             height: '100%'
-        }} id="globus" ref={targetRef}>
+        }} ref={targetRef}>
             {children}
         </div>
     );
