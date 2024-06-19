@@ -2,7 +2,7 @@ import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 
 import {Entity, Geometry, GeometryParams} from '@/entity';
-import {Globus, GlobusContextProvider} from "@/Globe";
+import {Globe, GlobeContextProvider} from "@/Globe";
 import {Vector} from "@/layer";
 
 const meta = {
@@ -26,8 +26,8 @@ export const Polygon: Story = {
         visibility: true,
     },
     render: (args: GeometryParams) => {
-        return <GlobusContextProvider>
-            <Globus atmosphereEnabled={false}
+        return <GlobeContextProvider>
+            <Globe
                     fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -36,8 +36,8 @@ export const Polygon: Story = {
                         />
                     </Entity>
                 </Vector>
-            </Globus>
-        </GlobusContextProvider>;
+            </Globe>
+        </GlobeContextProvider>;
     }
 };
 export const Point: Story = {
@@ -51,8 +51,8 @@ export const Point: Story = {
         visibility: true,
     },
     render: (args: GeometryParams) => {
-        return <GlobusContextProvider>
-            <Globus atmosphereEnabled={false}
+        return <GlobeContextProvider>
+            <Globe
                     fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -61,8 +61,8 @@ export const Point: Story = {
                         />
                     </Entity>
                 </Vector>
-            </Globus>
-        </GlobusContextProvider>;
+            </Globe>
+        </GlobeContextProvider>;
     }
 }
 export const Line: Story = {
@@ -74,8 +74,8 @@ export const Line: Story = {
         visibility: true,
     },
     render: (args: GeometryParams) => {
-        return <GlobusContextProvider>
-            <Globus atmosphereEnabled={false}
+        return <GlobeContextProvider>
+            <Globe
                     fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -84,7 +84,7 @@ export const Line: Story = {
                         />
                     </Entity>
                 </Vector>
-            </Globus>
-        </GlobusContextProvider>;
+            </Globe>
+        </GlobeContextProvider>;
     }
 }

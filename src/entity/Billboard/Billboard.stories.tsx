@@ -1,7 +1,7 @@
 import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Globus, GlobusContextProvider} from "@/Globe";
+import {Globe, GlobeContextProvider} from "@/Globe";
 import {Billboard, BillboardParams, Entity} from '@/entity';
 import {Vector} from "@/layer";
 
@@ -71,8 +71,8 @@ export const Default: Story = {
         offset: [0, 0, 0],
         visibility: true,
     },
-    render: (args: BillboardParams) => <GlobusContextProvider>
-        <Globus atmosphereEnabled={false}>
+    render: (args: BillboardParams) => <GlobeContextProvider>
+        <Globe>
             <Vector name={'test'}
                     scaleByDistance={[6000000, 24000000, 10000000000]}>
                 <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -81,8 +81,8 @@ export const Default: Story = {
                     />
                 </Entity>
             </Vector>
-        </Globus>
-    </GlobusContextProvider>
+        </Globe>
+    </GlobeContextProvider>
 };
 
 export const  DifferentSrc: Story = {

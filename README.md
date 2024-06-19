@@ -11,13 +11,13 @@ Example of usage:
 `App.tsx`
 ```tsx
 import '@openglobus/openglobus-react/dist/style.css'
-import Globus, {GlobusContextProvider} from '@openglobus/openglobus-react'
+import Globus, {GlobeContextProvider} from '@openglobus/openglobus-react'
 
 
 function App() {
-    return <GlobusContextProvider>
+    return <GlobeContextProvider>
         <Globus/>
-    </GlobusContextProvider>
+    </GlobeContextProvider>
 }
 
 export default App

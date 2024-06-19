@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
 
-import {Globus, GlobusContextProvider} from "@/Globe";
+import {Globe, GlobeContextProvider} from "@/Globe";
 import React from "react";
 import {XYZ, XYZProps} from "@/layer/XYZ/XYZ";
 import {utils} from "@openglobus/og";
@@ -33,11 +33,11 @@ export const OpenStreetMap: Story = {
         name: 'osm',
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     },
-    render: (args: XYZProps) => <GlobusContextProvider>
-        <Globus atmosphereEnabled={false}>
+    render: (args: XYZProps) => <GlobeContextProvider>
+        <Globe>
             <XYZ {...args} />
-        </Globus>
-    </GlobusContextProvider>
+        </Globe>
+    </GlobeContextProvider>
 };
 
 export const Satellites: Story = {
@@ -51,10 +51,10 @@ export const Satellites: Story = {
         }
     },
     render: (args: XYZProps) =>
-        <GlobusContextProvider>
-            <Globus>
+        <GlobeContextProvider>
+            <Globe>
                 <XYZ {...args} />
-            </Globus>
-        </GlobusContextProvider>
+            </Globe>
+        </GlobeContextProvider>
 }
 

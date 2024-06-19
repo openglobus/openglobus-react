@@ -2,7 +2,7 @@ import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 
 import {Entity, Polyline, PolylineParams} from '@/entity';
-import {Globus, GlobusContextProvider} from "@/Globe";
+import {Globe, GlobeContextProvider} from "@/Globe";
 import {Vector} from "@/layer";
 
 const meta = {
@@ -35,8 +35,8 @@ export const Default: Story = {
         ]
     },
     render: (args: PolylineParams) => {
-        return <GlobusContextProvider>
-            <Globus atmosphereEnabled={false}
+        return <GlobeContextProvider>
+            <Globe
                     fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -45,7 +45,7 @@ export const Default: Story = {
                         />
                     </Entity>
                 </Vector>
-            </Globus>
-        </GlobusContextProvider>;
+            </Globe>
+        </GlobeContextProvider>;
     }
 };

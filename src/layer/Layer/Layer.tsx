@@ -1,20 +1,20 @@
 import {useEffect} from 'react';
-import {useGlobusContext} from '@/Globe';
+import {useGlobeContext} from '@/Globe';
 import {ILayerParams, Layer as GlobusLayer} from '@openglobus/og';
 
 const Layer = ({props, name}: { props: ILayerParams, name: string }) => {
-    const {globus} = useGlobusContext();
+    const {globe} = useGlobeContext();
 
     useEffect(() => {
-        if (globus) {
+        if (globe) {
             const newLayer = new GlobusLayer(name, props);
-            globus.planet.addLayer(newLayer);
+            globe.planet.addLayer(newLayer);
 
             return () => {
-                globus.planet.removeLayer(newLayer);
+                globe.planet.removeLayer(newLayer);
             };
         }
-    }, [globus]);
+    }, [globe]);
 
     return null;
 };

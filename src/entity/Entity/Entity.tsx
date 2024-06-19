@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useCallback, useContext, useEffect, useRef, useState} from "react";
-import {useGlobusContext} from '@/index';
+import {useGlobeContext} from '@/index';
 import {
     Billboard as GlobusBillboard,
     Entity as GlobusEntity,
@@ -36,7 +36,7 @@ export interface EntityParams extends IEntityParams {
 }
 
 const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name, children, ...rest}) => {
-    const {globus} = useGlobusContext();
+    const {globe} = useGlobeContext();
     const {
         addEntity,
         removeEntity,
@@ -79,19 +79,19 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
     }, [visibility]);
 
     useEffect(() => {
-        if (globus) {
+        if (globe) {
             entityRef.current = new GlobusEntity({
                 lonlat, name, ...rest
             });
             addEntity(entityRef.current);
 
             return () => {
-                if (globus && entityRef.current) {
+                if (globe && entityRef.current) {
                     removeEntity(entityRef.current);
                 }
             };
         }
-    }, [globus, addEntity, removeEntity]);
+    }, [globe, addEntity, removeEntity]);
 
     useEffect(() => {
         if (billboard && !entityRef.current?.billboard) entityRef.current?.setBillboard(billboard);

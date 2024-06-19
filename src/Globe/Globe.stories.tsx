@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Globus } from './Globe';
+import { Globe } from './Globe';
 
 const meta = {
-  component: Globus,
+  component: Globe,
   title: 'Components/Scenes/Globe',
-} satisfies Meta<typeof Globus>;
+} satisfies Meta<typeof Globe>;
 
 export default meta;
 

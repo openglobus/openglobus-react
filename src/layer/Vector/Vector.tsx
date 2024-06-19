@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createContext, useCallback, useEffect, useRef, useState} from "react";
-import {useGlobusContext} from '../../index';
+import {useGlobeContext} from '../../index';
 import type {Billboard, Entity, Geometry, GeoObject, Label, Polyline, Strip} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
 import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
@@ -62,7 +62,7 @@ export interface VectorProps extends IVectorParams {
 }
 
 const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) => {
-    const {globus} = useGlobusContext();
+    const {globe} = useGlobeContext();
     const vectorRef = useRef<GlobusVector | null>(null);
     const [entities, setEntities] = useState<any[]>([]);
     const entitiesRef = useRef(new Set()); // To keep track of added entities
@@ -74,20 +74,20 @@ const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) =>
     }, [visibility]);
 
     useEffect(() => {
-        if (globus) {
+        if (globe) {
             vectorRef.current = new GlobusVector(name, rest);
-            globus.planet.addLayer(vectorRef.current);
+            globe.planet.addLayer(vectorRef.current);
             if (rest.onDraw) vectorRef.current?.events.on('draw', rest.onDraw);
             if (rest.onMouseEnter) vectorRef.current?.events.on('mouseenter', rest.onMouseEnter);
             return () => {
                 if (vectorRef.current) {
-                    globus.planet.removeLayer(vectorRef.current);
+                    globe.planet.removeLayer(vectorRef.current);
                     if (rest.onDraw) vectorRef.current?.events.off('draw', rest.onDraw);
                     if (rest.onMouseEnter) vectorRef.current?.events.off('mouseenter', rest.onMouseEnter);
                 }
             };
         }
-    }, [globus]);
+    }, [globe]);
 
     useEffect(() => {
         if (vectorRef.current && entities.length > 0) {

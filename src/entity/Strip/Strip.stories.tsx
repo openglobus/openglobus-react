@@ -2,7 +2,7 @@ import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 
 import {Entity, Strip, StripParams} from '@/entity';
-import {Globus, GlobusContextProvider} from "@/Globe";
+import {Globe, GlobeContextProvider} from "@/Globe";
 import {Vector} from "@/layer";
 import {Ellipsoid, LonLat} from '@openglobus/og';
 
@@ -44,8 +44,8 @@ export const Default: Story = {
         path: getLeaf(new LonLat(0, 90), new LonLat(90, 0)).map((arr) => arr.map(ll => [ll.lon, ll.lat, ll.height])) as []
     },
     render: (args: StripParams) => {
-        return <GlobusContextProvider>
-            <Globus atmosphereEnabled={false}
+        return <GlobeContextProvider>
+            <Globe
                     fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -54,7 +54,7 @@ export const Default: Story = {
                         />
                     </Entity>
                 </Vector>
-            </Globus>
-        </GlobusContextProvider>;
+            </Globe>
+        </GlobeContextProvider>;
     }
 };

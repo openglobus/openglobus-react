@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
-import {useGlobusContext} from "./GlobeContext";
-import {Globe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
+import {useGlobeContext} from "./GlobeContext";
+import {Globe as GlobusGlobe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
 import {EventCallback} from "@openglobus/og/lib/js/Events";
 import {IGlobeParams} from "@openglobus/og/lib/js/Globe";
 import "@openglobus/og/css/og.css";
@@ -14,11 +14,11 @@ export interface GlobusProps extends IGlobeParams {
     onDraw?: EventCallback
 }
 
-const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
+const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
-    const {setGlobus} = useGlobusContext();
+    const {setGlobe} = useGlobeContext();
     const [options, setOptions] = useState<IGlobeParams>(rest);
-    const gRef = useRef<Globe | null>(null);
+    const gRef = useRef<GlobusGlobe | null>(null);
     useEffect(() => {
         if (gRef && gRef.current && rest.atmosphereEnabled !== undefined) gRef.current.planet.atmosphereEnabled = rest.atmosphereEnabled;
     }, [rest.atmosphereEnabled]);
@@ -62,7 +62,7 @@ const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
                     return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});},
             });
 
-            gRef.current = new Globe({
+            gRef.current = new GlobusGlobe({
                 target: targetRef.current!,
                 name: 'Earth',
                 terrain: new GlobusTerrain(),
@@ -77,9 +77,8 @@ const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
         } else {
             targetRef.current = gRef.current.$target as HTMLDivElement
         }
-        // targetRef.current!.globus = globus;
 
-        setGlobus(gRef.current);
+        setGlobe(gRef.current);
         return () => {
             if (onDraw)
                 gRef.current?.planet.events.off('draw', onDraw)
@@ -97,4 +96,4 @@ const Globus: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
         </div>
     );
 };
-export {Globus};
+export {Globe};

@@ -2,7 +2,7 @@ import * as React from "react";
 import {useEffect, useRef} from "react";
 import {Ellipsoid, LonLat, Strip as GlobusStrip, Vec3} from "@openglobus/og";
 import {IStripParams} from "@openglobus/og/lib/js/entity/Strip";
-import {useGlobusContext} from "@/Globe";
+import {useGlobeContext} from "@/Globe";
 
 export interface StripParams extends Omit<IStripParams, 'path'> {
     path?: [Vec3, Vec3][] | [LonLat, LonLat][] | [[number, number, number], [number, number, number]][];
@@ -40,7 +40,7 @@ const Strip: React.FC<StripParams> = ({
                                           ...params
                                       }) => {
     const stripRef = useRef<GlobusStrip | null>(null);
-const {globus} = useGlobusContext();
+const {globe} = useGlobeContext();
     useEffect(() => {
         if (typeof visibility === 'boolean' && stripRef.current) {
             stripRef.current?.setVisibility(visibility)
@@ -54,8 +54,8 @@ const {globus} = useGlobusContext();
     }, [opacity]);
 
     useEffect(() => {
-        if (globus && path !== undefined && stripRef.current) {
-            stripRef.current?.setPath(convertPathArrayToLonLat(globus.planet.ellipsoid, path))
+        if (globe && path !== undefined && stripRef.current) {
+            stripRef.current?.setPath(convertPathArrayToLonLat(globe.planet.ellipsoid, path))
         }
     }, [path]);
 
@@ -66,12 +66,12 @@ const {globus} = useGlobusContext();
     }, [color]);
 
     useEffect(() => {
-        if (globus){
+        if (globe){
             stripRef.current = new GlobusStrip({
                 ...params,
                 color,
                 visibility,
-                path: convertPathArrayToLonLat(globus.planet.ellipsoid, path),
+                path: convertPathArrayToLonLat(globe.planet.ellipsoid, path),
                 opacity,
             });
             if (stripRef.current && _addStrip) {
@@ -84,7 +84,7 @@ const {globus} = useGlobusContext();
                 _removeStrip(stripRef.current);
             }
         };
-    }, [_addStrip, _removeStrip, globus]);
+    }, [_addStrip, _removeStrip, globe]);
 
     return null;
 };

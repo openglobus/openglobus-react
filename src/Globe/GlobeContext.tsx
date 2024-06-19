@@ -2,21 +2,21 @@ import {Globe} from "@openglobus/og";
 import * as React from "react";
 import {createContext, useContext, useState} from "react";
 
-export interface GlobusContextProps {
-    globus: Globe | null;
-    setGlobus: React.Dispatch<React.SetStateAction<Globe | null>>;
+export interface GlobeContextProps {
+    globe: Globe | null;
+    setGlobe: React.Dispatch<React.SetStateAction<Globe | null>>;
 }
 
-const GlobusContext = createContext<GlobusContextProps>({
-    globus: null,
-    setGlobus: () => {
+const GlobeContext = createContext<GlobeContextProps>({
+    globe: null,
+    setGlobe: () => {
     },
 });
 
-export const GlobusContextProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [globus, setGlobus] = useState<Globe | null>(null);
+export const GlobeContextProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+    const [globe, setGlobe] = useState<Globe | null>(null);
 
-    return <GlobusContext.Provider value={{globus: globus, setGlobus: setGlobus}}>{children}</GlobusContext.Provider>;
+    return <GlobeContext.Provider value={{globe, setGlobe}}>{children}</GlobeContext.Provider>;
 };
 
-export const useGlobusContext = (): GlobusContextProps => useContext(GlobusContext);
+export const useGlobeContext = (): GlobeContextProps => useContext(GlobeContext);

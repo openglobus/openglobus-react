@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react';
 
 import {Vector, VectorProps} from './Vector';
 import {Billboard, Entity} from "@/entity";
-import {Globus, GlobusContextProvider} from "@/Globe";
+import {Globe, GlobeContextProvider} from "@/Globe";
 import {action} from '@storybook/addon-actions';
 import React from "react";
 
@@ -25,8 +25,8 @@ export const Default: Story = {
         onMouseEnter: action('onMouseEnter', {depth: 1, maxDepth: 1}),
         // onDraw: action('onDraw', {depth: 1, maxDepth: 1}),
     },
-    render: (args: VectorProps) => <GlobusContextProvider>
-        <Globus atmosphereEnabled={false}>
+    render: (args: VectorProps) => <GlobeContextProvider>
+        <Globe>
             <Vector {...args}>
                 <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
                     <Billboard
@@ -36,7 +36,7 @@ export const Default: Story = {
                     />
                 </Entity>
             </Vector>
-        </Globus>
-    </GlobusContextProvider>
+        </Globe>
+    </GlobeContextProvider>
 };
 

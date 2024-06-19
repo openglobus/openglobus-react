@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import {useGlobusContext} from '@/Globe';
+import {useGlobeContext} from '@/Globe';
 import {IXYZParams, XYZ as GlobusXYZ} from '@openglobus/og';
 
 export interface XYZProps extends IXYZParams {
@@ -8,7 +8,7 @@ export interface XYZProps extends IXYZParams {
 }
 
 const XYZ: React.FC<XYZProps> = ({name, ...rest}) => {
-    const {globus} = useGlobusContext();
+    const {globe} = useGlobeContext();
     const xyzRef = useRef<GlobusXYZ | null>(null);
     //
     useEffect(() => {
@@ -18,15 +18,15 @@ const XYZ: React.FC<XYZProps> = ({name, ...rest}) => {
     }, [rest.url]);
 
     useEffect(() => {
-        if (globus) {
+        if (globe) {
             xyzRef.current = new GlobusXYZ(name, {...rest});
-            globus.planet.addLayer(xyzRef.current);
+            globe.planet.addLayer(xyzRef.current);
 
             return () => {
-                xyzRef.current && globus.planet.removeLayer(xyzRef.current);
+                xyzRef.current && globe.planet.removeLayer(xyzRef.current);
             };
         }
-    }, [globus]);
+    }, [globe]);
 
     return null;
 };

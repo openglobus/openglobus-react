@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import {useGlobusContext} from '@/Globe';
+import {useGlobeContext} from '@/Globe';
 import {GeoImage as GlobusGeoImage, IGeoImageParams} from '@openglobus/og';
 
 export interface GeoImageProps extends IGeoImageParams {
@@ -8,7 +8,7 @@ export interface GeoImageProps extends IGeoImageParams {
 }
 
 const GeoImage: React.FC<GeoImageProps> = ({name, ...rest}) => {
-    const {globus} = useGlobusContext();
+    const {globe} = useGlobeContext();
     const geoImageRef = useRef<GlobusGeoImage | null>(null);
 
     useEffect(() => {
@@ -18,15 +18,15 @@ const GeoImage: React.FC<GeoImageProps> = ({name, ...rest}) => {
     }, [rest.src]);
 
     useEffect(() => {
-        if (globus) {
+        if (globe) {
             geoImageRef.current = new GlobusGeoImage(name, rest);
-            globus.planet.addLayer(geoImageRef.current);
+            globe.planet.addLayer(geoImageRef.current);
 
             return () => {
-                geoImageRef.current && globus.planet.removeLayer(geoImageRef.current);
+                geoImageRef.current && globe.planet.removeLayer(geoImageRef.current);
             };
         }
-    }, [globus]);
+    }, [globe]);
 
     return null;
 };

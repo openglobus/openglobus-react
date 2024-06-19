@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import {useGlobusContext} from '@/Globe';
+import {useGlobeContext} from '@/Globe';
 import {GeoVideo as GlobusGeoVideo, IGeoVideoParams} from '@openglobus/og';
 
 export interface GeoVideoProps extends IGeoVideoParams {
@@ -8,7 +8,7 @@ export interface GeoVideoProps extends IGeoVideoParams {
 }
 
 const GeoVideo: React.FC<GeoVideoProps> = ({name, ...rest}) => {
-    const {globus} = useGlobusContext();
+    const {globe} = useGlobeContext();
     const geoVideoRef = useRef<GlobusGeoVideo | null>(null);
 
     useEffect(() => {
@@ -19,15 +19,15 @@ const GeoVideo: React.FC<GeoVideoProps> = ({name, ...rest}) => {
     }, [rest.src]);
 
     useEffect(() => {
-        if (globus) {
+        if (globe) {
             geoVideoRef.current = new GlobusGeoVideo(name, rest);
-            globus.planet.addLayer(geoVideoRef.current);
+            globe.planet.addLayer(geoVideoRef.current);
 
             return () => {
-                geoVideoRef.current && globus.planet.removeLayer(geoVideoRef.current);
+                geoVideoRef.current && globe.planet.removeLayer(geoVideoRef.current);
             };
         }
-    }, [globus]);
+    }, [globe]);
 
     return null;
 };

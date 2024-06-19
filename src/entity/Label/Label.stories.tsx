@@ -2,7 +2,7 @@ import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 
 import {Entity, Label, LabelParams} from '@/entity';
-import {Globus, GlobusContextProvider} from "@/Globe";
+import {Globe, GlobeContextProvider} from "@/Globe";
 import {Vector} from "@/layer";
 
 const meta = {
@@ -36,8 +36,8 @@ export const Default: Story = {
         isRTL: false,
     },
     render: (args: LabelParams) => {
-        return <GlobusContextProvider>
-            <Globus atmosphereEnabled={false}
+        return <GlobeContextProvider>
+            <Globe
                     fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -46,8 +46,8 @@ export const Default: Story = {
                         />
                     </Entity>
                 </Vector>
-            </Globus>
-        </GlobusContextProvider>;
+            </Globe>
+        </GlobeContextProvider>;
     }
 };
 
@@ -59,8 +59,8 @@ export const Arabic: Story = {
         isRTL: true,
     },
     render: (args: LabelParams) => {
-        return <GlobusContextProvider>
-            <Globus atmosphereEnabled={false}
+        return <GlobeContextProvider>
+            <Globe
                     fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
@@ -69,7 +69,7 @@ export const Arabic: Story = {
                         />
                     </Entity>
                 </Vector>
-            </Globus>
-        </GlobusContextProvider>;
+            </Globe>
+        </GlobeContextProvider>;
     }
 };
