@@ -11,6 +11,7 @@ type LayerChildren = React.ReactElement<{ type: typeof Layer|typeof Vector}>;
 export interface GlobusProps extends IGlobeParams {
     children?: LayerChildren | LayerChildren[]
     atmosphereEnabled?: boolean,
+    sunActive?: boolean,
     onDraw?: EventCallback
 }
 
@@ -22,7 +23,15 @@ const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
     useEffect(() => {
         if (gRef && gRef.current && rest.atmosphereEnabled !== undefined) gRef.current.planet.atmosphereEnabled = rest.atmosphereEnabled;
     }, [rest.atmosphereEnabled]);
-
+    useEffect(() => {
+        if (gRef && gRef.current && rest.sunActive !== undefined) {
+            if (rest.sunActive) {
+                gRef.current?.sun.activate()
+            } else {
+                gRef.current?.sun.deactivate()
+            }
+        }
+    }, [rest.sunActive]);
     useEffect(() => {
         if (!gRef.current) {
             const osm = new XYZ('OpenStreetMap', {
