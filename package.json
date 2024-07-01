@@ -1,36 +1,52 @@
 {
   "name": "@openglobus/openglobus-react",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Openglobus React Components",
-  "main": "dist/index.umd.js",
+  "main": "./dist/index.umd.cjs",
   "private": false,
-  "module": "dist/index.mjs",
-  "types": "dist/src/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "type": "module",
   "files": [
     "dist"
   ],
   "scripts": {
+    "dev": "vite",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build && tsc"
+    "build": "vite build",
+    "build:watch": "vite build --watch && tsc",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "keywords": [
     "3d",
     "react",
+    "react-components",
     "openglobus",
     "gis"
   ],
   "author": "Pavel Sukhodolski",
   "license": "MIT",
   "devDependencies": {
-    "@openglobus/og": "^0.18.5",
-    "@types/node": "^20.10.0",
-    "@types/react": "^18.2.38",
-    "react": "^18.2.0",
-    "typescript": "^5.3.2",
-    "vite": "^5.0.2"
+    "@openglobus/og": "^0.20.2",
+    "@chromatic-com/storybook": "^1.5.0",
+    "@storybook/addon-essentials": "^8.1.11",
+    "@storybook/addon-interactions": "^8.1.11",
+    "@storybook/addon-links": "^8.1.11",
+    "@storybook/blocks": "^8.1.11",
+    "@storybook/react": "^8.1.11",
+    "@storybook/react-vite": "^8.1.11",
+    "@storybook/test": "^8.1.11",
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "react": "^18.3.1",
+    "storybook": "^8.1.11",
+    "typescript": "^5.5.2",
+    "vite": "^5.3.1",
+    "vite-plugin-dts": "^3.9.1"
   },
   "peerDependencies": {
-    "@openglobus/og": "^0.18.5",
+    "@openglobus/og": "^0.20.2",
     "react": "^18.2.0"
   }
 }

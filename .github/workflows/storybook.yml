@@ -1,0 +1,32 @@
+name: Build and publish Storybook
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  publish-storybook:
+
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm run build-storybook
+      - name: Deploy to external repository
+        uses: pavletto/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY  }}
+        with:
+          source-directory: ./storybook-static
+          destination-github-username: openglobus
+          destination-repository-name: openglobus.github.io
+          user-email: github-actions[bot]@users.noreply.github.com
+          target-branch: master
+          target-directory: storybook
