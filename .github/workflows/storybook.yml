@@ -1,8 +1,8 @@
 name: Build and publish Storybook
 
 on:
-  push:
-    branches: [ improve-components ]
+  release:
+    types: [ published ]
 
 jobs:
   publish-storybook:
