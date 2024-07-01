@@ -2,10 +2,10 @@
   "name": "@openglobus/openglobus-react",
   "version": "0.1.0",
   "description": "Openglobus React Components",
-  "main": "./dist/index.umd.js",
+  "main": "./dist/index.umd.cjs",
   "private": false,
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
   "type": "module",
   "files": [
     "dist"
@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "vite",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build && tsc",
+    "build": "vite build",
     "build:watch": "vite build --watch && tsc",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -21,6 +21,7 @@
   "keywords": [
     "3d",
     "react",
+    "react-components",
     "openglobus",
     "gis"
   ],
