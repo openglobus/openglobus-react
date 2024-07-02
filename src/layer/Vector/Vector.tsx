@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createContext, useCallback, useEffect, useRef, useState} from "react";
-import {useGlobeContext} from '../../index';
+import {Layer, LayerProps, useGlobeContext} from '../../index';
 import type {Billboard, Entity, Geometry, GeoObject, Label, Polyline, Strip} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
 import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
@@ -54,12 +54,14 @@ const VectorContext = createContext<{
 
 type EntityElement = React.ReactElement<{ type: typeof Entity }>;
 
-export interface VectorProps extends IVectorParams {
+export interface VectorPropsBase extends IVectorParams {
     children?: EntityElement | EntityElement[]
     name: string
     onMouseEnter?: EventCallback
     onDraw?: EventCallback
 }
+
+export type VectorProps = VectorPropsBase & LayerProps;
 
 const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) => {
     const {globe} = useGlobeContext();
@@ -179,7 +181,9 @@ const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) =>
             addStrip,
             removeStrip
         }}>
-            {children}
+            <Layer layerRef={vectorRef} name={name} {...rest}>
+                {children}
+            </Layer>
         </VectorContext.Provider>
     );
 };
