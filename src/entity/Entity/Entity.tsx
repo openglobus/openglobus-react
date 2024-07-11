@@ -81,7 +81,7 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
     useEffect(() => {
         if (globe) {
             entityRef.current = new GlobusEntity({
-                lonlat, name, ...rest
+                lonlat: lonlat? lonlat : new LonLat(lon,lat,alt), name, ...rest
             });
             addEntity(entityRef.current);
 
