@@ -10,6 +10,15 @@ export interface XYZProps extends IXYZParams {
 const XYZ: React.FC<XYZProps> = ({name, ...rest}) => {
     const {globe} = useGlobeContext();
     const xyzRef = useRef<GlobusXYZ | null>(null);
+
+    useEffect(() => {
+        if (typeof rest.opacity === 'number' && xyzRef.current) {
+            if (xyzRef.current) {
+                xyzRef.current.opacity = rest.opacity;
+            }
+        }
+    }, [rest.opacity]);
+
     //
     useEffect(() => {
         if (typeof rest.url === 'string' && xyzRef.current) {
