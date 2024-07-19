@@ -1,6 +1,8 @@
 import {useEffect, useRef} from 'react';
 import {useGlobeContext} from '@/Globe';
 import {IXYZParams, XYZ as GlobusXYZ} from '@openglobus/og';
+import React from 'react';
+import {useLayerParams} from '../Layer/Layer';
 
 export interface XYZProps extends IXYZParams {
     name: string;
@@ -11,15 +13,6 @@ const XYZ: React.FC<XYZProps> = ({name, ...rest}) => {
     const {globe} = useGlobeContext();
     const xyzRef = useRef<GlobusXYZ | null>(null);
 
-    useEffect(() => {
-        if (typeof rest.opacity === 'number' && xyzRef.current) {
-            if (xyzRef.current) {
-                xyzRef.current.opacity = rest.opacity;
-            }
-        }
-    }, [rest.opacity]);
-
-    //
     useEffect(() => {
         if (typeof rest.url === 'string' && xyzRef.current) {
             xyzRef.current?.setUrl(rest.url)
@@ -36,6 +29,8 @@ const XYZ: React.FC<XYZProps> = ({name, ...rest}) => {
             };
         }
     }, [globe]);
+
+    useLayerParams(xyzRef.current, rest);
 
     return null;
 };
