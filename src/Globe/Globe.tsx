@@ -69,10 +69,7 @@ const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
                 nightTextureCoefficient: 2.7,
                 urlRewrite: function (s: any, u: string) {
                     // @ts-ignore
-                    return utils.stringTemplate(u, {
-                        s: this._getSubdomain(),
-                        quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)
-                    });
+                    return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});
                 },
             });
 
