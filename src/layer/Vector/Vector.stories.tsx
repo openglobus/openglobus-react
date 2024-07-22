@@ -25,7 +25,8 @@ export const Default: Story = {
         ...LayerDefault.argTypes
     },
     args: {
-        name: 'test'
+        name: 'test',
+        opacity: 1
     },
     render: (args: VectorProps) => <GlobeContextProvider>
         <Globe>

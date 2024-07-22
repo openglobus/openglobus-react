@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {forwardRef, useEffect} from 'react';
-import {ILayerParams, Vector as GlobusVector} from '@openglobus/og';
-import { EventCallback } from '@openglobus/og/lib/js/Events';
-import {useGlobeContext} from "@/Globe";
+import {useEffect} from 'react';
+import {ILayerParams, Layer as GlobusLayer} from '@openglobus/og';
+import {EventCallback} from '@openglobus/og/lib/js/Events';
+
 export interface LayerProps extends ILayerParams {
     name: string
-    layerRef?: React.MutableRefObject<GlobusVector | null>,
+    layerRef?: React.MutableRefObject<GlobusLayer | null>,
     children?: React.ReactNode;
     onVisibilityChange?: EventCallback;
     onAdd?: EventCallback;
@@ -37,12 +37,17 @@ export interface LayerProps extends ILayerParams {
     onTouchEnter?: EventCallback;
 }
 
-const Layer: React.FC<LayerProps> =({ children, name, layerRef, ...params}) => {
-    const {globe} = useGlobeContext();
+const Layer: React.FC<LayerProps> = ({opacity, children, name, layerRef, ...params}) => {
     const [refPassed, setRefPassed] = React.useState(false);
-
     useEffect(() => {
-        if (refPassed && layerRef && layerRef.current){
+        if (layerRef) {
+            if (layerRef.current && typeof opacity === 'number' && refPassed) {
+                layerRef.current.opacity = opacity;
+            }
+        }
+    }, [opacity]);
+    useEffect(() => {
+        if (refPassed && layerRef && layerRef.current) {
             if (params.onVisibilityChange) layerRef.current?.events.on("visibilitychange", params.onVisibilityChange)
             if (params.onAdd) layerRef.current?.events.on("add", params.onAdd)
             if (params.onRemove) layerRef.current?.events.on("remove", params.onRemove)

@@ -1,6 +1,8 @@
+import * as React from 'react';
 import {useEffect, useRef} from 'react';
 import {useGlobeContext} from '@/Globe';
 import {IXYZParams, XYZ as GlobusXYZ} from '@openglobus/og';
+import {Layer} from "@/layer";
 
 export interface XYZProps extends IXYZParams {
     name: string;
@@ -28,7 +30,9 @@ const XYZ: React.FC<XYZProps> = ({name, ...rest}) => {
         }
     }, [globe]);
 
-    return null;
+    return <Layer layerRef={xyzRef} name={name} {...rest}>
+
+    </Layer>;
 };
 
 export {XYZ};

@@ -7,7 +7,7 @@ import {fileURLToPath, URL} from "url";
 export default defineConfig({
     plugins: [dts({
         include: ['src/**/*.ts', 'src/**/*.tsx'],
-        exclude: ['node_modules', 'dist'],
+        exclude: ['node_modules','src/**/*.stories.ts', 'dist'],
         outDir: 'dist/types',
     })],
     resolve: {
