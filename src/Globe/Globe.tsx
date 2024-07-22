@@ -7,7 +7,8 @@ import {IGlobeParams} from "@openglobus/og/lib/js/Globe";
 import "@openglobus/og/css/og.css";
 import {Layer, Vector} from "@/layer";
 
-type LayerChildren = React.ReactElement<{ type: typeof Layer|typeof Vector}>;
+type LayerChildren = React.ReactElement<{ type: typeof Layer | typeof Vector }>;
+
 export interface GlobusProps extends IGlobeParams {
     children?: LayerChildren | LayerChildren[]
     atmosphereEnabled?: boolean,
@@ -68,7 +69,8 @@ const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
                 nightTextureCoefficient: 2.7,
                 urlRewrite: function (s: any, u: string) {
                     // @ts-ignore
-                    return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});},
+                    return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});
+                },
             });
 
             gRef.current = new GlobusGlobe({

@@ -1,6 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
 import {Vector, VectorProps} from './Vector';
+import {Default as LayerDefault} from '../Layer/Layer.stories';
 import {Billboard, Entity} from "@/entity";
 import {Globe, GlobeContextProvider} from "@/Globe";
 import {action} from '@storybook/addon-actions';
@@ -20,10 +21,12 @@ export const Default: Story = {
     parameters: {
         actions: {depth: 1, maxDepth: 1},
     },
+    argTypes:{
+        ...LayerDefault.argTypes
+    },
     args: {
         name: 'test',
-        onMouseEnter: action('onMouseEnter', {depth: 1, maxDepth: 1}),
-        // onDraw: action('onDraw', {depth: 1, maxDepth: 1}),
+        opacity: 1
     },
     render: (args: VectorProps) => <GlobeContextProvider>
         <Globe>

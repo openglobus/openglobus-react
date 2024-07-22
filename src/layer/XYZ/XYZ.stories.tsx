@@ -31,6 +31,7 @@ export const OpenStreetMap: Story = {
 
     args: {
         name: 'osm',
+        opacity: 1,
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     },
     render: (args: XYZProps) => <GlobeContextProvider>
@@ -43,6 +44,7 @@ export const OpenStreetMap: Story = {
 export const Satellites: Story = {
     args: {
         name: 'sat',
+        opacity: 1,
         url: 'https://ecn.{s}.tiles.virtualearth.net/tiles/a{quad}.jpeg?n=z&g=7146',
         subdomains: ['t0', 't1', 't2', 't3'],
         urlRewrite: function (s: any, u: string) {
