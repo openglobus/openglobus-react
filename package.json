@@ -1,6 +1,6 @@
 {
   "name": "@openglobus/openglobus-react",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Openglobus React Components",
   "main": "./dist/index.umd.cjs",
   "private": false,
@@ -28,11 +28,11 @@
   "author": "Pavel Sukhodolski",
   "license": "MIT",
   "dependencies": {
-    "@openglobus/og": "^0.20.4",
+    "@openglobus/og": "^0.21.0",
     "react": "^18.3.1"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.7.0",
+    "@chromatic-com/storybook": "^1.8.0",
     "@storybook/addon-essentials": "^8.2.9",
     "@storybook/addon-interactions": "^8.2.9",
     "@storybook/addon-links": "^8.2.9",
@@ -40,12 +40,12 @@
     "@storybook/react": "^8.2.9",
     "@storybook/react-vite": "^8.2.9",
     "@storybook/test": "^8.2.9",
-    "@types/node": "^22.5.0",
-    "@types/react": "^18.3.4",
+    "@types/node": "^22.5.4",
+    "@types/react": "^18.3.5",
     "react": "^18.3.1",
     "storybook": "^8.2.9",
     "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-dts": "^4.0.3"
+    "vite": "^5.4.3",
+    "vite-plugin-dts": "^4.1.0"
   }
 }
