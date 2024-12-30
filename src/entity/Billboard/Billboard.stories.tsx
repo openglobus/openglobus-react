@@ -66,7 +66,7 @@ export const Default: Story = {
     args: {
         size: [96, 96],
         color: "#ff5959",
-        src: 'https://openglobus.org/examples/examples/billboards/carrot.png',
+        src: 'https://sandbox.openglobus.org/examples/billboards/carrot.png',
         rotation: 0,
         offset: [0, 0, 0],
         visibility: true,

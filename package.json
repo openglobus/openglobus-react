@@ -15,7 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
     "build:watch": "vite build --watch && tsc",
-    "storybook": "storybook dev -p 8081",
+    "storybook": "storybook dev -p 8000",
     "build-storybook": "storybook build"
   },
   "keywords": [
@@ -28,24 +28,24 @@
   "author": "Pavel Sukhodolski",
   "license": "MIT",
   "dependencies": {
-    "@openglobus/og": "^0.21.0",
-    "react": "^18.3.1"
+    "@openglobus/og": "^0.22.0",
+    "react": "^19.0.0"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.8.0",
-    "@storybook/addon-essentials": "^8.2.9",
-    "@storybook/addon-interactions": "^8.2.9",
-    "@storybook/addon-links": "^8.2.9",
-    "@storybook/blocks": "^8.2.9",
-    "@storybook/react": "^8.2.9",
-    "@storybook/react-vite": "^8.2.9",
-    "@storybook/test": "^8.2.9",
-    "@types/node": "^22.5.4",
-    "@types/react": "^18.3.5",
-    "react": "^18.3.1",
-    "storybook": "^8.2.9",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.3",
-    "vite-plugin-dts": "^4.1.0"
+    "@chromatic-com/storybook": "^3.2.3",
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/addon-links": "^8.4.7",
+    "@storybook/blocks": "^8.4.7",
+    "@storybook/react": "^8.4.7",
+    "@storybook/react-vite": "^8.4.7",
+    "@storybook/test": "^8.4.7",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "react": "^19.0.0",
+    "storybook": "^8.4.7",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.6",
+    "vite-plugin-dts": "^4.4.0"
   }
 }

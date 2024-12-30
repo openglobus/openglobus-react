@@ -38,7 +38,7 @@ export const Default: Story = {
     render: (args: LabelParams) => {
         return <GlobeContextProvider>
             <Globe
-                    fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
+                    fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
                         <Label
@@ -61,7 +61,7 @@ export const Arabic: Story = {
     render: (args: LabelParams) => {
         return <GlobeContextProvider>
             <Globe
-                    fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
+                    fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
                         <Label

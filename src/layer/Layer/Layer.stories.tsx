@@ -66,7 +66,7 @@ export const Default: Story = {
                     <Billboard
                         size={[96, 96]}
                         color={"#ff5959"}
-                        src={'https://openglobus.org/examples/examples/billboards/carrot.png'}
+                        src={'https://sandbox.openglobus.org/examples/billboards/carrot.png'}
                     />
                 </Entity>
             </Vector>

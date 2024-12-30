@@ -28,7 +28,7 @@ export const Polygon: Story = {
     render: (args: GeometryParams) => {
         return <GlobeContextProvider>
             <Globe
-                    fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
+                    fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
                         <Geometry
@@ -53,7 +53,7 @@ export const Point: Story = {
     render: (args: GeometryParams) => {
         return <GlobeContextProvider>
             <Globe
-                    fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
+                    fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
                         <Geometry
@@ -76,7 +76,7 @@ export const Line: Story = {
     render: (args: GeometryParams) => {
         return <GlobeContextProvider>
             <Globe
-                    fontsSrc={"https://openglobus.org/examples/examples/fonts/fonts"}>
+                    fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
                     <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
                         <Geometry
