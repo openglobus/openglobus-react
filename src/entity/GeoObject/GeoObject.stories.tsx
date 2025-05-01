@@ -30,7 +30,7 @@ export const Default: Story = {
         <Globe>
             <Vector name={'test'}
                     scaleByDistance={[100, 4000000, 1]}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                <Entity name="Custom Entity" lon={0} lat={0} alt={0} yaw={args.yaw} roll={args.roll} pitch={args.pitch}>
                     <GeoObject
                         {...args}
                     />
@@ -48,7 +48,7 @@ export const Untextured: Story = {
         <Globe>
             <Vector name={'test'}
                     scaleByDistance={[100, 4000000, 1]}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                <Entity name="Custom Entity" lon={0} lat={0} alt={0} yaw={args.yaw} roll={args.roll} pitch={args.pitch}>
                     <GeoObject
                         {...args}
                     />
@@ -68,7 +68,7 @@ export const Barrel: Story = {
         <Globe>
             <Vector name={'test'}
                     scaleByDistance={[100, 4000000, 1]}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                <Entity name="Custom Entity" lon={0} lat={0} alt={0} yaw={args.yaw} roll={args.roll} pitch={args.pitch}>
                     <GeoObject
                         {...args}
                     />

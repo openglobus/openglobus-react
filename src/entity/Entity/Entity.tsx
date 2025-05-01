@@ -7,14 +7,14 @@ import {
     Geometry as GlobusGeometry,
     GeoObject as GlobusGeoObject,
     Label as GlobusLabel,
-    LonLat,
+    LonLat, math,
     Polyline as GlobusPolyline,
     Strip as GlobusStrip
 } from '@openglobus/og';
-import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
+import type {IEntityParams} from "@openglobus/og/lib/entity/Entity";
 import {VectorContext} from "@/layer/Vector/Vector";
-import {EventCallback} from "@openglobus/og/lib/js/Events";
-import {NumberArray3} from "@openglobus/og/lib/js/math/Vec3";
+import {EventCallback} from "@openglobus/og/lib/Events";
+import {NumberArray3} from "@openglobus/og/lib/math/Vec3";
 import {Billboard, Geometry, GeoObject, Label, Polyline, Strip} from "@/entity";
 
 type EntityChildElement = React.ReactElement<
@@ -35,7 +35,7 @@ export interface EntityParams extends IEntityParams {
     onDraw?: EventCallback
 }
 
-const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name, children, ...rest}) => {
+const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name, yaw, pitch, roll, children, ...rest}) => {
     const {globe} = useGlobeContext();
     const {
         addEntity,
@@ -61,6 +61,23 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
     const [polyline, setPolyline] = useState<GlobusPolyline | null>(null);
     const [strip, setStrip] = useState<GlobusStrip | null>(null);
 
+    useEffect(() => {
+        if (typeof yaw === 'number' && entityRef.current) {
+            entityRef.current?.setYaw(yaw * math.RADIANS)
+        }
+    }, [yaw]);
+
+    useEffect(() => {
+        if (typeof roll === 'number' && entityRef.current) {
+            entityRef.current?.setRoll(roll * math.RADIANS)
+        }
+    }, [roll]);
+
+    useEffect(() => {
+        if (typeof pitch === 'number' && entityRef.current) {
+            entityRef.current?.setPitch(pitch * math.RADIANS)
+        }
+    }, [pitch]);
     useEffect(() => {
         if (lonlat) {
             if (!(lonlat instanceof LonLat)) lonlat = LonLat.createFromArray(lonlat as NumberArray3);

@@ -1,10 +1,10 @@
 import * as React from "react";
 import {useEffect} from "react";
 import {LonLat} from "@openglobus/og";
-import {IPlanetCameraParams} from "@openglobus/og/lib/js/camera/PlanetCamera";
 import {useGlobeContext} from "@/Globe";
+import {ICameraParams} from "@openglobus/og/lib/camera/Camera";
 
-export interface PlanetCameraParams extends IPlanetCameraParams {
+export interface PlanetCameraParams extends ICameraParams {
     lon?: number;
     lat?: number;
     alt?: number;

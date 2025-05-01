@@ -2,9 +2,9 @@ import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import {useGlobeContext} from "./GlobeContext";
 import {Globe as GlobusGlobe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
-import {EventCallback} from "@openglobus/og/lib/js/Events";
-import {IGlobeParams} from "@openglobus/og/lib/js/Globe";
-import "@openglobus/og/css/og.css";
+import {EventCallback} from "@openglobus/og/lib/Events";
+import {IGlobeParams} from "@openglobus/og/lib/Globe";
+import "@openglobus/og/styles";
 import {Layer, Vector} from "@/layer";
 
 type LayerChildren = React.ReactElement<{ type: typeof Layer | typeof Vector }>;

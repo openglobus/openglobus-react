@@ -1,7 +1,12 @@
 import {useEffect, useRef} from "react";
-import {Geometry as GlobusGeometry, Vec4} from "@openglobus/og";
-import {GeometryTypeEnum, GeometryTypeToCoordinates, IGeometryParams} from "@openglobus/og/lib/js/entity/Geometry";
-import {htmlColorToRgba} from "@openglobus/og/lib/js/utils/shared";
+import {
+    Geometry as GlobusGeometry,
+    Vec4,
+    utils,
+    GeometryTypeEnum,
+    IGeometryParams,
+    GeometryTypeToCoordinates
+} from "@openglobus/og";
 
 
 export interface GeometryParamsExtended<T extends keyof typeof GeometryTypeEnum = keyof typeof GeometryTypeEnum> extends Omit<IGeometryParams, 'style'> {
@@ -65,7 +70,7 @@ const Geometry = <T extends keyof typeof GeometryTypeEnum>(params: GeometryParam
             } else if (Array.isArray(fillColor)) {
                 geometryRef.current.setFillColor(...fillColor);
             } else if (typeof fillColor === 'string' && geometryRef.current) {
-                const fillColorVec = htmlColorToRgba(fillColor);
+                const fillColorVec = utils.htmlColorToRgba(fillColor);
                 geometryRef.current.setFillColor4v(fillColorVec);
             }
         }
@@ -78,7 +83,7 @@ const Geometry = <T extends keyof typeof GeometryTypeEnum>(params: GeometryParam
             } else if (Array.isArray(lineColor)) {
                 geometryRef.current.setLineColor(...lineColor);
             } else if (typeof lineColor === 'string' && geometryRef.current) {
-                const lineColorVec = htmlColorToRgba(lineColor);
+                const lineColorVec = utils.htmlColorToRgba(lineColor);
                 geometryRef.current.setLineColor4v(lineColorVec);
             }
         }
@@ -91,7 +96,7 @@ const Geometry = <T extends keyof typeof GeometryTypeEnum>(params: GeometryParam
             } else if (Array.isArray(strokeColor)) {
                 geometryRef.current.setStrokeColor(...strokeColor);
             } else if (typeof strokeColor === 'string' && geometryRef.current) {
-                const strokeColorVec = htmlColorToRgba(strokeColor);
+                const strokeColorVec = utils.htmlColorToRgba(strokeColor);
                 geometryRef.current.setStrokeColor4v(strokeColorVec);
             }
         }

@@ -1,8 +1,7 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Billboard as GlobusBillboard, Vec2, Vec3} from "@openglobus/og";
-import {IBillboardParams} from "@openglobus/og/lib/js/entity/Billboard";
-import {RADIANS} from "@openglobus/og/lib/js/math";
+import {Billboard as GlobusBillboard, Vec2, Vec3, math} from "@openglobus/og";
+import type {IBillboardParams} from "@openglobus/og/lib/entity/Billboard";
 
 export interface BillboardParams extends IBillboardParams {
     name?: string;
@@ -37,7 +36,7 @@ const Billboard: React.FC<BillboardParams> = ({
 
     useEffect(() => {
         if (typeof rotation === 'number' && billboardRef.current) {
-            billboardRef.current?.setRotation(rotation * RADIANS)
+            billboardRef.current?.setRotation(rotation * math.RADIANS)
         }
     }, [rotation]);
 
@@ -74,7 +73,7 @@ const Billboard: React.FC<BillboardParams> = ({
             src,
             offset,
             visibility,
-            rotation: rotation ? rotation * RADIANS : 0
+            rotation: rotation ? rotation * math.RADIANS : 0
         });
         if (billboardRef.current && _addBillboard) {
             _addBillboard(billboardRef.current);

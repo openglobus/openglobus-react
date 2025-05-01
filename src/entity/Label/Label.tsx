@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Label as GlobusLabel, Vec2, Vec3} from "@openglobus/og";
-import {ILabelParams} from "@openglobus/og/lib/js/entity/Label";
-import {RADIANS} from "@openglobus/og/lib/js/math";
+import {Label as GlobusLabel, Vec2, Vec3, math} from "@openglobus/og";
+import type {ILabelParams} from "@openglobus/og";
+
 
 export interface LabelParams extends ILabelParams {
     name?: string;
@@ -38,7 +38,7 @@ const Label: React.FC<LabelParams> = ({
 
     useEffect(() => {
         if (typeof rotation === 'number' && labelRef.current) {
-            labelRef.current?.setRotation(rotation * RADIANS)
+            labelRef.current?.setRotation(rotation * math.RADIANS)
         }
     }, [rotation]);
 
@@ -122,7 +122,7 @@ const Label: React.FC<LabelParams> = ({
             opacity,
             offset,
             visibility,
-            rotation: rotation ? rotation * RADIANS : 0
+            rotation: rotation ? rotation * math.RADIANS : 0
         });
         if (labelRef.current && _addLabel) {
             _addLabel(labelRef.current);
