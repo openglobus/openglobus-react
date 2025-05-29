@@ -10,12 +10,8 @@ export interface GeoObjectParams extends IGeoObjectParams {
 }
 
 const GeoObject: React.FC<GeoObjectParams> = ({
-                                                  yaw,
-                                                  roll,
-                                                  pitch,
                                                   color,
                                                   objSrc,
-                                                  textureSrc,
                                                   scale,
                                                   visibility,
                                                   _addGeoObject,
@@ -23,24 +19,6 @@ const GeoObject: React.FC<GeoObjectParams> = ({
                                                   ...params
                                               }) => {
     const geoObjectRef = useRef<GlobusGeoObject | null>(null);
-
-    useEffect(() => {
-        if (typeof yaw === 'number' && geoObjectRef.current) {
-            geoObjectRef.current?.setYaw(yaw * RADIANS)
-        }
-    }, [yaw]);
-
-    useEffect(() => {
-        if (typeof roll === 'number' && geoObjectRef.current) {
-            geoObjectRef.current?.setRoll(roll * RADIANS)
-        }
-    }, [roll]);
-
-    useEffect(() => {
-        if (typeof pitch === 'number' && geoObjectRef.current) {
-            geoObjectRef.current?.setPitch(pitch * RADIANS)
-        }
-    }, [pitch]);
 
     useEffect(() => {
         if (scale && geoObjectRef.current) {
@@ -66,13 +44,6 @@ const GeoObject: React.FC<GeoObjectParams> = ({
         }
     }, [objSrc]);
 
-
-    useEffect(() => {
-        if (textureSrc && geoObjectRef.current) {
-            geoObjectRef.current?.setTextureSrc(textureSrc)
-        }
-    }, [textureSrc]);
-
     useEffect(() => {
         if (typeof visibility === 'boolean' && geoObjectRef.current) {
             geoObjectRef.current?.setVisibility(visibility)
@@ -81,7 +52,7 @@ const GeoObject: React.FC<GeoObjectParams> = ({
 
     useEffect(() => {
         geoObjectRef.current = new GlobusGeoObject({
-            yaw, roll, pitch, color, objSrc, textureSrc, scale, visibility, ...params
+            color, objSrc, scale, visibility, ...params
         });
         if (geoObjectRef.current && _addGeoObject) {
             _addGeoObject(geoObjectRef.current);

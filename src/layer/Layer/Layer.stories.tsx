@@ -59,6 +59,7 @@ export const Default: Story = {
         onLdblclick: action('onLdblclick', {depth: 1, maxDepth: 1}),
         // onDraw: action('onDraw', {depth: 1, maxDepth: 1}),
     },
+    //@ts-ignore
     render: (args: VectorProps) => <GlobeContextProvider>
         <Globe>
             <Vector {...args}>

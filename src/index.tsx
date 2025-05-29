@@ -1,4 +1,5 @@
-import '@openglobus/og/css/og.css';
+import "@openglobus/og/styles";
+
 export * from "./Globe";
 export * from './layer';
 export * from  './entity';

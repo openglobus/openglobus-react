@@ -17,14 +17,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         visibility: true,
-        yaw: 0,
-        roll: 0,
-        pitch: 0,
         scale: 10,
         tag: 'none',
         color: 'red',
         objSrc: 'https://raw.githubusercontent.com/pavletto/og_resources/main/geo_object/penguin.obj',
-        textureSrc: 'https://raw.githubusercontent.com/pavletto/og_resources/main/geo_object/penguin.png',
     },
     render: (args: GeoObjectParams) => <GlobeContextProvider>
         <Globe>
@@ -42,7 +38,6 @@ export const Default: Story = {
 export const Untextured: Story = {
     args: {
         ...Default.args,
-        textureSrc: undefined
     },
     render: (args: GeoObjectParams) => <GlobeContextProvider>
         <Globe>
@@ -61,7 +56,6 @@ export const Untextured: Story = {
 export const Barrel: Story = {
     args: {
         ...Default.args,
-        textureSrc: 'https://raw.githubusercontent.com/PrincessGod/objTo3d-tiles/master/bin/barrel/barrel.png',
         objSrc: 'https://raw.githubusercontent.com/PrincessGod/objTo3d-tiles/master/bin/barrel/barrel.obj'
     },
     render: (args: GeoObjectParams) => <GlobeContextProvider>

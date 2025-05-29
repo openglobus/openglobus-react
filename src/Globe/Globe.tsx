@@ -1,4 +1,4 @@
-import "@openglobus/og/lib/og.css";
+import "@openglobus/og/styles";
 
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
