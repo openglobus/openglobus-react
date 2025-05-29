@@ -2,7 +2,7 @@ import * as React from "react";
 import {useEffect, useRef} from "react";
 import {LonLat, Polyline as GlobusPolyline, Vec3} from "@openglobus/og";
 import {IPolylineParams} from "@openglobus/og/lib/entity/Polyline";
-import {htmlColorToRgba} from "@openglobus/og/lib/utils/shared";
+import {utils} from "@openglobus/og";
 
 type CSSColor =
     | 'aliceblue' | 'antiquewhite' | 'aqua' | 'aquamarine' | 'azure'
@@ -70,7 +70,7 @@ const isSegmentPathColorArray = (arr: any): arr is  IPolylineParams['pathColors'
 const convertPathColors = (pathColors: CSSColor[][] | IPolylineParams['pathColors']): IPolylineParams['pathColors'] => {
     if (isCSSColorArray(pathColors)) {
         return pathColors.map(path => path.map((c) => {
-            const vec4Color = htmlColorToRgba(c as CSSColor); // необходимо приведение типа
+            const vec4Color = utils.htmlColorToRgba(c as CSSColor); // необходимо приведение типа
             return [vec4Color.x, vec4Color.y, vec4Color.z, vec4Color.w];
         }));
     }
