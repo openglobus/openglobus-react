@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {Billboard as GlobusBillboard, Vec2, Vec3} from "@openglobus/og";
-import {IBillboardParams} from "@openglobus/og/lib/js/entity/Billboard";
-import {RADIANS} from "@openglobus/og/lib/js/math";
+import {IBillboardParams} from "@openglobus/og/lib/entity/Billboard";
+import {RADIANS} from "@openglobus/og/lib/math";
 
 export interface BillboardParams extends IBillboardParams {
     name?: string;

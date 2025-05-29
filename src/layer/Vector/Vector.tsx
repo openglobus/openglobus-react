@@ -3,8 +3,8 @@ import {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {Layer, LayerProps, useGlobeContext} from '../../index';
 import type {Billboard, Entity, Geometry, GeoObject, Label, Polyline, Strip} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
-import {IVectorParams} from '@openglobus/og/lib/js/layer/Vector';
-import {EventCallback} from "@openglobus/og/lib/js/Events";
+import {IVectorParams} from '@openglobus/og/lib/layer/Vector';
+import {EventCallback} from "@openglobus/og/lib/Events";
 
 const VectorContext = createContext<{
     addEntity: (entity: Entity) => void,
@@ -108,10 +108,10 @@ const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) =>
         });
     }, []);
 
-    const removeEntity = useCallback(async (entity: any) => {
+    const removeEntity = useCallback((entity: any) => {
         setEntities(prev => prev.filter(e => e !== entity));
         if (vectorRef.current) {
-            await vectorRef.current.removeEntity(entity);
+            vectorRef.current.removeEntity(entity);
             entitiesRef.current.delete(entity);
         }
     }, []);

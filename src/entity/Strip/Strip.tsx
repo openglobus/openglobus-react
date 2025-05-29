@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {Ellipsoid, LonLat, Strip as GlobusStrip, Vec3} from "@openglobus/og";
-import {IStripParams} from "@openglobus/og/lib/js/entity/Strip";
+import {IStripParams} from "@openglobus/og/lib/entity/Strip";
 import {useGlobeContext} from "@/Globe";
 
 export interface StripParams extends Omit<IStripParams, 'path'> {

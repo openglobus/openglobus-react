@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {Label as GlobusLabel, Vec2, Vec3} from "@openglobus/og";
-import {ILabelParams} from "@openglobus/og/lib/js/entity/Label";
-import {RADIANS} from "@openglobus/og/lib/js/math";
+import {ILabelParams} from "@openglobus/og/lib/entity/Label";
+import {RADIANS} from "@openglobus/og/lib/math";
 
 export interface LabelParams extends ILabelParams {
     name?: string;

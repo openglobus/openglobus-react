@@ -1,7 +1,7 @@
 import {useEffect, useRef} from "react";
 import {Geometry as GlobusGeometry, Vec4} from "@openglobus/og";
-import {GeometryTypeEnum, GeometryTypeToCoordinates, IGeometryParams} from "@openglobus/og/lib/js/entity/Geometry";
-import {htmlColorToRgba} from "@openglobus/og/lib/js/utils/shared";
+import {GeometryTypeEnum, GeometryTypeToCoordinates, IGeometryParams} from "@openglobus/og/lib/entity/Geometry";
+import {htmlColorToRgba} from "@openglobus/og/lib/utils/shared";
 
 
 export interface GeometryParamsExtended<T extends keyof typeof GeometryTypeEnum = keyof typeof GeometryTypeEnum> extends Omit<IGeometryParams, 'style'> {
@@ -42,8 +42,7 @@ const Geometry = <T extends keyof typeof GeometryTypeEnum>(params: GeometryParam
         strokeWidth,
         type, coordinates,
         _addGeometry,
-        _removeGeometry,
-        ...geometryParams
+        _removeGeometry
     } = params;
 
     const geometryRef = useRef<GlobusGeometry | null>(null);

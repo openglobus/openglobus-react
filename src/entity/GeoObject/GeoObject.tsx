@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {GeoObject as GlobusGeoObject, Vec4} from "@openglobus/og";
-import {IGeoObjectParams} from "@openglobus/og/lib/js/entity/GeoObject";
-import {RADIANS} from "@openglobus/og/lib/js/math";
+import {IGeoObjectParams} from "@openglobus/og/lib/entity/GeoObject";
+import {RADIANS} from "@openglobus/og/lib/math";
 
 export interface GeoObjectParams extends IGeoObjectParams {
     readonly _addGeoObject?: (geoObject: GlobusGeoObject) => void,

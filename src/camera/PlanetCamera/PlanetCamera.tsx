@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect} from "react";
 import {LonLat} from "@openglobus/og";
-import {IPlanetCameraParams} from "@openglobus/og/lib/js/camera/PlanetCamera";
+import {IPlanetCameraParams} from "@openglobus/og/lib/camera/PlanetCamera";
 import {useGlobeContext} from "@/Globe";
 
 export interface PlanetCameraParams extends IPlanetCameraParams {

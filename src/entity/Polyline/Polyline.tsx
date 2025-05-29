@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {LonLat, Polyline as GlobusPolyline, Vec3} from "@openglobus/og";
-import {IPolylineParams} from "@openglobus/og/lib/js/entity/Polyline";
-import {htmlColorToRgba} from "@openglobus/og/lib/js/utils/shared";
+import {IPolylineParams} from "@openglobus/og/lib/entity/Polyline";
+import {htmlColorToRgba} from "@openglobus/og/lib/utils/shared";
 
 type CSSColor =
     | 'aliceblue' | 'antiquewhite' | 'aqua' | 'aquamarine' | 'azure'
@@ -27,9 +27,9 @@ type CSSColor =
     | 'yellow' | 'yellowgreen'
     | `#${string}` // HEX
     | `rgb(${number}, ${number}, ${number})`
-    | `rgba(${number}, ${number}, ${number}, ${number | number})`
+    | `rgba(${number}, ${number}, ${number})`
     | `hsl(${number}, ${number}%, ${number}%)`
-    | `hsla(${number}, ${number}%, ${number}%, ${number | number})`;
+    | `hsla(${number}, ${number}%, ${number}%)`;
 
 export interface PolylineParams extends Omit<IPolylineParams, 'pathColors' | 'pathLonLat' | 'path3v'> {
     path?: IPolylineParams['pathLonLat'] | IPolylineParams['path3v'];
