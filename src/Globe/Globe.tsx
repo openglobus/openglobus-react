@@ -1,10 +1,11 @@
+import "@openglobus/og/styles";
+
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import {useGlobeContext} from "./GlobeContext";
-import {Globe as GlobusGlobe, GlobusTerrain, utils, XYZ} from "@openglobus/og";
-import {EventCallback} from "@openglobus/og/lib/js/Events";
-import {IGlobeParams} from "@openglobus/og/lib/js/Globe";
-import "@openglobus/og/css/og.css";
+import {Globe as GlobusGlobe, GlobusRgbTerrain, OpenStreetMap, Bing} from "@openglobus/og";
+import {EventCallback} from "@openglobus/og/lib/Events";
+import {IGlobeParams} from "@openglobus/og/lib/Globe";
 import {Layer, Vector} from "@/layer";
 
 type LayerChildren = React.ReactElement<{ type: typeof Layer | typeof Vector }>;
@@ -35,12 +36,7 @@ const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
     }, [rest.sunActive]);
     useEffect(() => {
         if (!gRef.current) {
-            const osm = new XYZ('OpenStreetMap', {
-                isBaseLayer: true,
-                url: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                visibility: true,
-                attribution: 'Data @ OpenStreetMap contributors, ODbL',
-            });
+            const osm = new OpenStreetMap("OSM");
 
             function toQuadKey(x: number, y: number, z: number): string {
                 var index = '';
@@ -54,29 +50,12 @@ const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
                 return index;
             }
 
-            const sat = new XYZ('sat', {
-                isBaseLayer: true,
-                subdomains: ['t0', 't1', 't2', 't3'],
-                url: 'https://ecn.{s}.tiles.virtualearth.net/tiles/a{quad}.jpeg?n=z&g=7146',
-                visibility: true,
-                attribution: `<a href="http://www.bing.com" target="_blank"><img title="Bing Imagery" src="https://sandcastle.cesium.com/CesiumUnminified/Assets/Images/bing_maps_credit.png" alt="Bing"></a> © 2021 Microsoft Corporation`,
-                maxNativeZoom: 19,
-                defaultTextures: [{color: '#001522'}, {color: '#E4E6F3'}],
-                shininess: 18,
-                specular: [0.00063, 0.00055, 0.00032],
-                ambient: 'rgb(100,100,140)',
-                diffuse: 'rgb(450,450,450)',
-                nightTextureCoefficient: 2.7,
-                urlRewrite: function (s: any, u: string) {
-                    // @ts-ignore
-                    return utils.stringTemplate(u, {s: this._getSubdomain(), quad: toQuadKey(s.tileX, s.tileY, s.tileZoom)});
-                },
-            });
+            const sat = new Bing("Microsoft Bing");
 
             gRef.current = new GlobusGlobe({
                 target: targetRef.current!,
                 name: 'Earth',
-                terrain: new GlobusTerrain(),
+                terrain: new GlobusRgbTerrain(),
                     layers: [osm, sat],
                 autoActivate: true,
                 atmosphereEnabled: true,

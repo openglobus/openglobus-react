@@ -11,10 +11,10 @@ import {
     Polyline as GlobusPolyline,
     Strip as GlobusStrip
 } from '@openglobus/og';
-import type {IEntityParams} from "@openglobus/og/lib/js/entity/Entity";
+import type {IEntityParams} from "@openglobus/og/lib/entity/Entity";
 import {VectorContext} from "@/layer/Vector/Vector";
-import {EventCallback} from "@openglobus/og/lib/js/Events";
-import {NumberArray3} from "@openglobus/og/lib/js/math/Vec3";
+import {EventCallback} from "@openglobus/og/lib/Events";
+import {NumberArray3} from "@openglobus/og/lib/math/Vec3";
 import {Billboard, Geometry, GeoObject, Label, Polyline, Strip} from "@/entity";
 
 type EntityChildElement = React.ReactElement<
