@@ -1,7 +1,7 @@
 import * as React from "react";
 import {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {Layer, LayerProps, useGlobeContext} from '../../index';
-import type {Billboard, Entity, Geometry, GeoObject, Label, Polyline, Strip} from '@openglobus/og';
+import {Billboard, Entity, Geometry, GeoObject, Gltf, Label, Polyline, Strip} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
 import {IVectorParams} from '@openglobus/og/lib/layer/Vector';
 import {EventCallback} from "@openglobus/og/lib/Events";
@@ -21,6 +21,8 @@ const VectorContext = createContext<{
     removePolyline: (entity: Entity) => void,
     addStrip: (entity: Entity, strip: Strip) => void,
     removeStrip: (entity: Entity) => void,
+    addGltf: (entity: Entity, gltf: Entity[]) => void,
+    removeGltf: (entity: Entity, gltf: Entity[]) => void,
 }>({
     addEntity: () => {
     },
@@ -49,6 +51,10 @@ const VectorContext = createContext<{
     addStrip: () => {
     },
     removeStrip: () => {
+    },
+    addGltf: (_entity: Entity, _gltf: Entity[]) => {
+    },
+    removeGltf: (_entity: Entity, _gltf: Entity[]) => {
     },
 });
 
@@ -164,6 +170,18 @@ const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) =>
         entity.strip?.remove();
     }, []);
 
+    const addGltf = useCallback((entity: Entity, gltfEntities: Entity[]) => {
+        entity.appendChildren(gltfEntities, true);
+    }, []);
+
+    const removeGltf = useCallback((entity: Entity, gltfEntities: Entity[]) => {
+        gltfEntities.forEach(child => {
+            if (child.parent === entity) {
+                child.remove();
+            }
+        });
+    }, []);
+
     return (
         <VectorContext.Provider value={{
             addEntity,
@@ -179,7 +197,9 @@ const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) =>
             addPolyline,
             removePolyline,
             addStrip,
-            removeStrip
+            removeStrip,
+            addGltf,
+            removeGltf
         }}>
             <Layer layerRef={vectorRef} name={name} {...rest}>
                 {children}

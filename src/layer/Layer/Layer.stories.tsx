@@ -1,8 +1,8 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 
 import {Billboard, Entity} from "@/entity";
 import {Globe, GlobeContextProvider} from "@/Globe";
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import React from "react";
 import {Layer, Vector, VectorProps} from "@/layer";
 

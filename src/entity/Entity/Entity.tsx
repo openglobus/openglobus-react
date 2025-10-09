@@ -1,6 +1,6 @@
 import * as React from "react";
-import {useCallback, useContext, useEffect, useRef, useState} from "react";
-import {useGlobeContext} from '@/index';
+import {useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import {Gltf, useGlobeContext} from '@/index';
 import {
     Billboard as GlobusBillboard,
     Entity as GlobusEntity,
@@ -8,6 +8,7 @@ import {
     GeoObject as GlobusGeoObject,
     Label as GlobusLabel,
     LonLat,
+    math,
     Polyline as GlobusPolyline,
     Strip as GlobusStrip
 } from '@openglobus/og';
@@ -23,19 +24,39 @@ type EntityChildElement = React.ReactElement<
     typeof Label |
     typeof Polyline |
     typeof Strip |
+    typeof Gltf |
+    typeof Entity |
     typeof Geometry
 >;
 
 export interface EntityParams extends IEntityParams {
     children?: EntityChildElement | EntityChildElement[],
     visibility?: boolean,
-    lon: number,
-    lat: number,
-    alt: number,
+    lon?: number,
+    lat?: number,
+    alt?: number,
     onDraw?: EventCallback
+    readonly _addEntity?: (billboard: GlobusEntity) => void;
+    readonly _removeEntity?: (billboard: GlobusEntity) => void;
 }
 
-const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name, children, ...rest}) => {
+const Entity: React.FC<EntityParams> = ({
+                                            visibility,
+                                            lon,
+                                            lat,
+                                            alt,
+                                            lonlat,
+                                            name,
+                                            children,
+                                            yaw,
+                                            pitch,
+                                            roll,
+                                            cartesian,
+                                            _addEntity,
+                                            _removeEntity,
+                                            relativePosition,
+                                            ...rest
+                                        }) => {
     const {globe} = useGlobeContext();
     const {
         addEntity,
@@ -51,15 +72,22 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         addPolyline,
         removePolyline,
         addStrip,
-        removeStrip
+        removeStrip,
+        addGltf,
+        removeGltf
     } = useContext(VectorContext);
+
     const entityRef = useRef<GlobusEntity | null>(null);
     const [billboard, setBillboard] = useState<GlobusBillboard | null>(null);
     const [geoObject, setGeoObject] = useState<GlobusGeoObject | null>(null);
     const [label, setLabel] = useState<GlobusLabel | null>(null);
     const [geometry, setGeometry] = useState<GlobusGeometry | null>(null);
+    const [gltf, setGltf] = useState<GlobusEntity[] | null>(null);
     const [polyline, setPolyline] = useState<GlobusPolyline | null>(null);
     const [strip, setStrip] = useState<GlobusStrip | null>(null);
+    const [ready, setReady] = useState<boolean>(false);
+
+    const pendingChildrenRef = useRef<GlobusEntity[]>([]);
 
     useEffect(() => {
         if (lonlat) {
@@ -69,7 +97,9 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
     }, [lonlat, billboard]);
 
     useEffect(() => {
-        if (name) entityRef.current?.setLonLat2(lon, lat, alt);
+        if (typeof lon === "number" && typeof lat === "number" && typeof alt === "number") {
+            entityRef.current?.setLonLat2(lon, lat, alt);
+        }
     }, [lon, lat, alt]);
 
     useEffect(() => {
@@ -79,19 +109,105 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
     }, [visibility]);
 
     useEffect(() => {
-        if (globe) {
-            entityRef.current = new GlobusEntity({
-                lonlat: lonlat? lonlat : new LonLat(lon,lat,alt), name, ...rest
-            });
-            addEntity(entityRef.current);
-
-            return () => {
-                if (globe && entityRef.current) {
-                    removeEntity(entityRef.current);
-                }
-            };
+        if (Array.isArray(cartesian) && entityRef.current) {
+            entityRef.current?.setCartesian(cartesian[0], cartesian[1], cartesian[2])
         }
-    }, [globe, addEntity, removeEntity]);
+    }, []);
+
+    useEffect(() => {
+        if (typeof yaw === 'number' && entityRef.current) {
+            entityRef.current?.setYaw(yaw * math.RADIANS)
+        }
+    }, [yaw]);
+
+    useEffect(() => {
+        if (typeof roll === 'number' && entityRef.current) {
+            entityRef.current?.setRoll(roll * math.RADIANS)
+        }
+    }, [roll]);
+
+    useEffect(() => {
+        if (typeof pitch === 'number' && entityRef.current) {
+            entityRef.current?.setPitch(pitch * math.RADIANS)
+        }
+    }, [pitch]);
+
+    useEffect(() => {
+        if (typeof relativePosition === 'boolean' && entityRef.current) {
+            entityRef.current.relativePosition = relativePosition;
+        }
+    }, [relativePosition]);
+
+    useLayoutEffect(() => {
+        if (!globe || _addEntity) return;
+
+        const entity = new GlobusEntity({
+            lonlat: lonlat ? lonlat : new LonLat(lon, lat, alt),
+            name,
+            ...rest
+        });
+        entityRef.current = entity;
+        addEntity(entity);
+
+        setReady(true);
+        if (gltf && entityRef.current) {
+            addGltf(entityRef.current, gltf);
+
+        }
+
+        if (pendingChildrenRef.current.length && entityRef.current) {
+            pendingChildrenRef.current.forEach(ch => entityRef.current!.appendChild(ch));
+            pendingChildrenRef.current = [];
+        }
+
+        return () => {
+            if (entityRef.current) {
+                removeEntity(entityRef.current);
+            }
+            setReady(false);
+        };
+    }, [globe, addEntity, removeEntity, _addEntity]);
+
+    useEffect(() => {
+        if (!_addEntity) return;
+
+        const entity = new GlobusEntity({
+            visibility,
+            name,
+            yaw,
+            pitch,
+            roll,
+            lonlat: lonlat ? lonlat : new LonLat(lon, lat, alt),
+            cartesian,
+            relativePosition,
+            ...rest
+        });
+
+        entityRef.current = entity;
+        _addEntity(entity);
+
+        if (gltf && entityRef.current) {
+            addGltf(entityRef.current, gltf);
+        }
+
+        setReady(true);
+
+        if (pendingChildrenRef.current.length && entityRef.current) {
+            pendingChildrenRef.current.forEach(ch => entityRef.current!.appendChild(ch));
+            pendingChildrenRef.current = [];
+        }
+
+        return () => {
+            _removeEntity?.(entity);
+            setReady(false);
+        };
+    }, [_addEntity, _removeEntity]);
+
+    useEffect(() => {
+        if (gltf && entityRef.current && ready) {
+            addGltf(entityRef.current, gltf);
+        }
+    }, [gltf, ready]);
 
     useEffect(() => {
         if (billboard && !entityRef.current?.billboard) entityRef.current?.setBillboard(billboard);
@@ -156,7 +272,7 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         if (entityRef.current) {
             removeLabel(entityRef.current);
         }
-        setGeoObject(null);
+        setLabel(null);
     }, [removeLabel]);
 
     const addGeometryContext = useCallback((entity: GlobusGeometry) => {
@@ -170,7 +286,7 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         if (entityRef.current) {
             removeGeometry(entityRef.current);
         }
-        setGeoObject(null);
+        setGeometry(null);
     }, [removeGeometry]);
 
     const addPolylineContext = useCallback((polyline: GlobusPolyline) => {
@@ -201,7 +317,37 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         setStrip(null);
     }, [removeStrip]);
 
-    const childProps = {
+    const addGltfContext = useCallback((GltfEntities: GlobusEntity[]) => {
+        setGltf(GltfEntities);
+    }, []);
+
+    const removeGltfContext = useCallback(() => {
+        setGltf(null);
+    }, []);
+
+    const _addEntityContext = useCallback((child: GlobusEntity) => {
+        if (entityRef.current) {
+            entityRef.current.appendChild(child);
+        } else {
+            pendingChildrenRef.current.push(child);
+        }
+    }, []);
+
+    const _removeEntityContext = useCallback((child: GlobusEntity) => {
+        if (entityRef.current) {
+            const list = entityRef.current.childEntities || [];
+            const idx = list.indexOf(child);
+            if (idx !== -1) {
+                list.splice(idx, 1);
+            }
+        } else {
+            pendingChildrenRef.current = pendingChildrenRef.current.filter(c => c !== child);
+        }
+    }, []);
+
+    const childProps = useMemo(() => ({
+        _addEntity: _addEntityContext,
+        _removeEntity: _removeEntityContext,
         _addGeometry: addGeometryContext,
         _removeGeometry: removeGeometryContext,
         _addLabel: addLabelContext,
@@ -214,19 +360,36 @@ const Entity: React.FC<EntityParams> = ({visibility, lon, lat, alt, lonlat, name
         _removePolyline: removePolylineContext,
         _addStrip: addStripContext,
         _removeStrip: removeStripContext,
-    };
-    if (!children) {
-        return null;
-    }
+        _addGltf: addGltfContext,
+        _removeGltf: removeGltfContext,
+    }), [
+        _addEntityContext,
+        _removeEntityContext,
+        addGeometryContext,
+        removeGeometryContext,
+        addLabelContext,
+        removeLabelContext,
+        addBillboardContext,
+        removeBillboardContext,
+        addGeoObjectContext,
+        removeGeoObjectContext,
+        addPolylineContext,
+        removePolylineContext,
+        addStripContext,
+        removeStripContext,
+        addGltfContext,
+        removeGltfContext,
+    ]);
+
+
+    if (!children) return null;
 
     return (
         <>
-            {Array.isArray(children) ? (
-                children.map((child) =>
-                    React.isValidElement(child) ? React.cloneElement(child, childProps) : child
-                )
-            ) : (
-                React.isValidElement(children) ? React.cloneElement(children, childProps) : children
+            {React.Children.map(children, (child, i) =>
+                React.isValidElement(child)
+                    ? React.cloneElement(child, {...childProps, key: child.key ?? i})
+                    : child
             )}
         </>
     );

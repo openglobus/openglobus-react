@@ -1,5 +1,5 @@
 import React from 'react';
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 
 import {Globe, GlobeContextProvider} from "@/Globe";
 import {PlanetCamera, PlanetCameraParams} from "@/camera/PlanetCamera/PlanetCamera";
