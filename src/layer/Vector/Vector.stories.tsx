@@ -1,10 +1,10 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 
 import {Vector, VectorProps} from './Vector';
 import {Default as LayerDefault} from '../Layer/Layer.stories';
 import {Billboard, Entity} from "@/entity";
 import {Globe, GlobeContextProvider} from "@/Globe";
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import React from "react";
 
 const meta = {

@@ -70,11 +70,11 @@ const isSegmentPathColorArray = (arr: any): arr is  IPolylineParams['pathColors'
 const convertPathColors = (pathColors: CSSColor[][] | IPolylineParams['pathColors']): IPolylineParams['pathColors'] => {
     if (isCSSColorArray(pathColors)) {
         return pathColors.map(path => path.map((c) => {
-            const vec4Color = utils.htmlColorToRgba(c as CSSColor); // необходимо приведение типа
+            const vec4Color = utils.htmlColorToRgba(c as CSSColor);
             return [vec4Color.x, vec4Color.y, vec4Color.z, vec4Color.w];
         }));
     }
-    return pathColors as IPolylineParams['pathColors']; // или обработайте как SegmentPathColor[]
+    return pathColors as IPolylineParams['pathColors'];
 };
 
 const Polyline: React.FC<PolylineParams> = ({
