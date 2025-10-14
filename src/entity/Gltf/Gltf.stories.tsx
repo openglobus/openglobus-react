@@ -29,7 +29,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
-        src: '/story-assets/maxwell_the_cat.glb',
+        src: 'https://openglobus.github.io/storybook/story-assets/maxwell_the_cat.glb',
     },
     render: ({src}: GltfProps) =>
         <GlobeContextProvider>
@@ -92,26 +92,26 @@ export const Rover: Story = {
                     <PlanetCamera lon={0} lat={0} alt={10} lookLon={0.001} lookLat={0} lookAlt={0} viewAngle={47}/>
                     <Vector name="rover" scaleByDistance={[100, 4000000, 1]}>
                         <Entity name="rover_base" cartesian={[6, 8, 9]} yaw={110 * Math.PI / 180} relativePosition>
-                            <Gltf src="/story-assets/rover_base.glb"/>
+                            <Gltf src="https://openglobus.github.io/storybook/story-assets/rover_base.glb"/>
 
                             {/* Camera arm */}
                             <Entity name="cam0_base"
                                     cartesian={[0.751, 0.349, 0.521]}
                                     yaw={cam0BaseYaw}
                                     relativePosition>
-                                <Gltf src="/story-assets/cam0_base.glb"/>
+                                <Gltf src="https://openglobus.github.io/storybook/story-assets/cam0_base.glb"/>
 
                                 <Entity name="cam0_joint"
                                         cartesian={[0, 0.515, 0]}
                                         yaw={cam0JointYaw}
                                         relativePosition>
-                                    <Gltf src="/story-assets/cam0_joint.glb"/>
+                                    <Gltf src="https://openglobus.github.io/storybook/story-assets/cam0_joint.glb"/>
 
                                     <Entity name="cam0_head"
                                             cartesian={[-0.035, 0.16, 0]}
                                             pitch={cam0HeadPitch}
                                             relativePosition>
-                                        <Gltf src="/story-assets/cam0_head.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/cam0_head.glb"/>
                                     </Entity>
                                 </Entity>
                             </Entity>
@@ -121,28 +121,28 @@ export const Rover: Story = {
                                     cartesian={[1.213, 0.022, -0.485]}
                                     yaw={scanerBaseYaw}
                                     relativePosition>
-                                <Gltf src="/story-assets/scaner_base.glb"/>
+                                <Gltf src="https://openglobus.github.io/storybook/story-assets/scaner_base.glb"/>
 
                                 <Entity name="scaner_link0" cartesian={[0.17, -0.09, -0.18]} relativePosition>
-                                    <Gltf src="/story-assets/scaner_link0.glb"/>
+                                    <Gltf src="https://openglobus.github.io/storybook/story-assets/scaner_link0.glb"/>
 
                                     <Entity name="scaner_link1"
                                             cartesian={[0, 0.0, -0.838]}
                                             pitch={scanerLink1Pitch}
                                             relativePosition>
-                                        <Gltf src="/story-assets/scaner_link1.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/scaner_link1.glb"/>
 
                                         <Entity name="scaner_joint"
                                                 cartesian={[-0.035, -0.005, -0.755]}
                                                 pitch={scanerJointPitch}
                                                 relativePosition>
-                                            <Gltf src="/story-assets/scaner_joint.glb"/>
+                                            <Gltf src="https://openglobus.github.io/storybook/story-assets/scaner_joint.glb"/>
 
                                             <Entity name="scaner_head"
                                                     cartesian={[0.042, -0.15, -0.175]}
                                                     pitch={180 * Math.PI / 180}
                                                     relativePosition>
-                                                <Gltf src="/story-assets/scaner_head.glb"/>
+                                                <Gltf src="https://openglobus.github.io/storybook/story-assets/scaner_head.glb"/>
                                             </Entity>
                                         </Entity>
                                     </Entity>
@@ -154,13 +154,13 @@ export const Rover: Story = {
                                     cartesian={[0.26, -0.0, -0.78]}
                                     pitch={13 * Math.PI / 180}
                                     relativePosition>
-                                <Gltf src="/story-assets/susp_left_front.glb"/>
+                                <Gltf src="https://openglobus.github.io/storybook/story-assets/susp_left_front.glb"/>
 
                                 <Entity name="amort_left_front"
                                         cartesian={[0.876, -0.3, -0.26]}
                                         pitch={-103 * Math.PI / 180}
                                         relativePosition>
-                                    <Gltf src="/story-assets/amort_left_front.glb"/>
+                                    <Gltf src="https://openglobus.github.io/storybook/story-assets/amort_left_front.glb"/>
 
                                     <Entity
                                         name="wheel_front_left"
@@ -169,7 +169,7 @@ export const Rover: Story = {
                                         roll={-roll}
                                         relativePosition
                                     >
-                                        <Gltf src="/story-assets/wheel_left.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/wheel_left.glb"/>
                                     </Entity>
                                 </Entity>
 
@@ -177,12 +177,12 @@ export const Rover: Story = {
                                         cartesian={[-0.757, -0.222, -0.008]}
                                         pitch={-13 * Math.PI / 180}
                                         relativePosition>
-                                    <Gltf src="/story-assets/susp_left_back.glb"/>
+                                    <Gltf src="https://openglobus.github.io/storybook/story-assets/susp_left_back.glb"/>
 
                                     <Entity name="amort_left_back"
                                             cartesian={[-0.625, -0.01, -0.263]}
                                             relativePosition>
-                                        <Gltf src="/story-assets/amort_left_back.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/amort_left_back.glb"/>
 
                                         <Entity
                                             name="wheel_back_left"
@@ -190,7 +190,7 @@ export const Rover: Story = {
                                             roll={-roll}
                                             relativePosition
                                         >
-                                            <Gltf src="/story-assets/wheel_left.glb"/>
+                                            <Gltf src="https://openglobus.github.io/storybook/story-assets/wheel_left.glb"/>
                                         </Entity>
                                     </Entity>
 
@@ -200,7 +200,7 @@ export const Rover: Story = {
                                         roll={-roll}
                                         relativePosition
                                     >
-                                        <Gltf src="/story-assets/wheel_left.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/wheel_left.glb"/>
                                     </Entity>
                                 </Entity>
                             </Entity>
@@ -210,13 +210,13 @@ export const Rover: Story = {
                                     cartesian={[0.253, 0.01, 0.711]}
                                     pitch={-13 * Math.PI / 180}
                                     relativePosition>
-                                <Gltf src="/story-assets/susp_right_front.glb"/>
+                                <Gltf src="https://openglobus.github.io/storybook/story-assets/susp_right_front.glb"/>
 
                                 <Entity name="amort_right_front"
                                         cartesian={[0.876, -0.3, 0.26]}
                                         pitch={-77 * Math.PI / 180}
                                         relativePosition>
-                                    <Gltf src="/story-assets/amort_right_front.glb"/>
+                                    <Gltf src="https://openglobus.github.io/storybook/story-assets/amort_right_front.glb"/>
 
                                     <Entity
                                         name="wheel_front_right"
@@ -226,7 +226,7 @@ export const Rover: Story = {
                                         roll={roll}
                                         relativePosition
                                     >
-                                        <Gltf src="/story-assets/wheel_left.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/wheel_left.glb"/>
                                     </Entity>
                                 </Entity>
 
@@ -234,12 +234,12 @@ export const Rover: Story = {
                                         cartesian={[-0.756, -0.243, 0.008]}
                                         pitch={13 * Math.PI / 180}
                                         relativePosition>
-                                    <Gltf src="/story-assets/susp_right_back.glb"/>
+                                    <Gltf src="https://openglobus.github.io/storybook/story-assets/susp_right_back.glb"/>
 
                                     <Entity name="amort_right_back"
                                             cartesian={[-0.622, -0.0, 0.263]}
                                             relativePosition>
-                                        <Gltf src="/story-assets/amort_right_back.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/amort_right_back.glb"/>
 
                                         <Entity
                                             name="wheel_back_right"
@@ -248,7 +248,7 @@ export const Rover: Story = {
                                             roll={roll}
                                             relativePosition
                                         >
-                                            <Gltf src="/story-assets/wheel_left.glb"/>
+                                            <Gltf src="https://openglobus.github.io/storybook/story-assets/wheel_left.glb"/>
                                         </Entity>
                                     </Entity>
 
@@ -259,7 +259,7 @@ export const Rover: Story = {
                                         roll={roll}
                                         relativePosition
                                     >
-                                        <Gltf src="/story-assets/wheel_left.glb"/>
+                                        <Gltf src="https://openglobus.github.io/storybook/story-assets/wheel_left.glb"/>
                                     </Entity>
                                 </Entity>
                             </Entity>
