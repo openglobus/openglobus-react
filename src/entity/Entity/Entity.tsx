@@ -17,6 +17,8 @@ import {VectorContext} from "@/layer/Vector/Vector";
 import {EventCallback} from "@openglobus/og/lib/Events";
 import {NumberArray3} from "@openglobus/og/lib/math/Vec3";
 import {Billboard, Geometry, GeoObject, Label, Polyline, Strip} from "@/entity";
+import {EntityCollectionContext} from "@/entity/EntityCollection";
+import {useRenderer} from "@/renderer/Renderer";
 
 type EntityChildElement = React.ReactElement<
     typeof Billboard |
@@ -58,24 +60,33 @@ const Entity: React.FC<EntityParams> = ({
                                             ...rest
                                         }) => {
     const {globe} = useGlobeContext();
-    const {
-        addEntity,
-        removeEntity,
-        addBillboard,
-        removeBillboard,
-        addGeoObject,
-        removeGeoObject,
-        addLabel,
-        removeLabel,
-        addGeometry,
-        removeGeometry,
-        addPolyline,
-        removePolyline,
-        addStrip,
-        removeStrip,
-        addGltf,
-        removeGltf
-    } = useContext(VectorContext);
+    const renderer = useRenderer()
+    const vectorCtx = useContext(VectorContext);
+    const entityCollectionCtx = useContext(EntityCollectionContext);
+    const noop = (() => {
+    })
+    const parent = globe ?? renderer;
+    const isParentGlobe = !!globe;
+
+    const ctx = isParentGlobe ? vectorCtx : entityCollectionCtx;
+
+    const addEntity = ctx?.addEntity ?? noop;
+    const removeEntity = ctx?.removeEntity ?? noop;
+    const addBillboard = ctx?.addBillboard ?? noop;
+    const removeBillboard = ctx?.removeBillboard ?? noop;
+    const addGeoObject = ctx?.addGeoObject ?? noop;
+    const removeGeoObject = ctx?.removeGeoObject ?? noop;
+    const addLabel = ctx?.addLabel ?? noop;
+    const removeLabel = ctx?.removeLabel ?? noop;
+    const addGeometry = ctx?.addGeometry ?? noop;
+    const removeGeometry = ctx?.removeGeometry ?? noop;
+    const addPolyline = ctx?.addPolyline ?? noop;
+    const removePolyline = ctx?.removePolyline ?? noop;
+    const addStrip = ctx?.addStrip ?? noop;
+    const removeStrip = ctx?.removeStrip ?? noop;
+    const addGltf = ctx?.addGltf ?? noop;
+    const removeGltf = ctx?.removeGltf ?? noop;
+
 
     const entityRef = useRef<GlobusEntity | null>(null);
     const [billboard, setBillboard] = useState<GlobusBillboard | null>(null);
@@ -88,7 +99,6 @@ const Entity: React.FC<EntityParams> = ({
     const [ready, setReady] = useState<boolean>(false);
 
     const pendingChildrenRef = useRef<GlobusEntity[]>([]);
-
     useEffect(() => {
         if (lonlat) {
             if (!(lonlat instanceof LonLat)) lonlat = LonLat.createFromArray(lonlat as NumberArray3);
@@ -139,7 +149,7 @@ const Entity: React.FC<EntityParams> = ({
     }, [relativePosition]);
 
     useLayoutEffect(() => {
-        if (!globe || _addEntity) return;
+        if (!parent || _addEntity) return;
 
         const entity = new GlobusEntity({
             lonlat: lonlat ? lonlat : new LonLat(lon, lat, alt),
@@ -166,7 +176,7 @@ const Entity: React.FC<EntityParams> = ({
             }
             setReady(false);
         };
-    }, [globe, addEntity, removeEntity, _addEntity]);
+    }, [parent, addEntity, removeEntity, _addEntity]);
 
     useEffect(() => {
         if (!_addEntity) return;
