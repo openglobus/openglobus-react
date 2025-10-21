@@ -1,6 +1,6 @@
 {
   "name": "@openglobus/openglobus-react",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "OpenGlobus React Components",
   "main": "./dist/index.umd.cjs",
   "private": false,
@@ -28,7 +28,7 @@
   "author": "Pavel Sukhodolski",
   "license": "MIT",
   "dependencies": {
-    "@openglobus/og": "^0.27.17",
+    "@openglobus/og": "^0.27.18",
     "react": "^19.2.0"
   },
   "devDependencies": {
