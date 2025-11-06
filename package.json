@@ -29,7 +29,7 @@
   "author": "Pavel Sukhodolski",
   "license": "MIT",
   "dependencies": {
-    "@openglobus/og": "^0.27.19",
+    "@openglobus/og": "^0.27.20",
     "react": "^19.2.0"
   },
   "devDependencies": {
