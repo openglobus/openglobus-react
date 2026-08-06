@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Billboard as GlobusBillboard, Vec2, Vec3, IBillboardParams} from "@openglobus/og";
+import {Billboard as GlobusBillboard, Vec2, IBillboardParams} from "@openglobus/og";
 
 export interface BillboardParams extends IBillboardParams {
     name?: string;
@@ -42,12 +42,10 @@ const Billboard: React.FC<BillboardParams> = ({
 
     useEffect(() => {
         if (offset && billboardRef.current) {
-            if (offset instanceof Vec3) {
-                billboardRef.current?.setOffset(offset.x, offset.y, offset.z);
-            } else if (offset instanceof Vec2) {
-                billboardRef.current?.setOffset(offset.x, offset.y);
+            if (offset instanceof Vec2) {
+                billboardRef.current.setOffset2v(offset);
             } else {
-                billboardRef.current?.setOffset(offset[0], offset[1], offset[2]);
+                billboardRef.current.setOffset(offset[0], offset[1]);
             }
         }
     }, [offset]);

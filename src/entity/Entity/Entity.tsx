@@ -12,10 +12,9 @@ import {
     Polyline as GlobusPolyline,
     Strip as GlobusStrip
 } from '@openglobus/og';
-import type {IEntityParams} from "@openglobus/og/lib/entity/Entity";
+import type {IEntityParams} from "@openglobus/og";
 import {VectorContext} from "@/layer/Vector/Vector";
-import {EventCallback} from "@openglobus/og/lib/Events";
-import {NumberArray3} from "@openglobus/og/lib/math/Vec3";
+import type {EventCallback, NumberArray3} from "@/types/openglobus";
 import {Billboard, Geometry, GeoObject, Label, Polyline, Strip} from "@/entity";
 import {EntityCollectionContext} from "@/entity/EntityCollection";
 import {useRenderer} from "@/renderer/Renderer";

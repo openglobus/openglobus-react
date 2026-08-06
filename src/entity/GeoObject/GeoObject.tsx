@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {GeoObject as GlobusGeoObject, Vec4} from "@openglobus/og";
-import {IGeoObjectParams} from "@openglobus/og/lib/entity/GeoObject";
+import {GeoObject as GlobusGeoObject, Vec3, Vec4} from "@openglobus/og";
+import type {IGeoObjectParams} from "@openglobus/og";
 
 export interface GeoObjectParams extends IGeoObjectParams {
     readonly _addGeoObject?: (geoObject: GlobusGeoObject) => void,
@@ -20,8 +20,12 @@ const GeoObject: React.FC<GeoObjectParams> = ({
     const geoObjectRef = useRef<GlobusGeoObject | null>(null);
 
     useEffect(() => {
-        if (scale && geoObjectRef.current) {
-            geoObjectRef.current?.setScale(scale as number)
+        if (typeof scale === 'number' && geoObjectRef.current) {
+            geoObjectRef.current.setScale(scale);
+        } else if (scale instanceof Vec3 && geoObjectRef.current) {
+            geoObjectRef.current.setScale3v(scale);
+        } else if (Array.isArray(scale) && geoObjectRef.current) {
+            geoObjectRef.current.setScale3v(new Vec3(scale[0], scale[1], scale[2]));
         }
     }, [scale]);
 
@@ -32,7 +36,7 @@ const GeoObject: React.FC<GeoObjectParams> = ({
             } else if (color instanceof Vec4) {
                 geoObjectRef.current?.setColor4v(color)
             } else if (Array.isArray(color)) {
-                geoObjectRef.current?.setColor(...color)
+                geoObjectRef.current?.setColor(color[0], color[1], color[2], color[3])
             }
         }
     }, [color]);

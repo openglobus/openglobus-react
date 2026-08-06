@@ -6,7 +6,17 @@ import {Globe, GlobeContextProvider} from "@/Globe";
 import {Vector} from "@/layer";
 import {PlanetCamera} from "@/camera/PlanetCamera/PlanetCamera";
 
-const meta = {
+type GltfStoryArgs = GltfProps & {
+    wheelSpeed?: number;
+    cam0BaseYaw?: number;
+    cam0JointYaw?: number;
+    cam0HeadPitch?: number;
+    scanerBaseYaw?: number;
+    scanerLink1Pitch?: number;
+    scanerJointPitch?: number;
+};
+
+const meta: Meta<GltfStoryArgs> = {
     component: Gltf,
     title: 'Components/Entity/Gltf',
     argTypes: {
@@ -22,7 +32,7 @@ const meta = {
         scanerLink1Pitch: {control: {type: 'range', min: -180, max: 180, step: 1}, defaultValue: 90},
         scanerJointPitch: {control: {type: 'range', min: -180, max: 180, step: 1}, defaultValue: 90},
     }
-} satisfies Meta<typeof Gltf>;
+};
 
 export default meta;
 
@@ -47,6 +57,7 @@ export const Default: Story = {
 
 export const Rover: Story = {
     args: {
+        src: 'https://openglobus.github.io/storybook/story-assets/rover_base.glb',
         wheelSpeed: 20,
         cam0BaseYaw: 145,
         cam0JointYaw: 0,

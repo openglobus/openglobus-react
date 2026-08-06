@@ -11,10 +11,8 @@ import {
     Polyline,
     Strip
 } from '@openglobus/og';
-// import type {IEntityCollectionParams} from '@openglobus/og'
-import {EventCallback} from '@openglobus/og/lib/Events';
-import {useParentNode} from '@/scene/RenderNode';
-import type {NumberArray3} from "@openglobus/og/lib/math/Vec3";
+import {useParentScene} from '@/scene/Scene';
+import type {NumberArray3} from "@/types/openglobus";
 
 interface IEntityCollectionParams {
     polygonOffsetUnits?: number;
@@ -92,24 +90,24 @@ export const EntityCollection: React.FC<EntityCollectionProps> = ({
                                                                       children,
                                                                       ...rest
                                                                   }) => {
-    const parentNode = useParentNode();
+    const scene = useParentScene();
     const collectionRef = useRef<OgEntityCollection | null>(null);
     const [entities, setEntities] = useState<OgEntity[]>([]);
     const entitiesRef = useRef(new Set<OgEntity>());
 
     useEffect(() => {
-        if (!parentNode) return;
+        if (!scene) return;
 
         const collection = new OgEntityCollection({});
         collection.setVisibility(visible);
 
-        collection.addTo(parentNode);
+        collection.addTo(scene);
         collectionRef.current = collection;
 
         return () => {
             collection.remove();
         };
-    }, [parentNode]);
+    }, [scene]);
 
     useEffect(() => {
         collectionRef.current?.setVisibility(visible);

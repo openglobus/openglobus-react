@@ -1,18 +1,18 @@
 import * as React from "react";
 import {useEffect} from "react";
 import {LonLat} from "@openglobus/og";
-import {IPlanetCameraParams} from "@openglobus/og/lib/camera/PlanetCamera";
+import type {PlanetCameraOptions} from "@/types/openglobus";
 import {useGlobeContext} from "@/Globe";
 
-export interface PlanetCameraParams extends IPlanetCameraParams {
-    lon?: number;
-    lat?: number;
-    alt?: number;
+export interface PlanetCameraParams extends PlanetCameraOptions {
+    lon: number;
+    lat: number;
+    alt: number;
     yaw?: number;
     viewAngle?: number;
-    lookLon?: number;
-    lookLat?: number;
-    lookAlt?: number;
+    lookLon: number;
+    lookLat: number;
+    lookAlt: number;
 }
 
 const PlanetCamera: React.FC<PlanetCameraParams> = ({
@@ -22,23 +22,33 @@ const PlanetCamera: React.FC<PlanetCameraParams> = ({
                                                         lookLon,
                                                         lookLat,
                                                         lookAlt,
+                                                        yaw,
                                                         viewAngle,
-                                                        ...params
                                                     }) => {
     const {globe} = useGlobeContext();
 
 
     useEffect(() => {
-        if (globe && typeof lon === "number" && typeof lat === "number" && typeof alt === "number") {
-            globe.planet.flyLonLat(new LonLat(lon, lat, alt), new LonLat(lookLon, lookLat, lookAlt))
-        }
+        if (!globe) return;
+
+        globe.planet.flyLonLat(
+                new LonLat(lon, lat, alt), {
+                    look: new LonLat(lookLon, lookLat, lookAlt)
+                }
+        );
     }, [lon, lat, alt, lookLon, lookLat, lookAlt, globe]);
 
     useEffect(() => {
-        if (globe && typeof viewAngle === "number") {
-            globe.planet.camera.setViewAngle(viewAngle)
-        }
+        if (!globe || viewAngle === undefined) return;
+
+        globe.planet.camera.setViewAngle(viewAngle);
     }, [viewAngle, globe]);
+
+    useEffect(() => {
+        if (!globe || yaw === undefined) return;
+
+        globe.planet.camera.setYaw(yaw);
+    }, [yaw, globe]);
 
     return null;
 };

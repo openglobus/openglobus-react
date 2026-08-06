@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useEffect, useRef, useState, createContext, useContext } from "react";
 import { control, Renderer as GlobeRenderer } from "@openglobus/og";
-import {IRendererParams} from "@openglobus/og/lib/renderer/Renderer";
+import type {RendererOptions} from "@/types/openglobus";
 
 
-interface RendererProps extends IRendererParams {
+export interface RendererProps extends RendererOptions {
     onDraw?: () => void;
     children?: React.ReactNode;
 }

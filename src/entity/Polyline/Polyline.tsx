@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {LonLat, Polyline as GlobusPolyline, Vec3} from "@openglobus/og";
-import {IPolylineParams} from "@openglobus/og/lib/entity/Polyline";
+import type {IPolylineParams} from "@openglobus/og";
 import {utils} from "@openglobus/og";
 
 type CSSColor =

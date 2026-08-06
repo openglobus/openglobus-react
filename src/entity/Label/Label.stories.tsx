@@ -31,7 +31,7 @@ export const Default: Story = {
         size: 32,
         outline: 0.2,
         text: "Hello, World!",
-        offset: [0, 0, 0],
+        offset: [0, 0],
         visibility: true,
         isRTL: false,
     },

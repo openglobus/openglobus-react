@@ -24,7 +24,13 @@ export default defineConfig({
             fileName: "index",
         },
         rollupOptions: {
-            external: ["react"],
+            external: ["react", /^@openglobus\/og(?:\/.*)?$/],
+            output: {
+                globals: {
+                    react: "React",
+                    "@openglobus/og": "og",
+                },
+            },
         },
     },
 });

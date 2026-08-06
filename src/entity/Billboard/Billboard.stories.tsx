@@ -49,10 +49,10 @@ export const Default: Story = {
         },
         offset: {
             description: 'Offset of the billboard in pixels',
-            defaultValue: [0, 0, 0],
+            defaultValue: [0, 0],
             table: {
-                type: {summary: '[number, number, number]'},
-                defaultValue: {summary: '[0, 0, 0]'},
+                type: {summary: '[number, number]'},
+                defaultValue: {summary: '[0, 0]'},
             }
         },
         visibility: {
@@ -68,7 +68,7 @@ export const Default: Story = {
         color: "#ff5959",
         src: 'https://sandbox.openglobus.org/examples/billboards/carrot.png',
         rotation: 0,
-        offset: [0, 0, 0],
+        offset: [0, 0],
         visibility: true,
     },
     render: (args: BillboardParams) => <GlobeContextProvider>

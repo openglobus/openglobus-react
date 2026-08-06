@@ -3,8 +3,8 @@ import {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {Layer, LayerProps, useGlobeContext} from '../../index';
 import {Billboard, Entity, Geometry, GeoObject, Gltf, Label, Polyline, Strip} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
-import {IVectorParams} from '@openglobus/og/lib/layer/Vector';
-import {EventCallback} from "@openglobus/og/lib/Events";
+import type {IVectorParams} from '@openglobus/og';
+import type {EventCallback} from "@/types/openglobus";
 
 const VectorContext = createContext<{
     addEntity: (entity: Entity) => void,

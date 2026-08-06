@@ -4,11 +4,10 @@ import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import {useGlobeContext} from "./GlobeContext";
 import {Globe as GlobusGlobe, GlobusRgbTerrain, OpenStreetMap, Bing} from "@openglobus/og";
-import {EventCallback} from "@openglobus/og/lib/Events";
-import {IGlobeParams} from "@openglobus/og/lib/Globe";
+import type {IGlobeParams} from "@openglobus/og";
 import {Layer, Vector} from "@/layer";
 import {Extent, LonLat} from "@openglobus/og";
-import type {NumberArray4} from "@openglobus/og/lib/math/Vec4";
+import type {EventCallback, NumberArray4} from "@/types/openglobus";
 
 type LayerChildren = React.ReactElement<{ type: typeof Layer | typeof Vector }>;
 
