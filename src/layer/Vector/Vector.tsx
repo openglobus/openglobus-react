@@ -64,7 +64,6 @@ export interface VectorPropsBase extends IVectorParams {
     children?: EntityElement | EntityElement[]
     name: string
     onMouseEnter?: EventCallback
-    onDraw?: EventCallback
 }
 
 export type VectorProps = VectorPropsBase & LayerProps;
@@ -85,12 +84,10 @@ const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) =>
         if (globe) {
             vectorRef.current = new GlobusVector(name, rest);
             globe.planet.addLayer(vectorRef.current);
-            if (rest.onDraw) vectorRef.current?.events.on('draw', rest.onDraw);
             if (rest.onMouseEnter) vectorRef.current?.events.on('mouseenter', rest.onMouseEnter);
             return () => {
                 if (vectorRef.current) {
                     globe.planet.removeLayer(vectorRef.current);
-                    if (rest.onDraw) vectorRef.current?.events.off('draw', rest.onDraw);
                     if (rest.onMouseEnter) vectorRef.current?.events.off('mouseenter', rest.onMouseEnter);
                 }
             };

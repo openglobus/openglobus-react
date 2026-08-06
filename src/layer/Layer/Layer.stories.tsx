@@ -57,7 +57,6 @@ export const Default: Story = {
         onMouseLeave: action('onMouseLeave', {depth: 1, maxDepth: 1}),
         onMouseMove: action('onMouseMove', {depth: 1, maxDepth: 1}),
         onLdblclick: action('onLdblclick', {depth: 1, maxDepth: 1}),
-        // onDraw: action('onDraw', {depth: 1, maxDepth: 1}),
     },
     //@ts-ignore
     render: (args: VectorProps) => <GlobeContextProvider>

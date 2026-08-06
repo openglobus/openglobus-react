@@ -7,7 +7,7 @@ import {Globe as GlobusGlobe, GlobusRgbTerrain, OpenStreetMap, Bing} from "@open
 import type {IGlobeParams} from "@openglobus/og";
 import {Layer, Vector} from "@/layer";
 import {Extent, LonLat} from "@openglobus/og";
-import type {EventCallback, NumberArray4} from "@/types/openglobus";
+import type {NumberArray4} from "@/types/openglobus";
 
 type LayerChildren = React.ReactElement<{ type: typeof Layer | typeof Vector }>;
 
@@ -15,11 +15,10 @@ export interface GlobusProps extends IGlobeParams {
     children?: LayerChildren | LayerChildren[]
     atmosphereEnabled?: boolean,
     sunActive?: boolean,
-    onDraw?: EventCallback
     viewExtent?: Extent | NumberArray4;
 }
 
-const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
+const Globe: React.FC<GlobusProps> = ({children, ...rest}) => {
     const targetRef = useRef<HTMLDivElement | null>(null);
     const {setGlobe} = useGlobeContext();
     const [options, setOptions] = useState<IGlobeParams>(rest);
@@ -67,9 +66,6 @@ const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
                 atmosphereEnabled: true,
                 ...options
             });
-            if (onDraw)
-                gRef.current.planet.events.on('draw', onDraw)
-
         } else {
             targetRef.current = gRef.current.$target as HTMLDivElement
         }
@@ -77,9 +73,6 @@ const Globe: React.FC<GlobusProps> = ({children, onDraw, ...rest}) => {
         setGlobe(gRef.current);
         return () => {
             if (gRef.current) {
-                if (onDraw) {
-                    gRef.current.planet.events.off('draw', onDraw)
-                }
                 gRef.current.destroy();
                 gRef.current = null;
             }

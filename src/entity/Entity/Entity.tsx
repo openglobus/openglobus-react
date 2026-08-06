@@ -14,7 +14,7 @@ import {
 } from '@openglobus/og';
 import type {IEntityParams} from "@openglobus/og";
 import {VectorContext} from "@/layer/Vector/Vector";
-import type {EventCallback, NumberArray3} from "@/types/openglobus";
+import type {NumberArray3} from "@/types/openglobus";
 import {Billboard, Geometry, GeoObject, Label, Polyline, Strip} from "@/entity";
 import {EntityCollectionContext} from "@/entity/EntityCollection";
 import {useRenderer} from "@/renderer/Renderer";
@@ -36,7 +36,6 @@ export interface EntityParams extends IEntityParams {
     lon?: number,
     lat?: number,
     alt?: number,
-    onDraw?: EventCallback
     readonly _addEntity?: (billboard: GlobusEntity) => void;
     readonly _removeEntity?: (billboard: GlobusEntity) => void;
 }
