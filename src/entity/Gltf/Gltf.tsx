@@ -1,12 +1,9 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Entity as GlobusEntity, Gltf as GlobusGltf, Vec3} from "@openglobus/og";
+import {Entity as GlobusEntity, Gltf as GlobusGltf} from "@openglobus/og";
 
 export interface GltfProps {
     src: string;
-    cartesian?: [number, number, number] | Vec3;
-    scale?: number;
-    visible?: boolean;
 }
 
 export interface GltfParams extends GltfProps {
@@ -26,15 +23,20 @@ export const Gltf: React.FC<GltfParams> = ({
         (async () => {
             const gltf = await GlobusGltf.loadGlb(src);
             const entities = gltf.toEntities();
+            if (!isMounted) return;
+
             gltfRef.current = entities;
-            if (isMounted && _addGltf) _addGltf(entities);
+            _addGltf?.(entities);
         })();
 
         return () => {
             isMounted = false;
-            if (_removeGltf && gltfRef.current) _removeGltf(gltfRef.current);
+            if (_removeGltf && gltfRef.current) {
+                _removeGltf(gltfRef.current);
+            }
+            gltfRef.current = null;
         };
-    }, [src]);
+    }, [src, _addGltf, _removeGltf]);
 
     return null;
 };

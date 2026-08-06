@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import type {Meta, StoryObj} from '@storybook/react-vite';
 
-import {Entity, GeoObjectParams, Gltf, GltfProps} from '@/entity';
+import {Entity, Gltf, GltfProps} from '@/entity';
 import {Globe, GlobeContextProvider} from "@/Globe";
 import {Vector} from "@/layer";
 import {PlanetCamera} from "@/camera/PlanetCamera/PlanetCamera";
