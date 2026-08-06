@@ -35,17 +35,18 @@
     "react": "^19.2.0"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^4.1.1",
+    "@chromatic-com/storybook": "^5.3.0",
     "@openglobus/og": "1.0.0-rc11",
-    "@storybook/addon-docs": "^9.1.13",
-    "@storybook/addon-links": "^9.1.13",
-    "@storybook/react-vite": "^9.1.13",
-    "@types/node": "^24.7.2",
-    "@types/react": "^19.2.2",
-    "react": "^19.2.0",
-    "storybook": "^9.1.13",
-    "typescript": "^5.9.3",
-    "vite": "^7.1.10",
-    "vite-plugin-dts": "^4.5.4"
+    "@storybook/addon-docs": "^10.5.6",
+    "@storybook/addon-links": "^10.5.6",
+    "@storybook/react-vite": "^10.5.6",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@typescript/typescript6": "^6.0.2",
+    "react": "^19.2.8",
+    "storybook": "^10.5.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.0",
+    "vite-plugin-dts": "^5.0.3"
   }
 }

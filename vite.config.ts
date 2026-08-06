@@ -8,7 +8,7 @@ export default defineConfig({
     plugins: [dts({
         include: ['src/**/*.ts', 'src/**/*.tsx'],
         exclude: ['node_modules','src/**/*.stories.tsx', 'dist'],
-        outDir: 'dist/types',
+        outDirs: ['dist/types'],
     })],
     resolve: {
         alias: {
@@ -18,7 +18,7 @@ export default defineConfig({
     build: {
         sourcemap: true,
         lib: {
-            entry: resolve(__dirname, "src/index.tsx"),
+            entry: resolve(import.meta.dirname, "src/index.tsx"),
             name: "@openglobus/openglobus-react",
 
             fileName: "index",

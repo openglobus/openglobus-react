@@ -1,21 +1,29 @@
-import type {StorybookConfig} from "@storybook/react-vite";
-import * as path from "node:path";
+import type { StorybookConfig } from "@storybook/react-vite";
+import { fileURLToPath } from "node:url";
 
 const config: StorybookConfig = {
-    stories: ["../src/**/*.mdx","../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+    stories: [
+        "../src/**/*.mdx",
+        "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    ],
     addons: [
         "@storybook/addon-links",
         "@chromatic-com/storybook",
-        "@storybook/addon-docs"
+        "@storybook/addon-docs",
     ],
     core: {
-        disableTelemetry: true
+        disableTelemetry: true,
     },
-    docs: {defaultName: 'Documentation'},
+    docs: {
+        defaultName: "Documentation",
+    },
     framework: {
         name: "@storybook/react-vite",
         options: {},
     },
-    staticDirs: [path.resolve(__dirname, "../public")],
+    staticDirs: [
+        fileURLToPath(new URL("../public", import.meta.url)),
+    ],
 };
+
 export default config;
