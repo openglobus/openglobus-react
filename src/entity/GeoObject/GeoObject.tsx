@@ -2,8 +2,12 @@ import * as React from "react";
 import {useEffect, useRef} from "react";
 import {GeoObject as GlobusGeoObject, Vec3, Vec4} from "@openglobus/og";
 import type {IGeoObjectParams} from "@openglobus/og";
+import type {CartesianInput} from "@/types/openglobus";
 
-export interface GeoObjectParams extends IGeoObjectParams {
+export interface GeoObjectParams extends Omit<IGeoObjectParams, 'position' | 'scale' | 'translate'> {
+    position?: CartesianInput;
+    scale?: number | CartesianInput;
+    translate?: CartesianInput;
     readonly _addGeoObject?: (geoObject: GlobusGeoObject) => void,
     readonly _removeGeoObject?: (geoObject: GlobusGeoObject) => void,
 }

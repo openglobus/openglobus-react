@@ -1,10 +1,13 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {Label as GlobusLabel, Vec2, ILabelParams} from "@openglobus/og";
+import type {CartesianInput} from "@/types/openglobus";
 
-export interface LabelParams extends ILabelParams {
+export interface LabelParams extends Omit<ILabelParams, 'alignedAxis' | 'position'> {
     name?: string;
     opacity?: number;
+    alignedAxis?: CartesianInput;
+    position?: CartesianInput;
     readonly _addLabel?: (billboard: GlobusLabel) => void;
     readonly _removeLabel?: (billboard: GlobusLabel) => void;
 }

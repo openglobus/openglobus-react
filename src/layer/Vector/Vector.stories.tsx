@@ -31,7 +31,7 @@ export const Default: Story = {
     render: (args: VectorProps) => <GlobeContextProvider>
         <Globe>
             <Vector {...args}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                <Entity name="Custom Entity" lonLat={[0, 0]}>
                     <Billboard
                         size={[96, 96]}
                         color={"#ff5959"}

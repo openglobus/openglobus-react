@@ -1,9 +1,12 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {Billboard as GlobusBillboard, Vec2, IBillboardParams} from "@openglobus/og";
+import type {CartesianInput} from "@/types/openglobus";
 
-export interface BillboardParams extends IBillboardParams {
+export interface BillboardParams extends Omit<IBillboardParams, 'alignedAxis' | 'position'> {
     name?: string;
+    alignedAxis?: CartesianInput;
+    position?: CartesianInput;
     readonly _addBillboard?: (billboard: GlobusBillboard) => void;
     readonly _removeBillboard?: (billboard: GlobusBillboard) => void;
 }

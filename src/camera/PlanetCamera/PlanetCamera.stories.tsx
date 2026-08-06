@@ -22,13 +22,10 @@ export const Default: {
 } = {
 
     args: {
-        lon: 0,
-        lat: 0,
-        alt: 100000,
-        lookLon: 10,
-        lookLat: 10,
-        lookAlt: 100000,
-        viewAngle:47
+        lonLat: [0, 0, 100000],
+        lookLonLat: [10, 10, 100000],
+        viewAngle: 47,
+        duration: 0
     },
     render: (args: PlanetCameraParams) => <GlobeContextProvider>
         <Globe>

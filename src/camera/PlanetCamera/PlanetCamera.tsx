@@ -1,42 +1,43 @@
 import * as React from "react";
 import {useEffect} from "react";
-import {LonLat} from "@openglobus/og";
-import type {PlanetCameraOptions} from "@/types/openglobus";
+import type {LonLatInput, PlanetCameraOptions} from "@/types/openglobus";
 import {useGlobeContext} from "@/Globe";
+import {toLonLat} from "@/utils/coordinates";
 
 export interface PlanetCameraParams extends PlanetCameraOptions {
-    lon: number;
-    lat: number;
-    alt: number;
+    lonLat: LonLatInput;
+    lookLonLat: LonLatInput;
     yaw?: number;
     viewAngle?: number;
-    lookLon: number;
-    lookLat: number;
-    lookAlt: number;
+    duration?: number;
 }
 
 const PlanetCamera: React.FC<PlanetCameraParams> = ({
-                                                        lon,
-                                                        lat,
-                                                        alt,
-                                                        lookLon,
-                                                        lookLat,
-                                                        lookAlt,
+                                                        lonLat,
+                                                        lookLonLat,
                                                         yaw,
                                                         viewAngle,
+                                                        duration,
                                                     }) => {
     const {globe} = useGlobeContext();
-
 
     useEffect(() => {
         if (!globe) return;
 
-        globe.planet.flyLonLat(
-                new LonLat(lon, lat, alt), {
-                    look: new LonLat(lookLon, lookLat, lookAlt)
-                }
-        );
-    }, [lon, lat, alt, lookLon, lookLat, lookAlt, globe]);
+        const position = toLonLat(lonLat);
+        const look = toLonLat(lookLonLat);
+
+        if (duration !== undefined && duration > 0) {
+            globe.planet.flyLonLat(position, {look, duration});
+        } else {
+            globe.planet.viewLonLat(position, look);
+        }
+    }, [
+        lonLat,
+        lookLonLat,
+        duration,
+        globe
+    ]);
 
     useEffect(() => {
         if (!globe || viewAngle === undefined) return;

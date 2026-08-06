@@ -30,7 +30,7 @@ export const Polygon: Story = {
             <Globe
                     fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
-                    <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                    <Entity name="Custom Entity" lonLat={[0, 0]}>
                         <Geometry
                             {...args}
                         />
@@ -55,7 +55,7 @@ export const Point: Story = {
             <Globe
                     fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
-                    <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                    <Entity name="Custom Entity" lonLat={[0, 0]}>
                         <Geometry
                             {...args}
                         />
@@ -78,7 +78,7 @@ export const Line: Story = {
             <Globe
                     fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
                 <Vector name={'test'}>
-                    <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                    <Entity name="Custom Entity" lonLat={[0, 0]}>
                         <Geometry
                             {...args}
                         />

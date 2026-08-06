@@ -75,7 +75,7 @@ export const Default: Story = {
         <Globe>
             <Vector name={'test'}
                     scaleByDistance={[6000000, 24000000, 10000000000]}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                <Entity name="Custom Entity" lonLat={[0, 0]}>
                     <Billboard
                         {...args}
                     />

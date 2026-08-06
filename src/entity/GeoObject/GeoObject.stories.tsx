@@ -77,7 +77,7 @@ export const Default: Story = {
                 <Vector name="Object hierarchy" scaleByDistance={[50, 50000, 1]}>
                     <Entity
                         name="Base object"
-                        lonlat={position}
+                        lonLat={position}
                         independentPicking
                         geoObject={{
                             tag: 'baseObject',
