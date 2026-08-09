@@ -23,7 +23,6 @@ export const Kilimanjaro: Story = {
         name: 'Kilimanjaro',
         src: 'https://sandbox.openglobus.org/examples/geoImage/SPOT%207%20Satellite%20Image%20Kilimanjaro.jpg',
         corners:  [[37.286664453664194, -3.0473247187887442], [37.38444113753977, -3.0468478037959073], [37.384014813048736, -3.0904441121085506], [37.29373990291454, -3.09380219219323]]
-        // onDraw: action('onDraw', {depth: 1, maxDepth: 1}),
     },
     render: (args: GeoImageProps) => <GlobeContextProvider>
         <Globe>

@@ -1,75 +1,113 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {Meta, StoryObj} from '@storybook/react-vite';
+import {control, LonLat, Object3d, Vec3} from '@openglobus/og';
 
-import {Entity, GeoObject, GeoObjectParams} from '@/entity';
-import {Globe, GlobeContextProvider} from "@/Globe";
-import {Vector} from "@/layer";
+import {Entity} from '@/entity';
+import {Globe, GlobeContextProvider, useGlobeContext} from '@/Globe';
+import {Vector} from '@/layer';
+
+const baseObject = Object3d.createCube(0.4, 2, 0.4)
+    .translate(new Vec3(0, 1, 0))
+    .setColor('#ff5252')
+    .setMaterialProperties({
+        ambientOcclusion: 1,
+        roughness: 0.15,
+        metallic: 0.85
+    });
+
+const viewObject = Object3d.createFrustum(3, 2, 1)
+    .setColor('#1cdd23')
+    .setMaterialProperties({
+        ambientOcclusion: 1,
+        roughness: 0.2,
+        metallic: 0.8
+    });
+
+const nestedViewObject = Object3d.createFrustum(3, 2, 1)
+    .setColor('#ef00ff')
+    .setMaterialProperties({
+        ambientOcclusion: 1,
+        roughness: 0.1,
+        metallic: 0.9
+    });
+
+const position = new LonLat(-105.6173319876, 39.615583413, 4057.9466);
+
+const ExampleSetup = () => {
+    const {globe} = useGlobeContext();
+
+    useEffect(() => {
+        if (!globe) return;
+
+        const controls = [
+            new control.EntityEditor(),
+            new control.OrthoSwitcher(),
+            new control.LayerSwitcher()
+        ];
+
+        globe.planet.addControls(controls);
+        globe.planet.camera.setLonLat(
+            new LonLat(-105.61717175714179, 39.61567256262465, 4064.033358156039),
+            position
+        );
+        globe.planet.camera.viewDistance(
+            globe.planet.ellipsoid.lonLatToCartesian(position),
+            12000
+        );
+
+        return () => controls.forEach(item => item.remove());
+    }, [globe]);
+
+    return null;
+};
 
 const meta = {
-    component: GeoObject,
-    title: 'Components/Entity/GeoObject',
-} satisfies Meta<typeof GeoObject>;
+    component: Entity,
+    title: 'Components/Entity/GeoObject'
+} satisfies Meta<typeof Entity>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {
-        visibility: true,
-        scale: 10,
-        tag: 'none',
-        color: 'red',
-        objSrc: 'https://raw.githubusercontent.com/pavletto/og_resources/main/geo_object/penguin.obj',
-    },
-    render: (args: GeoObjectParams) => <GlobeContextProvider>
-        <Globe>
-            <Vector name={'test'}
-                    scaleByDistance={[100, 4000000, 1]}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
-                    <GeoObject
-                        {...args}
-                    />
-                </Entity>
-            </Vector>
-        </Globe>
-    </GlobeContextProvider>
+    render: () => (
+        <GlobeContextProvider>
+            <Globe>
+                <ExampleSetup/>
+                <Vector name="Object hierarchy" scaleByDistance={[50, 50000, 1]}>
+                    <Entity
+                        name="Base object"
+                        lonLat={position}
+                        independentPicking
+                        geoObject={{
+                            tag: 'baseObject',
+                            object3d: baseObject
+                        }}
+                    >
+                        <Entity
+                            name="View object"
+                            cartesian={[0, 1, 0]}
+                            relativePosition
+                            independentPicking
+                            geoObject={{
+                                tag: 'viewObject',
+                                object3d: viewObject
+                            }}
+                        >
+                            <Entity
+                                name="Nested view object"
+                                cartesian={[0, 3, -1]}
+                                relativePosition
+                                independentPicking
+                                geoObject={{
+                                    tag: 'nestedViewObject',
+                                    object3d: nestedViewObject
+                                }}
+                            />
+                        </Entity>
+                    </Entity>
+                </Vector>
+            </Globe>
+        </GlobeContextProvider>
+    )
 };
-export const Untextured: Story = {
-    args: {
-        ...Default.args,
-    },
-    render: (args: GeoObjectParams) => <GlobeContextProvider>
-        <Globe>
-            <Vector name={'test'}
-                    scaleByDistance={[100, 4000000, 1]}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
-                    <GeoObject
-                        {...args}
-                    />
-                </Entity>
-            </Vector>
-        </Globe>
-    </GlobeContextProvider>
-};
-
-export const Barrel: Story = {
-    args: {
-        ...Default.args,
-        objSrc: 'https://raw.githubusercontent.com/PrincessGod/objTo3d-tiles/master/bin/barrel/barrel.obj'
-    },
-    render: (args: GeoObjectParams) => <GlobeContextProvider>
-        <Globe>
-            <Vector name={'test'}
-                    scaleByDistance={[100, 4000000, 1]}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
-                    <GeoObject
-                        {...args}
-                    />
-                </Entity>
-            </Vector>
-        </Globe>
-    </GlobeContextProvider>
-};
-
-// export const Default = (args: BillboardParams) =>

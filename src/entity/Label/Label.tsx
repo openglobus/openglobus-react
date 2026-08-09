@@ -1,10 +1,13 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Label as GlobusLabel, Vec2, Vec3, ILabelParams} from "@openglobus/og";
+import {Label as GlobusLabel, Vec2, ILabelParams} from "@openglobus/og";
+import type {CartesianInput} from "@/types/openglobus";
 
-export interface LabelParams extends ILabelParams {
+export interface LabelParams extends Omit<ILabelParams, 'alignedAxis' | 'position'> {
     name?: string;
     opacity?: number;
+    alignedAxis?: CartesianInput;
+    position?: CartesianInput;
     readonly _addLabel?: (billboard: GlobusLabel) => void;
     readonly _removeLabel?: (billboard: GlobusLabel) => void;
 }
@@ -66,12 +69,10 @@ const Label: React.FC<LabelParams> = ({
 
     useEffect(() => {
         if (offset && labelRef.current) {
-            if (offset instanceof Vec3) {
-                labelRef.current?.setOffset(offset.x, offset.y, offset.z);
-            } else if (offset instanceof Vec2) {
-                labelRef.current?.setOffset(offset.x, offset.y);
+            if (offset instanceof Vec2) {
+                labelRef.current.setOffset2v(offset);
             } else {
-                labelRef.current?.setOffset(offset[0], offset[1], offset[2]);
+                labelRef.current.setOffset(offset[0], offset[1]);
             }
         }
     }, [offset]);

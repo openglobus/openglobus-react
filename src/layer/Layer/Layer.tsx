@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useEffect} from 'react';
 import {ILayerParams, Layer as GlobusLayer} from '@openglobus/og';
-import {EventCallback} from '@openglobus/og/lib/Events';
+import type {EventCallback} from '@/types/openglobus';
 
 export interface LayerProps extends ILayerParams {
     name: string

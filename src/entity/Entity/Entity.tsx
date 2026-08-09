@@ -1,64 +1,53 @@
 import * as React from "react";
 import {useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
-import {Gltf, useGlobeContext} from '@/index';
+import {useGlobeContext} from '@/index';
 import {
     Billboard as GlobusBillboard,
     Entity as GlobusEntity,
     Geometry as GlobusGeometry,
     GeoObject as GlobusGeoObject,
     Label as GlobusLabel,
-    LonLat,
     math,
     Polyline as GlobusPolyline,
-    Strip as GlobusStrip
+    Strip as GlobusStrip,
+    Vec3
 } from '@openglobus/og';
-import type {IEntityParams} from "@openglobus/og/lib/entity/Entity";
+import type {IEntityParams} from "@openglobus/og";
 import {VectorContext} from "@/layer/Vector/Vector";
-import {EventCallback} from "@openglobus/og/lib/Events";
-import {NumberArray3} from "@openglobus/og/lib/math/Vec3";
-import {Billboard, Geometry, GeoObject, Label, Polyline, Strip} from "@/entity";
+import type {CartesianInput, LonLatInput} from "@/types/openglobus";
 import {EntityCollectionContext} from "@/entity/EntityCollection";
 import {useRenderer} from "@/renderer/Renderer";
+import {toLonLat} from "@/utils/coordinates";
 
-type EntityChildElement = React.ReactElement<
-    typeof Billboard |
-    typeof GeoObject |
-    typeof Label |
-    typeof Polyline |
-    typeof Strip |
-    typeof Gltf |
-    typeof Entity |
-    typeof Geometry
->;
+type EntityChildElement = React.ReactElement<any>;
 
-export interface EntityParams extends IEntityParams {
+export interface EntityParams extends Omit<IEntityParams, 'lonlat' | 'cartesian' | 'localPosition' | 'scale'> {
     children?: EntityChildElement | EntityChildElement[],
     visibility?: boolean,
-    lon?: number,
-    lat?: number,
-    alt?: number,
-    onDraw?: EventCallback
+    lonLat?: LonLatInput,
+    cartesian?: CartesianInput,
+    localPosition?: CartesianInput,
+    scale?: number | CartesianInput,
+    updateRelativeCenter?: boolean,
     readonly _addEntity?: (billboard: GlobusEntity) => void;
     readonly _removeEntity?: (billboard: GlobusEntity) => void;
 }
 
-const Entity: React.FC<EntityParams> = ({
+const Entity = React.forwardRef<GlobusEntity, EntityParams>(({
                                             visibility,
-                                            lon,
-                                            lat,
-                                            alt,
-                                            lonlat,
+                                            lonLat,
                                             name,
                                             children,
                                             yaw,
                                             pitch,
                                             roll,
                                             cartesian,
+                                            updateRelativeCenter,
                                             _addEntity,
                                             _removeEntity,
                                             relativePosition,
                                             ...rest
-                                        }) => {
+                                        }, forwardedRef) => {
     const {globe} = useGlobeContext();
     const renderer = useRenderer()
     const vectorCtx = useContext(VectorContext);
@@ -67,6 +56,9 @@ const Entity: React.FC<EntityParams> = ({
     })
     const parent = globe ?? renderer;
     const isParentGlobe = !!globe;
+    const yawRad = yaw !== undefined ? yaw * math.RADIANS : undefined;
+    const pitchRad = pitch !== undefined ? pitch * math.RADIANS : undefined;
+    const rollRad = roll !== undefined ? roll * math.RADIANS : undefined;
 
     const ctx = isParentGlobe ? vectorCtx : entityCollectionCtx;
 
@@ -98,19 +90,12 @@ const Entity: React.FC<EntityParams> = ({
     const [strip, setStrip] = useState<GlobusStrip | null>(null);
     const [ready, setReady] = useState<boolean>(false);
 
+    React.useImperativeHandle(forwardedRef, () => entityRef.current!, [ready]);
+
     const pendingChildrenRef = useRef<GlobusEntity[]>([]);
     useEffect(() => {
-        if (lonlat) {
-            if (!(lonlat instanceof LonLat)) lonlat = LonLat.createFromArray(lonlat as NumberArray3);
-            entityRef.current?.setLonLat(lonlat);
-        }
-    }, [lonlat, billboard]);
-
-    useEffect(() => {
-        if (typeof lon === "number" && typeof lat === "number" && typeof alt === "number") {
-            entityRef.current?.setLonLat2(lon, lat, alt);
-        }
-    }, [lon, lat, alt]);
+        if (lonLat) entityRef.current?.setLonLat(toLonLat(lonLat));
+    }, [lonLat, billboard]);
 
     useEffect(() => {
         if (typeof visibility === 'boolean' && entityRef.current) {
@@ -119,28 +104,37 @@ const Entity: React.FC<EntityParams> = ({
     }, [visibility]);
 
     useEffect(() => {
-        if (Array.isArray(cartesian) && entityRef.current) {
-            entityRef.current?.setCartesian(cartesian[0], cartesian[1], cartesian[2])
+        if (cartesian instanceof Vec3 && entityRef.current) {
+            entityRef.current.setCartesian3v(cartesian);
+        } else if (Array.isArray(cartesian) && entityRef.current) {
+            entityRef.current.setCartesian(cartesian[0], cartesian[1], cartesian[2]);
         }
-    }, []);
+    }, [cartesian]);
 
     useEffect(() => {
-        if (typeof yaw === 'number' && entityRef.current) {
-            entityRef.current?.setYaw(yaw * math.RADIANS)
+        const activeRenderer = globe?.renderer ?? renderer;
+        if (updateRelativeCenter && ready && entityRef.current && activeRenderer) {
+            activeRenderer.setRelativeCenter(entityRef.current.getAbsoluteCartesian());
         }
-    }, [yaw]);
+    }, [updateRelativeCenter, ready, lonLat, cartesian, globe, renderer]);
 
     useEffect(() => {
-        if (typeof roll === 'number' && entityRef.current) {
-            entityRef.current?.setRoll(roll * math.RADIANS)
+        if (yawRad !== undefined && entityRef.current) {
+            entityRef.current.setYaw(yawRad);
         }
-    }, [roll]);
+    }, [yawRad]);
 
     useEffect(() => {
-        if (typeof pitch === 'number' && entityRef.current) {
-            entityRef.current?.setPitch(pitch * math.RADIANS)
+        if (rollRad !== undefined && entityRef.current) {
+            entityRef.current.setRoll(rollRad);
         }
-    }, [pitch]);
+    }, [rollRad]);
+
+    useEffect(() => {
+        if (pitchRad !== undefined && entityRef.current) {
+            entityRef.current.setPitch(pitchRad);
+        }
+    }, [pitchRad]);
 
     useEffect(() => {
         if (typeof relativePosition === 'boolean' && entityRef.current) {
@@ -152,8 +146,13 @@ const Entity: React.FC<EntityParams> = ({
         if (!parent || _addEntity) return;
 
         const entity = new GlobusEntity({
-            lonlat: lonlat ? lonlat : new LonLat(lon, lat, alt),
+            lonlat: lonLat,
+            cartesian,
             name,
+            yaw: yawRad,
+            pitch: pitchRad,
+            roll: rollRad,
+            relativePosition,
             ...rest
         });
         entityRef.current = entity;
@@ -184,10 +183,10 @@ const Entity: React.FC<EntityParams> = ({
         const entity = new GlobusEntity({
             visibility,
             name,
-            yaw,
-            pitch,
-            roll,
-            lonlat: lonlat ? lonlat : new LonLat(lon, lat, alt),
+            yaw: yawRad,
+            pitch: pitchRad,
+            roll: rollRad,
+            lonlat: lonLat,
             cartesian,
             relativePosition,
             ...rest
@@ -403,6 +402,8 @@ const Entity: React.FC<EntityParams> = ({
             )}
         </>
     );
-};
+});
+
+Entity.displayName = 'Entity';
 
 export {Entity};

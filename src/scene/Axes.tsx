@@ -14,22 +14,23 @@ export const Axes: React.FC<AxesProps> = ({ visible = true, size }) => {
 
     useEffect(() => {
         if (!renderer) return;
-        if (visible && !axesRef.current) {
-            const axes = new scene.Axes(size);
-            renderer.addNode(axes);
-            axesRef.current = axes;
-        } else if (!visible && axesRef.current) {
-            renderer.removeNode(axesRef.current);
-            axesRef.current = null;
-        }
+        const axes = new scene.Axes(size);
+        axes.setActive(visible);
+        renderer.addScene(axes);
+        axesRef.current = axes;
 
         return () => {
             if (axesRef.current) {
-                renderer.removeNode(axesRef.current);
+                axesRef.current.remove();
+                axesRef.current.destroy();
                 axesRef.current = null;
             }
         };
-    }, [renderer, visible, size]);
+    }, [renderer, size]);
+
+    useEffect(() => {
+        axesRef.current?.setActive(visible);
+    }, [visible]);
 
     return null;
 };

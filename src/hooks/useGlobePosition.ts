@@ -1,14 +1,16 @@
 import {useEffect, useMemo, useRef, useState} from "react";
-import {LonLat, Vec3} from "@openglobus/og";
+import {Vec3} from "@openglobus/og";
 import {useGlobeContext} from "@/Globe";
+import type {CartesianInput, LonLatInput} from "@/types/openglobus";
+import {toLonLat} from "@/utils/coordinates";
 
 /**
  * Возвращает экранные координаты для точки на глобусе.
  * Использует ту же формулу видимости, что и Popup.
  */
 export function useGlobePosition(
-    lonLat?: LonLat | [number, number, number?],
-    cartesian?: Vec3 | [number, number, number],
+    lonLat?: LonLatInput,
+    cartesian?: CartesianInput,
     offset: [number, number] = [0, 0]
 ) {
     const {globe} = useGlobeContext();
@@ -25,7 +27,7 @@ export function useGlobePosition(
         }
 
         if (lonLat) {
-            const ll = lonLat instanceof LonLat ? lonLat : new LonLat(...lonLat);
+            const ll = toLonLat(lonLat);
             const cart = ellipsoid.lonLatToCartesian(ll);
             return {cart, height: ll.height || 0};
         }

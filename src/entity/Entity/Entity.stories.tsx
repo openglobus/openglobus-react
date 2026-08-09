@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        lon: 10, lat: 10, alt: 100000
+        lonLat: [10, 10, 100000]
     },
     render: (args: EntityParams) => <GlobeContextProvider>
         <Globe>

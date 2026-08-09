@@ -4,3 +4,6 @@ export * from "./Globe";
 export * from './layer';
 export * from  './entity';
 export * from  './camera/PlanetCamera/PlanetCamera';
+export * from './renderer';
+export * from './scene';
+export type {CartesianInput, LonLatInput} from './types/openglobus';

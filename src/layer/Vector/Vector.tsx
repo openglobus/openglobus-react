@@ -3,8 +3,8 @@ import {createContext, useCallback, useEffect, useRef, useState} from "react";
 import {Layer, LayerProps, useGlobeContext} from '../../index';
 import {Billboard, Entity, Geometry, GeoObject, Gltf, Label, Polyline, Strip} from '@openglobus/og';
 import {Vector as GlobusVector} from '@openglobus/og';
-import {IVectorParams} from '@openglobus/og/lib/layer/Vector';
-import {EventCallback} from "@openglobus/og/lib/Events";
+import type {IVectorParams} from '@openglobus/og';
+import type {EventCallback} from "@/types/openglobus";
 
 const VectorContext = createContext<{
     addEntity: (entity: Entity) => void,
@@ -64,7 +64,6 @@ export interface VectorPropsBase extends IVectorParams {
     children?: EntityElement | EntityElement[]
     name: string
     onMouseEnter?: EventCallback
-    onDraw?: EventCallback
 }
 
 export type VectorProps = VectorPropsBase & LayerProps;
@@ -85,12 +84,10 @@ const Vector: React.FC<VectorProps> = ({visibility, children, name, ...rest}) =>
         if (globe) {
             vectorRef.current = new GlobusVector(name, rest);
             globe.planet.addLayer(vectorRef.current);
-            if (rest.onDraw) vectorRef.current?.events.on('draw', rest.onDraw);
             if (rest.onMouseEnter) vectorRef.current?.events.on('mouseenter', rest.onMouseEnter);
             return () => {
                 if (vectorRef.current) {
                     globe.planet.removeLayer(vectorRef.current);
-                    if (rest.onDraw) vectorRef.current?.events.off('draw', rest.onDraw);
                     if (rest.onMouseEnter) vectorRef.current?.events.off('mouseenter', rest.onMouseEnter);
                 }
             };

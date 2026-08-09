@@ -1,16 +1,20 @@
 import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react-vite';
+import {LonLat} from '@openglobus/og';
 
+import {PlanetCamera} from "@/camera/PlanetCamera/PlanetCamera";
 import {Entity, Label, LabelParams} from '@/entity';
 import {Globe, GlobeContextProvider} from "@/Globe";
 import {Vector} from "@/layer";
+
+const FONTS_SRC = "./story-assets/fonts";
 
 const meta = {
     component: Label,
     title: 'Components/Entity/Label',
     argTypes: {
         face: {
-            options: ['Sacramento-Regular', 'NotoSansArabic-Regular', 'Audiowide-Regular'],
+            options: ['Roboto-Regular'],
             control: {type: 'select'},
         }
     }
@@ -25,48 +29,26 @@ export const Default: Story = {
         color: "#053df3",
         outlineColor: "#33fa07",
         rotation: 0,
-        face: 'Audiowide-Regular',
+        face: 'Roboto-Regular',
         align: 'center',
         opacity: 1,
         size: 32,
         outline: 0.2,
         text: "Hello, World!",
-        offset: [0, 0, 0],
+        offset: [0, 0],
         visibility: true,
         isRTL: false,
     },
     render: (args: LabelParams) => {
         return <GlobeContextProvider>
-            <Globe
-                    fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
+            <Globe fontsSrc={FONTS_SRC}>
+                <PlanetCamera
+                    lonLat={new LonLat(1, 1, 100000)}
+                    lookLonLat={new LonLat(0, 0, 0)}
+                />
                 <Vector name={'test'}>
-                    <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
-                        <Label
-                            {...args}
-                        />
-                    </Entity>
-                </Vector>
-            </Globe>
-        </GlobeContextProvider>;
-    }
-};
-
-export const Arabic: Story = {
-    args: {
-        ...Default.args,
-        text: 'حبيبي',
-        face: 'NotoSansArabic-Regular',
-        isRTL: true,
-    },
-    render: (args: LabelParams) => {
-        return <GlobeContextProvider>
-            <Globe
-                    fontsSrc={"https://sandbox.openglobus.org/examples/fonts/fonts"}>
-                <Vector name={'test'}>
-                    <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
-                        <Label
-                            {...args}
-                        />
+                    <Entity name="Custom Entity" lonLat={[0, 0]}>
+                        <Label {...args}/>
                     </Entity>
                 </Vector>
             </Globe>

@@ -57,13 +57,12 @@ export const Default: Story = {
         onMouseLeave: action('onMouseLeave', {depth: 1, maxDepth: 1}),
         onMouseMove: action('onMouseMove', {depth: 1, maxDepth: 1}),
         onLdblclick: action('onLdblclick', {depth: 1, maxDepth: 1}),
-        // onDraw: action('onDraw', {depth: 1, maxDepth: 1}),
     },
     //@ts-ignore
     render: (args: VectorProps) => <GlobeContextProvider>
         <Globe>
             <Vector {...args}>
-                <Entity name="Custom Entity" lon={0} lat={0} alt={0}>
+                <Entity name="Custom Entity" lonLat={[0, 0]}>
                     <Billboard
                         size={[96, 96]}
                         color={"#ff5959"}

@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
 import React from 'react';
 import {Globe, GlobeContextProvider} from '@/Globe';
-import {LonLat} from '@openglobus/og';
 import {useGlobePosition} from '@/hooks/useGlobePosition';
+import type {LonLatInput} from '@/types/openglobus';
 
 const meta = {
     title: 'Hooks/useGlobePosition',
@@ -13,7 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // 🌍 Массив городов
-const cities = [
+const cities: {name: string; coords: LonLatInput}[] = [
     { name: "📍 Dubai", coords: [55.27, 25.20, 0] },
     { name: "🗼 Paris", coords: [2.3522, 48.8566, 0] },
     { name: "🗽 New York", coords: [-74.006, 40.7128, 0] },
@@ -25,8 +25,8 @@ const cities = [
     { name: "🌋 Honolulu", coords: [-157.8583, 21.3069, 0] },
 ];
 
-const Marker: React.FC<{ name: string; lonlat: LonLat }> = ({name, lonlat}) => {
-    const pos = useGlobePosition(lonlat, undefined, [0, -12]);
+const Marker: React.FC<{name: string; lonLat: LonLatInput}> = ({name, lonLat}) => {
+    const pos = useGlobePosition(lonLat, undefined, [0, -12]);
     if (!pos?.visible) return null;
 
     return (
@@ -57,7 +57,7 @@ export const MultiplePins: Story = {
                     <Marker
                         key={city.name}
                         name={city.name}
-                        lonlat={new LonLat(...city.coords)}
+                        lonLat={city.coords}
                     />
                 ))}
             </div>

@@ -1,9 +1,12 @@
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Billboard as GlobusBillboard, Vec2, Vec3, IBillboardParams} from "@openglobus/og";
+import {Billboard as GlobusBillboard, Vec2, IBillboardParams} from "@openglobus/og";
+import type {CartesianInput} from "@/types/openglobus";
 
-export interface BillboardParams extends IBillboardParams {
+export interface BillboardParams extends Omit<IBillboardParams, 'alignedAxis' | 'position'> {
     name?: string;
+    alignedAxis?: CartesianInput;
+    position?: CartesianInput;
     readonly _addBillboard?: (billboard: GlobusBillboard) => void;
     readonly _removeBillboard?: (billboard: GlobusBillboard) => void;
 }
@@ -42,12 +45,10 @@ const Billboard: React.FC<BillboardParams> = ({
 
     useEffect(() => {
         if (offset && billboardRef.current) {
-            if (offset instanceof Vec3) {
-                billboardRef.current?.setOffset(offset.x, offset.y, offset.z);
-            } else if (offset instanceof Vec2) {
-                billboardRef.current?.setOffset(offset.x, offset.y);
+            if (offset instanceof Vec2) {
+                billboardRef.current.setOffset2v(offset);
             } else {
-                billboardRef.current?.setOffset(offset[0], offset[1], offset[2]);
+                billboardRef.current.setOffset(offset[0], offset[1]);
             }
         }
     }, [offset]);

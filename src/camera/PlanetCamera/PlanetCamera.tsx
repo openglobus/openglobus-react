@@ -1,44 +1,55 @@
 import * as React from "react";
 import {useEffect} from "react";
-import {LonLat} from "@openglobus/og";
-import {IPlanetCameraParams} from "@openglobus/og/lib/camera/PlanetCamera";
+import type {LonLatInput, PlanetCameraOptions} from "@/types/openglobus";
 import {useGlobeContext} from "@/Globe";
+import {toLonLat} from "@/utils/coordinates";
 
-export interface PlanetCameraParams extends IPlanetCameraParams {
-    lon?: number;
-    lat?: number;
-    alt?: number;
+export interface PlanetCameraParams extends PlanetCameraOptions {
+    lonLat: LonLatInput;
+    lookLonLat: LonLatInput;
     yaw?: number;
     viewAngle?: number;
-    lookLon?: number;
-    lookLat?: number;
-    lookAlt?: number;
+    duration?: number;
 }
 
 const PlanetCamera: React.FC<PlanetCameraParams> = ({
-                                                        lon,
-                                                        lat,
-                                                        alt,
-                                                        lookLon,
-                                                        lookLat,
-                                                        lookAlt,
+                                                        lonLat,
+                                                        lookLonLat,
+                                                        yaw,
                                                         viewAngle,
-                                                        ...params
+                                                        duration,
                                                     }) => {
     const {globe} = useGlobeContext();
 
+    useEffect(() => {
+        if (!globe) return;
+
+        const position = toLonLat(lonLat);
+        const look = toLonLat(lookLonLat);
+
+        if (duration !== undefined && duration > 0) {
+            globe.planet.flyLonLat(position, {look, duration});
+        } else {
+            globe.planet.viewLonLat(position, look);
+        }
+    }, [
+        lonLat,
+        lookLonLat,
+        duration,
+        globe
+    ]);
 
     useEffect(() => {
-        if (globe && typeof lon === "number" && typeof lat === "number" && typeof alt === "number") {
-            globe.planet.flyLonLat(new LonLat(lon, lat, alt), new LonLat(lookLon, lookLat, lookAlt))
-        }
-    }, [lon, lat, alt, lookLon, lookLat, lookAlt, globe]);
+        if (!globe || viewAngle === undefined) return;
 
-    useEffect(() => {
-        if (globe && typeof viewAngle === "number") {
-            globe.planet.camera.setViewAngle(viewAngle)
-        }
+        globe.planet.camera.setViewAngle(viewAngle);
     }, [viewAngle, globe]);
+
+    useEffect(() => {
+        if (!globe || yaw === undefined) return;
+
+        globe.planet.camera.setYaw(yaw);
+    }, [yaw, globe]);
 
     return null;
 };
