@@ -10,10 +10,10 @@
 ## Install:
 
 ```bash
-npm i @openglobus/openglobus-react@1.0.0 @openglobus/og@1.0.0-rc10
+npm i @openglobus/openglobus-react@1.0.0 @openglobus/og@1.0.0-rc15
 ```
 
-Version `1.0.0` of the React components targets OpenGlobus `1.0.0-rc10`.
+Version `1.0.1` of the React components targets OpenGlobus `1.0.0-rc15`.
 
 ## Usage:
 
